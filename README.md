@@ -72,3 +72,4 @@ export default defineConfig([
 ])
 ```
 # memetrader-frontend
+# memerader-frontend
