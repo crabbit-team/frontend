@@ -80,7 +80,7 @@ export function BattleLobby() {
                         className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors"
                     >
                         <Plus className="w-4 h-4" />
-                        Create Battle Room
+                        Create Battle
                     </button>
                 </div>
 

@@ -6,7 +6,7 @@ import {
     BattleRoom,
     Vaults,
     VaultDetail,
-    AIAssist,
+    AIArchitect,
     Rank,
     UserProfile,
 } from "./pages";
@@ -37,8 +37,8 @@ export const router = createBrowserRouter([
                 element: <VaultDetail />,
             },
             {
-                path: "ai-assist",
-                element: <AIAssist />,
+                path: "ai-architect",
+                element: <AIArchitect />,
             },
             {
                 path: "rank",

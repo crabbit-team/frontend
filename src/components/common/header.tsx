@@ -17,8 +17,8 @@ export function Header() {
                     <Link to="/rank" className="flex items-center gap-2 hover:text-primary hover:text-glow transition-all">
                         <Activity className="w-4 h-4" /> Rank
                     </Link>
-                    <Link to="/ai-assist" className="flex items-center gap-2 hover:text-primary hover:text-glow transition-all">
-                        <Zap className="w-4 h-4" /> AI-Strategy
+                    <Link to="/ai-architect" className="flex items-center gap-2 hover:text-primary hover:text-glow transition-all">
+                        <Zap className="w-4 h-4" /> AI-Architect
                     </Link>
                 </nav>
 

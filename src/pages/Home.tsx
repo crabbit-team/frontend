@@ -33,10 +33,10 @@ export function Home() {
                         </Link>
 
                         <Link
-                            to="/vaults"
+                            to="/rank"
                             className="px-8 py-4 border border-primary/50 text-primary font-pixel text-sm hover:bg-primary/10 transition-all clip-path-polygon"
                         >
-                            VIEW_VAULTS
+                            VIEW_RANK
                         </Link>
                     </div>
                 </div>

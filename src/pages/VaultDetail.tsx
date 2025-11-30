@@ -14,7 +14,7 @@ export function VaultDetail() {
     if (loading) {
         return (
             <div className="min-h-screen bg-[#0c0b10] flex items-center justify-center text-white font-tech">
-                <div className="animate-pulse text-purple-400">Loading Vault Data...</div>
+                <div className="animate-pulse text-purple-400">Loading Strategy Data...</div>
             </div>
         );
     }
@@ -193,7 +193,7 @@ export function VaultDetail() {
                                 {/* Empty State / Info */}
                                 <div className="pt-4 border-t border-white/5 text-center">
                                     <p className="text-xs text-muted-foreground">
-                                        No active deposits in this vault.
+                                        No active deposits in this strategy.
                                     </p>
                                 </div>
                             </div>
