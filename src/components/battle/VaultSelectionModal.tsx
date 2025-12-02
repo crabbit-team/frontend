@@ -37,7 +37,7 @@ export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectio
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <h2 className="text-3xl font-bold font-pixel text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                                            SELECT YOUR VAULT
+                                            SELECT YOUR STRATEGY
                                         </h2>
                                         <p className="text-sm text-gray-400 font-mono mt-2">
                                             Choose a trading strategy to battle with

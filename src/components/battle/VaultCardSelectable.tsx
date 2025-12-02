@@ -73,7 +73,7 @@ export function VaultCardSelectable({ vault, onSelect }: VaultCardSelectableProp
 
                 {/* Select Button */}
                 <button className="w-full mt-4 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold font-pixel text-sm rounded-lg hover:shadow-[0_0_25px_rgba(124,58,237,0.6)] transition-all">
-                    SELECT THIS VAULT
+                    SELECT
                 </button>
             </div>
         </motion.div>

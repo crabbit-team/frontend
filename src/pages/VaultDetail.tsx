@@ -2,13 +2,20 @@
 import { motion } from "framer-motion";
 import { Wallet, Info, ArrowLeft, TrendingUp, Shield, DollarSign } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+    PieChart,
+    Pie,
+    Cell,
+    ResponsiveContainer,
+    Tooltip,
+    Legend,
+} from "recharts";
 import { useState } from "react";
-import { useVault } from "../hooks/useVault";
+import { useMockVault } from "../hooks/useMockVault";
 
 export function VaultDetail() {
     const { id } = useParams();
-    const { vault, loading, error } = useVault(id);
+    const { vault, loading, error } = useMockVault(id);
     const [amount, setAmount] = useState("");
 
     if (loading) {

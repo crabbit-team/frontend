@@ -1,13 +1,17 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Clock } from "lucide-react";
-import { BattleChart } from "../components/battle/BattleChart";
 import { TradePanel } from "../components/battle/TradePanel";
 import { PlayerStats } from "../components/battle/PlayerStats";
 import { MOCK_BATTLES } from "../lib/mockData";
+import type { BattleRoom as BattleRoomType } from "../api/battle";
 
 export function BattleRoom() {
     const { id } = useParams();
-    const battle = MOCK_BATTLES.find(b => b.id === id) || MOCK_BATTLES[1]; // Fallback to active battle for demo
+    const numericId = Number(id);
+    const battle: BattleRoomType =
+        MOCK_BATTLES.find(b => b.id === numericId) || MOCK_BATTLES[1]; // Fallback to active battle for demo
+
+    const timeLabel = `${battle.duration_seconds}s`;
 
     return (
         <div className="space-y-6">
@@ -18,25 +22,23 @@ export function BattleRoom() {
                 </Link>
                 <div className="flex items-center gap-2 bg-secondary px-3 py-1 rounded-full text-sm font-medium">
                     <Clock className="w-4 h-4" />
-                    <span>{battle.timeLeft || "00:00"}</span>
+                    <span>{timeLabel}</span>
                 </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <PlayerStats
-                    name={battle.playerA}
-                    pnl={battle.pnlA || 0}
+                    name={battle.creator_address}
+                    pnl={battle.creator_return_pct ?? 0}
                     equity={1125}
                 />
                 <PlayerStats
-                    name={battle.playerB || "Opponent"}
-                    pnl={battle.pnlB || 0}
+                    name={battle.opponent_address || "AI Strategy"}
+                    pnl={battle.opponent_return_pct ?? 0}
                     equity={1082}
                     isOpponent
                 />
             </div>
-
-            <BattleChart />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">

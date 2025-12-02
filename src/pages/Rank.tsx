@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
-import { Wallet } from "lucide-react";
 import { cn } from "../lib/utils";
-import { Link, useNavigate } from "react-router-dom";
-
-import { MOCK_VAULTS } from "../data/mockVaults";
+import { useNavigate } from "react-router-dom";
+import { MOCK_VAULTS } from "../lib/mockData";
 
 export function Rank() {
     return (
@@ -27,15 +25,35 @@ export function Rank() {
                 </div>
 
                 {/* 2. Ranking Showcase (Centerpiece) */}
-                <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[400px]">
-                    {/* Rank 2 (Left) */}
-                    <RankingCard user={MOCK_VAULTS[1]} position="left" delay={0.2} />
+                <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[200px]">
+                    {/* Simple mock spotlight for top 3 strategies */}
+                    {(() => {
+                        const top3 = MOCK_VAULTS.slice(0, 3);
+                        if (top3.length < 3) return null;
 
-                    {/* Rank 1 (Center) */}
-                    <RankingCard user={MOCK_VAULTS[0]} position="center" delay={0} />
+                        const spotlight = [
+                            { vault: top3[1], rank: 2, position: "left" as const, delay: 0.3 },
+                            { vault: top3[0], rank: 1, position: "center" as const, delay: 0.2 },
+                            { vault: top3[2], rank: 3, position: "right" as const, delay: 0.4 },
+                        ];
 
-                    {/* Rank 3 (Right) */}
-                    <RankingCard user={MOCK_VAULTS[2]} position="right" delay={0.4} />
+                        return spotlight.map(({ vault, rank, position, delay }) => (
+                            <RankingCard
+                                key={vault.id}
+                                user={{
+                                    id: vault.id,
+                                    rank,
+                                    vaultName: vault.name,
+                                    owner: vault.manager,
+                                    roiUsd: `+$${(vault.apy * 1000).toFixed(0)}`,
+                                    tvl: `$${vault.tvl.toLocaleString()}`,
+                                    avatar: vault.name.charAt(0).toUpperCase(),
+                                }}
+                                position={position}
+                                delay={delay}
+                            />
+                        ));
+                    })()}
                 </div>
 
                 {/* 4. Ranking Table */}
@@ -49,42 +67,37 @@ export function Rank() {
                     </div>
 
                     <div className="divide-y divide-white/5">
-                        {MOCK_VAULTS.map((vault, index) => (
-                            <div key={vault.id} className="block group">
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="grid grid-cols-12 gap-4 p-6 items-center hover:bg-white/5 transition-colors"
+                        {MOCK_VAULTS.map((vault, index) => {
+                            const rank = index + 1;
+                            const roiUsd = (vault.apy * 1000).toFixed(0);
+                            const tvlLabel = `$${vault.tvl.toLocaleString()}`;
+
+                            return (
+                                <div
+                                    key={vault.id}
+                                    className="grid grid-cols-12 gap-4 px-6 py-4 text-sm items-center"
                                 >
-                                    <div className="col-span-1 font-pixel text-muted-foreground">#{vault.rank}</div>
-                                    <div className="col-span-5 flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-lg shadow-inner shrink-0">
-                                            {vault.avatar}
+                                    <div className="col-span-1 font-mono text-muted-foreground">
+                                        #{rank}
+                                    </div>
+                                    <div className="col-span-5">
+                                        <div className="font-mono text-white">{vault.name}</div>
+                                        <div className="text-xs text-muted-foreground">
+                                            by {vault.manager}
                                         </div>
-                                        <div className="flex flex-col">
-                                            <div className="font-bold text-white group-hover:text-primary transition-colors text-base">{vault.vaultName}</div>
-                                            <div className="text-xs text-muted-foreground font-mono">{vault.owner}</div>
-                                        </div>
                                     </div>
-                                    <div className="col-span-2 text-right font-mono">
-                                        <span className={cn(
-                                            "font-bold",
-                                            vault.roiUsd.startsWith('+') ? "text-green-400" : "text-red-400"
-                                        )}>
-                                            {vault.roiUsd}
-                                        </span>
+                                    <div className="col-span-2 text-right font-mono text-emerald-400">
+                                        +${roiUsd}
                                     </div>
-                                    <div className="col-span-2 text-right font-mono text-white/90 font-medium">{vault.tvl}</div>
-                                    <div className="col-span-2 text-right flex justify-end">
-                                        <Link to={`/vaults/${vault.id}`} className="px-6 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs hover:shadow-[0_0_15px_rgba(124,58,237,0.5)] transition-all flex items-center gap-2">
-                                            <Wallet className="w-3 h-3" />
-                                            Deposit
-                                        </Link>
+                                    <div className="col-span-2 text-right font-mono text-white/80">
+                                        {tvlLabel}
                                     </div>
-                                </motion.div>
-                            </div>
-                        ))}
+                                    <div className="col-span-2 text-right font-mono text-muted-foreground">
+                                        —
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
@@ -92,6 +105,7 @@ export function Rank() {
     );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function RankingCard({ user, position, delay }: { user: any, position: 'left' | 'center' | 'right', delay: number }) {
     const isCenter = position === 'center';
     const navigate = useNavigate();

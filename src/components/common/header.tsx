@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Terminal, Activity, Trophy, Zap } from "lucide-react";
+import { WalletProfileButton } from "./WalletProfileButton";
 
 export function Header() {
     return (
@@ -7,7 +8,7 @@ export function Header() {
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 <Link to="/" className="text-xl font-bold tracking-tight font-pixel text-primary flex items-center gap-2 hover:text-primary/80 transition-colors">
                     <Terminal className="w-6 h-6" />
-                    MEMERADER
+                    CRABBIT
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-8 text-sm font-bold tracking-wider uppercase">
@@ -23,9 +24,7 @@ export function Header() {
                 </nav>
 
                 <div className="flex items-center gap-4">
-                    <button className="bg-primary/10 border border-primary text-primary px-6 py-2 rounded-none font-pixel text-xs hover:bg-primary hover:text-primary-foreground transition-all clip-path-polygon">
-                        [ CONNECT WALLET ]
-                    </button>
+                    <WalletProfileButton />
                 </div>
             </div>
         </header>

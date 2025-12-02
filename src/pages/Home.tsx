@@ -51,9 +51,9 @@ export function Home() {
                     <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center mb-6 border border-primary/30">
                         <Trophy className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-bold font-pixel mb-4 text-primary">PVP_BATTLES</h3>
+                    <h3 className="text-xl font-bold font-pixel mb-4 text-primary">AI_BATTLES</h3>
                     <p className="text-muted-foreground font-tech text-lg">
-                        Real-time PNL combat. Challenge traders 1v1. Winner takes the pool.
+                        Real-time PNL combat. Challenge AI strategies 1v1. Winner takes the pool.
                     </p>
                 </div>
 
@@ -64,7 +64,7 @@ export function Home() {
                     <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center mb-6 border border-primary/30">
                         <TrendingUp className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-bold font-pixel mb-4 text-primary">STRATEGY_VAULTS</h3>
+                    <h3 className="text-xl font-bold font-pixel mb-4 text-primary">STRATEGY_RANK</h3>
                     <p className="text-muted-foreground font-tech text-lg">
                         Deposit into high-yield algos. Managed by elite traders and bots.
                     </p>

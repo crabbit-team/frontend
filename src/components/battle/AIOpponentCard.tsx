@@ -7,13 +7,6 @@ interface AIOpponentCardProps {
     onSelect: (opponent: AIOpponent) => void;
 }
 
-const difficultyColors = {
-    Easy: "border-green-500/30 bg-green-500/10 text-green-400",
-    Medium: "border-yellow-500/30 bg-yellow-500/10 text-yellow-400",
-    Hard: "border-orange-500/30 bg-orange-500/10 text-orange-400",
-    Expert: "border-red-500/30 bg-red-500/10 text-red-400"
-};
-
 export function AIOpponentCard({ opponent, onSelect }: AIOpponentCardProps) {
     return (
         <motion.div
@@ -32,9 +25,6 @@ export function AIOpponentCard({ opponent, onSelect }: AIOpponentCardProps) {
                         <h3 className="text-xl font-bold font-pixel text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 transition-all">
                             {opponent.name}
                         </h3>
-                        <div className={`inline-block mt-1 px-2 py-1 rounded text-xs font-bold uppercase border ${difficultyColors[opponent.difficulty]}`}>
-                            {opponent.difficulty}
-                        </div>
                     </div>
                 </div>
 
@@ -48,20 +38,37 @@ export function AIOpponentCard({ opponent, onSelect }: AIOpponentCardProps) {
                     <div className="space-y-1">
                         <div className="flex items-center gap-1 text-xs text-gray-500 uppercase tracking-wider font-mono">
                             <TrendingUp className="w-3 h-3" />
-                            <span>Win Rate</span>
+                            <span>APY</span>
                         </div>
                         <div className="text-2xl font-bold text-purple-400 font-pixel">
-                            {opponent.winRate}%
+                            {opponent.apy}%
                         </div>
                     </div>
                     <div className="space-y-1">
                         <div className="flex items-center gap-1 text-xs text-gray-500 uppercase tracking-wider font-mono">
                             <Zap className="w-3 h-3" />
-                            <span>Specialty</span>
+                            <span>TVL</span>
                         </div>
                         <div className="text-sm font-bold text-cyan-400 font-mono truncate">
-                            {opponent.specialty}
+                            ${Math.round(opponent.tvl / 1000).toLocaleString()}K
                         </div>
+                    </div>
+                </div>
+
+                {/* Holdings (allocation only, no chart) */}
+                <div className="space-y-2 pt-2">
+                    <div className="text-xs text-gray-500 uppercase tracking-wider font-mono">
+                        Holdings
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {opponent.holdings.slice(0, 4).map((holding, idx) => (
+                            <div
+                                key={`${holding.token}-${idx}`}
+                                className="px-2 py-1 bg-purple-600/10 border border-purple-500/20 rounded text-xs font-mono text-purple-300"
+                            >
+                                {holding.token} {holding.allocation}%
+                            </div>
+                        ))}
                     </div>
                 </div>
 

@@ -9,6 +9,7 @@ import {
     AIArchitect,
     Rank,
     UserProfile,
+    StrategyResult,
 } from "./pages";
 
 export const router = createBrowserRouter([
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
             {
                 path: "ai-architect",
                 element: <AIArchitect />,
+            },
+            {
+                path: "strategy/result",
+                element: <StrategyResult />,
             },
             {
                 path: "rank",

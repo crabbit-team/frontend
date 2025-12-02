@@ -52,7 +52,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                     >
                         <Coins className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
                         <div className="text-xs text-gray-400 font-mono uppercase">Entry Fee</div>
-                        <div className="text-2xl font-bold font-pixel text-yellow-400">100 CRT</div>
+                        <div className="text-2xl font-bold font-pixel text-yellow-400">FREE</div>
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -78,20 +78,10 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
 
                 {/* VS Section */}
                 <div className="relative mb-12">
-                    {/* Center VS Badge */}
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", delay: 0.5 }}
-                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
-                    >
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-[0_0_50px_rgba(124,58,237,0.6)] border-4 border-[#0c0b10]">
-                            <Swords className="w-12 h-12 text-white" />
-                        </div>
-                    </motion.div>
+                    {/* option: Center VS Badge */}
 
                     <div className="grid grid-cols-2 gap-8">
-                        {/* Player Vault Card */}
+                        {/* Player Strategy Card */}
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -122,7 +112,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                             </div>
                         </motion.div>
 
-                        {/* AI Opponent Card */}
+                        {/* AI Strategy Card */}
                         <motion.div
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -131,7 +121,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                         >
                             <div className="text-center mb-4">
                                 <div className="inline-block px-4 py-1 bg-red-600/20 border border-red-500/30 rounded-full text-xs font-bold font-pixel text-red-400 uppercase mb-4">
-                                    AI Opponent
+                                    AI Strategy
                                 </div>
                             </div>
                             <div className="flex flex-col items-center">
@@ -140,17 +130,18 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                                 </div>
                                 <h3 className="text-2xl font-bold font-pixel text-white mb-2">{opponent.name}</h3>
                                 <p className="text-sm text-gray-400 font-mono mb-2">{opponent.specialty}</p>
-                                <div className="inline-block px-3 py-1 bg-orange-600/20 border border-orange-500/30 rounded text-xs font-bold font-pixel text-orange-400 uppercase mb-4">
-                                    {opponent.difficulty}
-                                </div>
                                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray-500 font-mono uppercase">Win Rate</div>
-                                        <div className="text-xl font-bold font-pixel text-purple-400">{opponent.winRate}%</div>
+                                        <div className="text-xs text-gray-500 font-mono uppercase">APY</div>
+                                        <div className="text-xl font-bold font-pixel text-green-400">
+                                            {opponent.apy}%
+                                        </div>
                                     </div>
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray-500 font-mono uppercase">Level</div>
-                                        <div className="text-xl font-bold font-pixel text-cyan-400">AI</div>
+                                        <div className="text-xs text-gray-500 font-mono uppercase">TVL</div>
+                                        <div className="text-xl font-bold font-pixel text-blue-400">
+                                            ${Math.round(opponent.tvl / 1000).toLocaleString()}K
+                                        </div>
                                     </div>
                                 </div>
                             </div>

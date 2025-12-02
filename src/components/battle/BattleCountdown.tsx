@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Clock, Zap } from "lucide-react";
 import type { Vault, AIOpponent } from "../../lib/mockData";
-import { CardBattleAnimation } from "./CardBattleAnimation";
+import { BattleMiniGame, type BattleMiniGameResult } from "./BattleMiniGame";
 
 interface BattleCountdownProps {
     countdown: number;
@@ -23,10 +23,50 @@ const battleLogMessages = [
     "Final countdown to results..."
 ];
 
-export function BattleCountdown({ countdown, vault, opponent }: BattleCountdownProps) {
+export function BattleCountdown({ countdown }: BattleCountdownProps) {
     const progress = ((60 - countdown) / 60) * 100;
     const currentMessageIndex = Math.floor(((60 - countdown) / 60) * battleLogMessages.length);
     const currentMessage = battleLogMessages[Math.min(currentMessageIndex, battleLogMessages.length - 1)];
+
+    const handleMiniGameComplete = (result: BattleMiniGameResult) => {
+        // Stub reward / result handlers for now – parent battle flow still uses ROI logic.
+        if (result.result === "user_win") {
+            // Example: grant CVT rewards equivalent to 1 USDT
+            grantBattleReward({
+                token: "CVT",
+                usdtValue: 1,
+                result: result.result,
+                userClearedCount: result.userClearedCount,
+                aiClearedCount: result.aiClearedCount,
+            });
+        } else {
+            handleBattleResult({
+                result: result.result,
+                userClearedCount: result.userClearedCount,
+                aiClearedCount: result.aiClearedCount,
+            });
+        }
+    };
+
+    // Simple stubs to demonstrate how reward / result callbacks could be wired.
+    const grantBattleReward = (payload: {
+        token: string;
+        usdtValue: number;
+        result: "user_win";
+        userClearedCount: number;
+        aiClearedCount: number;
+    }) => {
+        // In a real implementation, this would trigger on-chain / backend reward logic.
+        console.log("grantBattleReward", payload);
+    };
+
+    const handleBattleResult = (payload: {
+        result: "ai_win" | "draw";
+        userClearedCount: number;
+        aiClearedCount: number;
+    }) => {
+        console.log("handleBattleResult", payload);
+    };
 
     return (
         <div className="min-h-screen bg-[#0c0b10] text-white p-6 flex items-center justify-center">
@@ -106,9 +146,9 @@ export function BattleCountdown({ countdown, vault, opponent }: BattleCountdownP
                     </div>
                 </motion.div>
 
-                {/* Card Battle Animation */}
-                <div className="mb-12">
-                    <CardBattleAnimation vault={vault} opponent={opponent} />
+                {/* Mini-game (centered, Chrome Dino-style) */}
+                <div className="mb-12 flex justify-center">
+                    <BattleMiniGame onComplete={handleMiniGameComplete} />
                 </div>
 
                 {/* Battle Log */}
