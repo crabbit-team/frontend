@@ -4,7 +4,6 @@ import {
     Home,
     BattleLobby,
     BattleRoom,
-    Vaults,
     VaultDetail,
     AIArchitect,
     Rank,
@@ -28,10 +27,6 @@ export const router = createBrowserRouter([
             {
                 path: "battle/:id",
                 element: <BattleRoom />,
-            },
-            {
-                path: "vaults",
-                element: <Vaults />,
             },
             {
                 path: "vaults/:id",

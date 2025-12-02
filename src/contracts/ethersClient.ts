@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 declare global {
   interface Window {
     // Injected by wallet extensions (MetaMask, RainbowKit connectors, etc.)
-    ethereum?: unknown;
+    ethereum?: any;
   }
 }
 

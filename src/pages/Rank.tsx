@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { MOCK_VAULTS } from "../lib/mockData";
 
 export function Rank() {
+    const navigate = useNavigate();
+
     return (
         <div className="min-h-screen bg-[#0c0b10] text-white font-tech overflow-hidden relative">
             {/* Background Particles (Simulated with CSS/SVG for performance) */}
@@ -75,7 +77,8 @@ export function Rank() {
                             return (
                                 <div
                                     key={vault.id}
-                                    className="grid grid-cols-12 gap-4 px-6 py-4 text-sm items-center"
+                                    className="grid grid-cols-12 gap-4 px-6 py-4 text-sm items-center hover:bg-white/5 cursor-pointer transition-colors"
+                                    onClick={() => navigate(`/vaults/${vault.id}`)}
                                 >
                                     <div className="col-span-1 font-mono text-muted-foreground">
                                         #{rank}

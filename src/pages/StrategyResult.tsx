@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { StrategyGenerateResponse } from "../api/strategy";
+import type { StrategyGenerateResponse } from "../api/Strategy";
 import { StrategyResultCard } from "../components/strategy/StrategyResultCard";
 import { investWithUSDC } from "../contracts/memeVaultActions";
 

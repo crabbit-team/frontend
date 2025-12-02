@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <ProfileProvider>
-    <RouterProvider router={router} />
+            <RouterProvider router={router} />
           </ProfileProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

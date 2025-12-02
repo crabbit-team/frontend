@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Send, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { generateStrategy } from "../api/strategy";
+import { generateStrategy } from "../api/Strategy";
 import { StrategyResultCard } from "../components/strategy/StrategyResultCard";
 
 const SAMPLE_PROMPTS = [

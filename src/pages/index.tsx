@@ -3,7 +3,6 @@ export { Rank } from "./Rank";
 export { VaultDetail } from "./VaultDetail";
 export { BattleLobby } from "./BattleLobby";
 export { BattleRoom } from "./BattleRoom";
-export { Vaults } from "./Vaults";
 export { AIArchitect } from "./AIArchtect";
 export { UserProfile } from "./UserProfile";
 export { StrategyResult } from "./StrategyResult";
