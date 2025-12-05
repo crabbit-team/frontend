@@ -38,10 +38,10 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
       : creatorAddress;
 
   return (
-    <div className="bg-card/60 border border-border rounded-lg p-6 hover:border-primary/60 hover:shadow-[0_0_30px_rgba(0,255,157,0.15)] transition-all flex flex-col gap-4">
+    <div className="bg-card/60 border border-border rounded-lg p-6 hover:border-carrot-orange/60 hover:shadow-[0_0_30px_rgba(208,129,65,0.15)] transition-all flex flex-col gap-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-[11px] font-pixel text-primary mb-1 uppercase">
+          <div className="text-[11px] font-pixel text-carrot-orange mb-1 uppercase">
             Strategy
           </div>
           <h3 className="font-bold text-lg font-pixel text-white">
@@ -68,7 +68,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
             Strategy APY
           </span>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-sm text-emerald-400 flex items-center gap-1">
+            <span className="font-mono text-sm text-success flex items-center gap-1">
               <TrendingUp className="w-3 h-3" />
               {typeof apy === "number" ? `${apy.toFixed(2)}%` : "-"}
             </span>
@@ -76,8 +76,8 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
               className={`text-[11px] font-mono ${
                 typeof change === "number"
                   ? changePositive
-                    ? "text-emerald-400"
-                    : "text-red-400"
+                    ? "text-success"
+                    : "text-error"
                   : "text-muted-foreground"
               }`}
             >
@@ -91,7 +91,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
 
       <div className="flex items-center justify-between gap-3 pt-3 border-t border-border/60">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full overflow-hidden bg-primary/10 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full overflow-hidden bg-carrot-orange/10 flex items-center justify-center">
             {creatorImage ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -100,7 +100,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <WalletIcon className="w-4 h-4 text-primary" />
+              <WalletIcon className="w-4 h-4 text-carrot-orange" />
             )}
           </div>
           <div className="flex flex-col">
@@ -115,7 +115,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
 
         <Link
           to={`/vaults/${encodeURIComponent(vault.address)}`}
-          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-primary text-primary-foreground text-xs font-mono hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-carrot-orange text-carrot-orange-foreground text-xs font-mono hover:bg-carrot-orange/90 transition-colors"
         >
           View Strategy
           <ArrowRight className="w-3 h-3" />

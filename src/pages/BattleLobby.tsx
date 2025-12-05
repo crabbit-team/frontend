@@ -74,7 +74,7 @@ export function BattleLobby() {
 
                     <button
                         onClick={startVaultSelection}
-                        className="bg-primary text-primary-foreground px-5 py-3 rounded-none font-pixel text-xs flex items-center gap-2 hover:bg-primary/90 transition-all clip-path-polygon"
+                        className="bg-carrot-orange text-carrot-orange-foreground px-5 py-3 rounded-none font-pixel text-xs flex items-center gap-2 hover:bg-carrot-orange/90 transition-all clip-path-polygon"
                     >
                         <Plus className="w-4 h-4" />
                         START_BATTLE
@@ -83,24 +83,24 @@ export function BattleLobby() {
 
                 {/* Battle Tutorial */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="bg-card/60 border border-primary/30 p-6 rounded-lg relative overflow-hidden">
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
-                        <p className="text-[11px] font-pixel text-primary mb-2">
+                    <div className="bg-card/60 border border-carrot-orange/30 p-6 rounded-lg relative overflow-hidden">
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-carrot-orange/10 rounded-full blur-3xl" />
+                        <p className="text-[11px] font-pixel text-carrot-orange mb-2">
                             HOW_IT_WORKS
                         </p>
                         <h2 className="text-xl font-bold mb-3 font-pixel">
                             01. Choose your strategy
                         </h2>
                         <p className="text-sm text-muted-foreground font-tech">
-                            Click <span className="font-mono text-primary">START_BATTLE</span> and
+                            Click <span className="font-mono text-carrot-orange">START_BATTLE</span> and
                             select a strategy you&apos;ve created or joined via a strategy. This becomes
                             your fighter for the next 1 minute.
                         </p>
                     </div>
 
-                    <div className="bg-card/60 border border-primary/30 p-6 rounded-lg relative overflow-hidden">
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-400/10 rounded-full blur-3xl" />
-                        <p className="text-[11px] font-pixel text-primary mb-2">
+                    <div className="bg-card/60 border border-carrot-orange/30 p-6 rounded-lg relative overflow-hidden">
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-success/10 rounded-full blur-3xl" />
+                        <p className="text-[11px] font-pixel text-carrot-orange mb-2">
                             BATTLE_FLOW
                         </p>
                         <h2 className="text-xl font-bold mb-3 font-pixel">
@@ -113,9 +113,9 @@ export function BattleLobby() {
                         </p>
                     </div>
 
-                    <div className="bg-card/60 border border-primary/30 p-6 rounded-lg relative overflow-hidden">
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl" />
-                        <p className="text-[11px] font-pixel text-primary mb-2">
+                    <div className="bg-card/60 border border-carrot-orange/30 p-6 rounded-lg relative overflow-hidden">
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-warning/10 rounded-full blur-3xl" />
+                        <p className="text-[11px] font-pixel text-carrot-orange mb-2">
                             REWARDS
                         </p>
                         <h2 className="text-xl font-bold mb-3 font-pixel">
@@ -130,9 +130,9 @@ export function BattleLobby() {
                 </div>
 
                 {/* Coming soon row for PVP battles */}
-                <div className="bg-card/40 border border-dashed border-primary/30 p-5 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="bg-card/40 border border-dashed border-carrot-orange/30 p-5 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
-                        <p className="text-[11px] font-pixel text-primary/70 mb-1">
+                        <p className="text-[11px] font-pixel text-carrot-orange/70 mb-1">
                             PVP_MODE
                         </p>
                         <h3 className="text-lg font-pixel mb-1">
@@ -144,7 +144,7 @@ export function BattleLobby() {
                             and climb a dedicated PvP leaderboard.
                         </p>
                     </div>
-                    <div className="text-[10px] font-pixel uppercase px-3 py-1 border border-primary/40 text-primary rounded-none opacity-70">
+                    <div className="text-[10px] font-pixel uppercase px-3 py-1 border border-carrot-orange/40 text-carrot-orange rounded-none opacity-70">
                         PVP_COMING_SOON
                     </div>
                 </div>

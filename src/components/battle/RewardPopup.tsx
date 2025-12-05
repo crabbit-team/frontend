@@ -28,7 +28,7 @@ export function RewardPopup({ isOpen, amount, onClose }: RewardPopupProps) {
                     transition={{ type: "spring", duration: 0.7 }}
                     className="fixed top-24 left-1/2 -translate-x-1/2 z-[100]"
                 >
-                    <div className="relative bg-gradient-to-br from-yellow-900/90 to-orange-900/90 backdrop-blur-md border-2 border-yellow-500/50 rounded-2xl p-8 shadow-[0_0_80px_rgba(234,179,8,0.8)]">
+                    <div className="relative bg-gradient-to-br from-warning/90 to-warning/90 backdrop-blur-md border-2 border-warning/50 rounded-2xl p-8 shadow-[0_0_80px_rgba(234,179,8,0.8)]">
                         {/* Sparkle Effects */}
                         <motion.div
                             animate={{
@@ -41,7 +41,7 @@ export function RewardPopup({ isOpen, amount, onClose }: RewardPopupProps) {
                             }}
                             className="absolute -top-4 -right-4"
                         >
-                            <Sparkles className="w-8 h-8 text-yellow-400" />
+                            <Sparkles className="w-8 h-8 text-warning" />
                         </motion.div>
                         <motion.div
                             animate={{
@@ -54,7 +54,7 @@ export function RewardPopup({ isOpen, amount, onClose }: RewardPopupProps) {
                             }}
                             className="absolute -bottom-4 -left-4"
                         >
-                            <Sparkles className="w-8 h-8 text-yellow-400" />
+                            <Sparkles className="w-8 h-8 text-warning" />
                         </motion.div>
 
                         {/* Content */}
@@ -69,13 +69,13 @@ export function RewardPopup({ isOpen, amount, onClose }: RewardPopupProps) {
                                     repeat: Infinity,
                                     repeatDelay: 1
                                 }}
-                                className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-[0_0_30px_rgba(234,179,8,0.8)]"
+                                className="w-20 h-20 rounded-full bg-gradient-to-br from-warning to-warning flex items-center justify-center shadow-[0_0_30px_rgba(234,179,8,0.8)]"
                             >
-                                <Coins className="w-10 h-10 text-white" />
+                                <Coins className="w-10 h-10 text-warning-foreground" />
                             </motion.div>
 
                             <div className="text-center">
-                                <div className="text-sm font-mono text-yellow-200 uppercase tracking-wider mb-2">
+                                <div className="text-sm font-mono text-warning-foreground/80 uppercase tracking-wider mb-2">
                                     Reward Claimed!
                                 </div>
                                 <motion.div
@@ -87,7 +87,7 @@ export function RewardPopup({ isOpen, amount, onClose }: RewardPopupProps) {
                                         repeat: Infinity,
                                         ease: "easeInOut"
                                     }}
-                                    className="text-5xl font-bold font-pixel text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400"
+                                    className="text-5xl font-bold font-pixel text-transparent bg-clip-text bg-gradient-to-r from-warning to-warning"
                                 >
                                     +{amount} CRT
                                 </motion.div>
@@ -109,7 +109,7 @@ export function RewardPopup({ isOpen, amount, onClose }: RewardPopupProps) {
                                         repeat: Infinity,
                                         delay: i * 0.1
                                     }}
-                                    className="absolute w-2 h-2 rounded-full bg-yellow-400"
+                                    className="absolute w-2 h-2 rounded-full bg-warning"
                                 />
                             ))}
                         </div>

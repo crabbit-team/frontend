@@ -111,7 +111,7 @@ export function WalletProfileButton() {
       {/* Existing button UI – keep this structure and styling */}
       <button
         type="button"
-        className="bg-primary/10 border border-primary text-primary px-6 py-2 rounded-none font-pixel text-xs hover:bg-primary hover:text-primary-foreground transition-all clip-path-polygon wallet-connect-btn"
+        className="bg-carrot-orange/10 border border-carrot-orange text-carrot-orange px-6 py-2 rounded-none font-pixel text-xs hover:bg-carrot-orange hover:text-carrot-orange-foreground transition-all clip-path-polygon wallet-connect-btn"
         onClick={handleClick}
       >
         <span className="wallet-connect-label">{label}</span>
@@ -119,16 +119,16 @@ export function WalletProfileButton() {
 
       {/* Dropdown */}
       {isDropdownOpen && profile && (
-        <div className="wallet-dropdown absolute right-0 mt-2 w-64 bg-[#13121a] border border-primary/40 rounded-xl shadow-xl z-50">
+        <div className="wallet-dropdown absolute right-0 mt-2 w-64 bg-card border border-carrot-orange/40 rounded-xl shadow-xl z-50">
           <button
             type="button"
             onClick={handleCopyAddress}
-            className="wallet-address-row px-3 py-2 text-[11px] font-mono text-muted-foreground break-all text-left hover:bg-primary/10 w-full flex items-center justify-between gap-2"
+            className="wallet-address-row px-3 py-2 text-[11px] font-mono text-muted-foreground break-all text-left hover:bg-carrot-orange/10 w-full flex items-center justify-between gap-2"
           >
             <span className="break-all flex-1">{profile.wallet_address}</span>
             <Copy className="w-3 h-3 flex-shrink-0 text-muted-foreground" />
             {copyFeedback && (
-              <span className="ml-2 text-[10px] text-primary font-bold">
+              <span className="ml-2 text-[10px] text-carrot-orange font-bold">
                 {copyFeedback}
               </span>
             )}
@@ -137,7 +137,7 @@ export function WalletProfileButton() {
           <button
             type="button"
             onClick={handleViewProfile}
-            className="w-full text-left px-3 py-2 text-[11px] font-mono text-primary hover:bg-primary/10"
+            className="w-full text-left px-3 py-2 text-[11px] font-mono text-carrot-orange hover:bg-carrot-orange/10"
           >
             View profile page
           </button>
@@ -146,7 +146,7 @@ export function WalletProfileButton() {
 
       {/* Optional small error text */}
       {error && (
-        <div className="mt-1 text-[10px] text-red-400 font-mono">
+        <div className="mt-1 text-[10px] text-error font-mono">
           {error}
         </div>
       )}

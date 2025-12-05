@@ -1,7 +1,6 @@
 import { Bot } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-
-const STRATEGY_PIE_COLORS = ["#22c55e", "#3b82f6", "#a855f7", "#f97316", "#e11d48"];
+import { CHART_COLOR_PALETTE } from "../../lib/utils";
 
 interface StrategyResultCardProps {
   variant: "real" | "sample";
@@ -24,15 +23,15 @@ export function StrategyResultCard({
   }));
 
   return (
-    <div className="bg-[#13121a] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-sm shadow-xl">
+    <div className="bg-card border border-border rounded-2xl overflow-hidden backdrop-blur-sm shadow-xl">
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-white/5 bg-gradient-to-r from-purple-900/20 to-indigo-900/20">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+      <div className="flex items-center gap-3 p-4 border-b border-white/5 bg-gradient-to-r from-carrot-orange/20 to-carrot-orange/20">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-carrot-orange to-carrot-orange flex items-center justify-center">
           <Bot className="w-5 h-5 text-white" />
         </div>
         <div>
           <div className="text-sm font-bold text-white">AI Strategy Architect</div>
-          <div className="text-xs text-gray-400 font-mono">
+          <div className="text-xs text-gray font-mono">
             {variant === "real" ? "Generated from your prompt" : "Sample output format"}
           </div>
         </div>
@@ -40,23 +39,23 @@ export function StrategyResultCard({
 
       {/* Body */}
       <div className="p-6 space-y-6">
-        <div className="bg-gradient-to-br from-purple-900/10 to-indigo-900/10 border border-purple-500/20 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-carrot-orange/10 to-carrot-orange/10 border border-carrot-orange/20 rounded-xl p-5">
           <div className="space-y-4">
             <div className="flex items-start justify-between mb-3">
               <h3 className="text-xl font-bold text-white font-pixel">
                 {variant === "real" ? "AI Meme Strategy" : "Sample Meme Strategy"}
               </h3>
             </div>
-            <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
+            <p className="text-gray-foreground font-mono text-sm leading-relaxed mb-4">
               {description}
             </p>
-            <p className="text-sm text-gray-400 font-mono leading-relaxed mb-4">
+            <p className="text-sm text-gray font-mono leading-relaxed mb-4">
               {reasoning}
             </p>
 
             {/* Allocation – title + left: pie chart, right: detailed token list */}
             <div className="pt-4 border-t border-white/5 space-y-3">
-              <div className="text-xs text-gray-500 uppercase tracking-wider font-mono">
+              <div className="text-xs text-gray uppercase tracking-wider font-mono">
                 Allocation
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -78,8 +77,8 @@ export function StrategyResultCard({
                           <Cell
                             key={`cell-${entry.name}-${index}`}
                             fill={
-                              STRATEGY_PIE_COLORS[
-                                index % STRATEGY_PIE_COLORS.length
+                              CHART_COLOR_PALETTE[
+                                index % CHART_COLOR_PALETTE.length
                               ]
                             }
                           />
@@ -100,8 +99,8 @@ export function StrategyResultCard({
                         className="inline-block w-2 h-2 rounded-full"
                         style={{
                           backgroundColor:
-                            STRATEGY_PIE_COLORS[
-                              idx % STRATEGY_PIE_COLORS.length
+                            CHART_COLOR_PALETTE[
+                              idx % CHART_COLOR_PALETTE.length
                             ],
                         }}
                       />

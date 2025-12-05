@@ -404,13 +404,13 @@ export function BattleMiniGame({
                         <div className="text-4xl mb-2">
                             {userCleared > aiCleared ? "🏆" : aiCleared > userCleared ? "🤖" : "🤝"}
                         </div>
-                        <h2 className="text-3xl font-black text-gray-800 mb-2">
+                        <h2 className="text-3xl font-black text-gray mb-2">
                             {userCleared > aiCleared ? "VICTORY!" : aiCleared > userCleared ? "DEFEAT" : "DRAW"}
                         </h2>
-                        <div className="text-gray-500 font-mono mb-4">
+                        <div className="text-gray font-mono mb-4">
                             SCORE: {userCleared}
                         </div>
-                        <div className="text-xs text-gray-400 animate-pulse">
+                        <div className="text-xs text-gray animate-pulse">
                             Redirecting...
                         </div>
                     </div>

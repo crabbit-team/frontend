@@ -14,7 +14,7 @@ export function VaultCard({ vault }: VaultCardProps) {
                     <h3 className="font-bold text-lg">{vault.name}</h3>
                     <p className="text-sm text-muted-foreground">by {vault.manager}</p>
                 </div>
-                <div className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded text-sm font-bold flex items-center gap-1">
+                <div className="bg-success/10 text-success px-2 py-1 rounded text-sm font-bold flex items-center gap-1">
                     <TrendingUp className="w-4 h-4" />
                     {vault.apy}% APY
                 </div>
@@ -40,7 +40,7 @@ export function VaultCard({ vault }: VaultCardProps) {
 
             <Link
                 to={`/vaults/${vault.id}`}
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center gap-2 py-2 rounded-md font-medium transition-colors"
+                className="w-full bg-carrot-orange text-carrot-orange-foreground hover:bg-carrot-orange/90 flex items-center justify-center gap-2 py-2 rounded-md font-medium transition-colors"
             >
                 View Strategy
                 <ArrowRight className="w-4 h-4" />

@@ -23,24 +23,24 @@ export function CardBattleAnimation({ vault, opponent }: CardBattleAnimationProp
                 }}
                 className="relative"
             >
-                <div className="w-48 h-64 bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border-2 border-purple-500/50 rounded-xl shadow-[0_0_40px_rgba(124,58,237,0.5)] backdrop-blur-sm overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-purple-900/30" />
+                <div className="w-48 h-64 bg-gradient-to-br from-carrot-orange/50 to-carrot-orange/50 border-2 border-carrot-orange/50 rounded-xl shadow-[0_0_40px_rgba(208,129,65,0.5)] backdrop-blur-sm overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-carrot-orange/30" />
                     <div className="relative p-6 flex flex-col items-center justify-center h-full">
                         <motion.div
                             animate={{
                                 boxShadow: [
-                                    "0 0 20px rgba(124,58,237,0.5)",
-                                    "0 0 40px rgba(124,58,237,0.8)",
-                                    "0 0 20px rgba(124,58,237,0.5)"
+                                    "0 0 20px rgba(208,129,65,0.5)",
+                                    "0 0 40px rgba(208,129,65,0.8)",
+                                    "0 0 20px rgba(208,129,65,0.5)"
                                 ]
                             }}
                             transition={{ duration: 1.5, repeat: Infinity }}
-                            className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mb-4"
+                            className="w-16 h-16 rounded-xl bg-gradient-to-br from-carrot-orange to-carrot-orange flex items-center justify-center mb-4"
                         >
                             <Shield className="w-8 h-8 text-white" />
                         </motion.div>
                         <h3 className="text-lg font-bold font-pixel text-white text-center">{vault.name}</h3>
-                        <p className="text-xs text-purple-400 font-mono mt-2">YOUR STRATEGY</p>
+                        <p className="text-xs text-carrot-orange font-mono mt-2">YOUR STRATEGY</p>
                     </div>
                 </div>
             </motion.div>
@@ -58,7 +58,7 @@ export function CardBattleAnimation({ vault, opponent }: CardBattleAnimationProp
                 }}
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             >
-                <div className="w-32 h-32 rounded-full bg-gradient-to-r from-purple-500/30 to-pink-500/30 blur-xl" />
+                <div className="w-32 h-32 rounded-full bg-gradient-to-r from-carrot-orange/30 to-pink/30 blur-xl" />
             </motion.div>
 
             {/* AI Opponent Card */}
@@ -75,8 +75,8 @@ export function CardBattleAnimation({ vault, opponent }: CardBattleAnimationProp
                 }}
                 className="relative"
             >
-                <div className="w-48 h-64 bg-gradient-to-br from-red-900/50 to-orange-900/50 border-2 border-red-500/50 rounded-xl shadow-[0_0_40px_rgba(239,68,68,0.5)] backdrop-blur-sm overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-red-900/30" />
+                <div className="w-48 h-64 bg-gradient-to-br from-error/50 to-warning/50 border-2 border-error/50 rounded-xl shadow-[0_0_40px_rgba(239,68,68,0.5)] backdrop-blur-sm overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-error/30" />
                     <div className="relative p-6 flex flex-col items-center justify-center h-full">
                         <motion.div
                             animate={{
@@ -92,7 +92,7 @@ export function CardBattleAnimation({ vault, opponent }: CardBattleAnimationProp
                             <Bot className="w-8 h-8 text-white" />
                         </motion.div>
                         <h3 className="text-lg font-bold font-pixel text-white text-center">{opponent.name}</h3>
-                        <p className="text-xs text-red-400 font-mono mt-2">AI OPPONENT</p>
+                        <p className="text-xs text-error font-mono mt-2">AI OPPONENT</p>
                     </div>
                 </div>
             </motion.div>

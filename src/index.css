@@ -17,9 +17,9 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 142 70% 50%;
+    --neongreen: 142 70% 50%;
     /* Neon Green #00ff9d approx */
-    --primary-foreground: 144 100% 5%;
+    --neongreen-foreground: 144 100% 5%;
 
     --secondary: 240 5% 15%;
     --secondary-foreground: 0 0% 98%;
@@ -28,11 +28,34 @@
     --muted-foreground: 240 5% 64.9%;
 
     --accent: 280 100% 50%;
-    /* Neon Purple */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
+
+    --success: 142 70% 50%;
+    --success-foreground: 144 100% 5%;
+
+    --warning: 45 90% 60%;
+    --warning-foreground: 0 0% 10%;
+
+    --info: 210 100% 50%;
+    --info-foreground: 0 0% 98%;
+
+    --error: 0 84% 60%;
+    --error-foreground: 0 0% 98%;
+
+    --pink: 330 100% 60%;
+    --pink-foreground: 0 0% 98%;
+
+    --gray: 240 3.7% 15.9%;
+    --gray-foreground: 0 0% 98%;
+
+    --carrot-green: 90 46% 71%;
+    --carrot-green-foreground: 0 0% 10%;
+
+    --carrot-orange: 26 65% 54%;
+    --carrot-orange-foreground: 0 0% 10%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
@@ -49,8 +72,8 @@
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 142 70% 50%;
-    --primary-foreground: 144 100% 5%;
+    --neongreen: 142 70% 50%;
+    --neongreen-foreground: 144 100% 5%;
     --secondary: 240 5% 15%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
@@ -59,7 +82,24 @@
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
+    --success: 142 70% 50%;
+    --success-foreground: 144 100% 5%;
+    --warning: 45 90% 60%;
+    --warning-foreground: 0 0% 10%;
+    --info: 210 100% 50%;
+    --info-foreground: 0 0% 98%;
+    --error: 0 84% 60%;
+    --error-foreground: 0 0% 98%;
+    --pink: 330 100% 60%;
+    --pink-foreground: 0 0% 98%;
+    --gray: 240 3.7% 15.9%;
+    --gray-foreground: 0 0% 98%;
+    --carrot-green: 90 46% 71%;
+    --carrot-green-foreground: 0 0% 10%;
+    --carrot-orange: 26 65% 54%;
+    --carrot-orange-foreground: 0 0% 10%;
+   /* --border: 240 3.7% 15.9%; */
+    --border: 26 65% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 142 70% 50%;
   }

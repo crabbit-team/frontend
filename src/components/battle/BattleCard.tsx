@@ -50,9 +50,9 @@ export function BattleCard({
   const timeLabel = timeLeftLabel || durationLabel || "-";
 
   return (
-    <div className="group bg-card/50 border border-primary/20 hover:border-primary transition-all hover:shadow-[0_0_20px_rgba(0,255,157,0.1)] relative overflow-hidden">
+    <div className="group bg-card/50 border border-carrot-orange/20 hover:border-carrot-orange transition-all hover:shadow-[0_0_20px_rgba(208,129,65,0.1)] relative overflow-hidden">
       {/* Decorative Corner */}
-      <div className="absolute top-0 right-0 w-8 h-8 bg-primary/10 clip-path-polygon" />
+      <div className="absolute top-0 right-0 w-8 h-8 bg-carrot-orange/10 clip-path-polygon" />
 
       <div className="p-6 space-y-5">
         {/* Status + Prize */}
@@ -62,16 +62,16 @@ export function BattleCard({
               className={cn(
                 "px-2 py-1 text-[10px] font-pixel uppercase tracking-wider border",
                 isWaiting
-                  ? "border-yellow-500/50 text-yellow-500 bg-yellow-500/10"
+                  ? "border-warning/50 text-warning bg-warning/10"
                   : isActive
-                    ? "border-green-500/50 text-green-500 bg-green-500/10 animate-pulse"
-                    : "border-gray-500/50 text-gray-500 bg-gray-500/10",
+                    ? "border-success/50 text-success bg-success/10 animate-pulse"
+                    : "border-gray/50 text-gray bg-gray/10",
               )}
             >
               {statusLabel}
             </span>
           </div>
-          <div className="flex items-center gap-2 text-primary font-bold font-pixel text-sm">
+          <div className="flex items-center gap-2 text-carrot-orange font-bold font-pixel text-sm">
             <Trophy className="w-4 h-4" />
             <span>{prizePool != null ? `${prizePool} CRT` : "--"}</span>
           </div>
@@ -79,7 +79,7 @@ export function BattleCard({
 
         {/* Strategy summary */}
         <div className="space-y-2">
-          <div className="text-[11px] font-pixel text-primary uppercase">
+          <div className="text-[11px] font-pixel text-carrot-orange uppercase">
             Strategy
           </div>
           <h3 className="font-bold text-lg font-pixel text-white truncate">
@@ -91,20 +91,20 @@ export function BattleCard({
             <span>{tvlLabel}</span>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
-            <span className="text-emerald-400">{displayApy}</span>
+            <span className="text-success">{displayApy}</span>
             <span className="w-1 h-1 rounded-full bg-white/20" />
             <span className="text-xs text-muted-foreground">{displayChange}</span>
           </div>
         </div>
 
         {/* Meta row */}
-        <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground font-mono bg-secondary/20 p-2 border border-primary/10 rounded">
+        <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground font-mono bg-secondary/20 p-2 border border-carrot-orange/10 rounded">
           <div className="flex items-center gap-2">
-            <Clock className="w-3 h-3 text-primary" />
+            <Clock className="w-3 h-3 text-carrot-orange" />
             <span>{timeLabel}</span>
           </div>
           <div className="flex items-center gap-2 justify-end">
-            <Users className="w-3 h-3 text-primary" />
+            <Users className="w-3 h-3 text-carrot-orange" />
             <span>
               ENTRY: {entryFee != null ? `${entryFee} CRT` : "--"}
             </span>
@@ -118,8 +118,8 @@ export function BattleCard({
             className={cn(
               "w-full flex items-center justify-center gap-2 py-3 font-pixel text-xs transition-all clip-path-polygon hover:translate-x-1 hover:-translate-y-1",
               isWaiting
-                ? "bg-primary text-black hover:bg-primary/90"
-                : "border border-primary/50 text-primary hover:bg-primary/10",
+                ? "bg-carrot-orange text-carrot-orange-foreground hover:bg-carrot-orange/90"
+                : "border border-carrot-orange/50 text-carrot-orange hover:bg-carrot-orange/10",
             )}
           >
             {isWaiting ? "JOIN_STRATEGY_BATTLE" : "VIEW_STRATEGY"}
@@ -128,7 +128,7 @@ export function BattleCard({
         ) : (
           <div
             className={cn(
-              "w-full flex items-center justify-center gap-2 py-3 font-pixel text-xs transition-all clip-path-polygon border border-dashed border-primary/40 text-primary/70 cursor-default",
+              "w-full flex items-center justify-center gap-2 py-3 font-pixel text-xs transition-all clip-path-polygon border border-dashed border-carrot-orange/40 text-carrot-orange/70 cursor-default",
             )}
           >
             {isWaiting ? "READY_TO_MATCH" : "STRATEGY_SUMMARY"}

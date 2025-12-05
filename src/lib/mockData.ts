@@ -473,7 +473,7 @@ export const MOCK_AI_OPPONENTS: AIOpponent[] = [
     {
         id: "ai_1",
         name: "Warren AI",
-        avatar: "from-blue-600 to-cyan-600",
+        avatar: "from-info to-info",
         difficulty: "Easy",
         winRate: 45,
         specialty: "Value Investing",
@@ -489,7 +489,7 @@ export const MOCK_AI_OPPONENTS: AIOpponent[] = [
     {
         id: "ai_2",
         name: "Crypto Hawk",
-        avatar: "from-purple-600 to-pink-600",
+        avatar: "from-carrot-orange to-pink",
         difficulty: "Medium",
         winRate: 58,
         specialty: "Momentum Trading",
@@ -505,7 +505,7 @@ export const MOCK_AI_OPPONENTS: AIOpponent[] = [
     {
         id: "ai_3",
         name: "Quantum Trader",
-        avatar: "from-green-600 to-teal-600",
+        avatar: "from-success to-success",
         difficulty: "Medium",
         winRate: 62,
         specialty: "Arbitrage Master",
@@ -520,7 +520,7 @@ export const MOCK_AI_OPPONENTS: AIOpponent[] = [
     {
         id: "ai_4",
         name: "Degen King",
-        avatar: "from-orange-600 to-red-600",
+        avatar: "from-warning to-error",
         difficulty: "Hard",
         winRate: 70,
         specialty: "Meme Coin Expert",
@@ -536,7 +536,7 @@ export const MOCK_AI_OPPONENTS: AIOpponent[] = [
     {
         id: "ai_5",
         name: "Alpha Bot",
-        avatar: "from-indigo-600 to-purple-600",
+        avatar: "from-carrot-orange to-carrot-orange",
         difficulty: "Hard",
         winRate: 75,
         specialty: "Multi-Strategy",
@@ -554,7 +554,7 @@ export const MOCK_AI_OPPONENTS: AIOpponent[] = [
     {
         id: "ai_6",
         name: "Satoshi's Ghost",
-        avatar: "from-yellow-600 to-amber-600",
+        avatar: "from-warning to-warning",
         difficulty: "Expert",
         winRate: 85,
         specialty: "Legendary",
