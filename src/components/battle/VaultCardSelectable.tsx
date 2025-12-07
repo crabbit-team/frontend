@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import type { VaultSummary } from "../../api/vault";
 import { CardWithFrame } from "../common/CardWithFrame";
-import { TierBadge } from "../common/TierBadge";
 
 interface VaultCardSelectableProps {
     vault: VaultSummary;
@@ -42,11 +41,6 @@ export function VaultCardSelectable({ vault, onSelect }: VaultCardSelectableProp
                 size="small"
                 backgroundSize="cover"
             >
-                {/* Tier Badge - 왼쪽 위 */}
-                <div className="absolute top-4 left-4 z-30">
-                    <TierBadge tier={vault.tier || "iron"} />
-                </div>
-                
                 {/* 카드 정보 - 하단 */}
                 <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
                     <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
