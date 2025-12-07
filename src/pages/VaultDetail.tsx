@@ -4,9 +4,10 @@ import {
   Wallet,
   Info,
   ArrowLeft,
-  TrendingUp,
   Shield,
   DollarSign,
+  Copy,
+  ExternalLink,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -17,22 +18,113 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { useState } from "react";
-import { useMockVault } from "../hooks/useMockVault";
+import { useState, useEffect } from "react";
+import { getVaultByAddress, type VaultDetail } from "../api/vault";
 import { CHART_COLOR_PALETTE } from "../lib/utils";
 
 export function VaultDetail() {
   const { id } = useParams();
-  const { vault, loading, error } = useMockVault(id);
+  const [vault, setVault] = useState<VaultDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [amount, setAmount] = useState("");
+  const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [imageLinkCopyFeedback, setImageLinkCopyFeedback] = useState<string | null>(null);
 
-  // 차트에 사용할 포트폴리오 데이터 (mockData의 portfolio 필드를 사용)
+  useEffect(() => {
+    async function fetchVault() {
+      if (!id) {
+        setError("Vault address is required");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        const vaultData = await getVaultByAddress(id);
+        setVault(vaultData);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch vault"
+        );
+        setVault(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    void fetchVault();
+  }, [id]);
+
+  // Address 복사 핸들러
+  const handleCopyAddress = async () => {
+    if (!vault?.address) return;
+    try {
+      await navigator.clipboard.writeText(vault.address);
+      setCopyFeedback("Copied!");
+      setTimeout(() => setCopyFeedback(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy address", err);
+    }
+  };
+
+  // Image URL 복사 핸들러
+  const handleCopyImageUrl = async () => {
+    if (!vault?.image_url) return;
+    try {
+      await navigator.clipboard.writeText(vault.image_url);
+      setImageLinkCopyFeedback("Copied!");
+      setTimeout(() => setImageLinkCopyFeedback(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy image URL", err);
+    }
+  };
+
+  // Strategy description 파싱 함수
+  const parseStrategyDescription = (description: string) => {
+    if (!description) return [{ label: "Description", value: "No description" }];
+
+    const sections: { label: string; value: string }[] = [];
+    const lines = description.split('\n').map(line => line.trim()).filter(line => line);
+
+    for (const line of lines) {
+      // "Label: Value" 형식 파싱
+      const colonIndex = line.indexOf(':');
+      if (colonIndex > 0) {
+        const label = line.substring(0, colonIndex).trim();
+        const value = line.substring(colonIndex + 1).trim();
+        if (label && value) {
+          sections.push({ label, value });
+        }
+      } else {
+        // 콜론이 없는 경우 (Summary 등) - 이전 섹션의 값으로 추가하거나 새로운 Summary로 처리
+        if (sections.length > 0 && !sections[sections.length - 1].value.includes(line)) {
+          // 마지막 섹션이 비어있거나, 새로운 내용인 경우
+          if (sections.length > 0 && sections[sections.length - 1].value === '') {
+            sections[sections.length - 1].value = line;
+          } else {
+            sections.push({ label: 'Summary', value: line });
+          }
+        } else if (sections.length === 0) {
+          sections.push({ label: 'Summary', value: line });
+        }
+      }
+    }
+
+    return sections.length > 0 ? sections : null;
+  };
+
+  // 차트에 사용할 포트폴리오 데이터
   const assets =
     vault?.portfolio?.map((item, index) => ({
-      name: item.token,
-      value: item.allocation,
+      name: item.address.slice(0, 6) + "..." + item.address.slice(-4), // 주소를 짧게 표시
+      value: item.weight,
       color: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
     })) ?? [];
+
+  const strategySections = vault?.description ? parseStrategyDescription(vault.description) : null;
 
   if (loading) {
     return (
@@ -84,39 +176,132 @@ export function VaultDetail() {
               </div>
 
               <div className="flex flex-col md:flex-row gap-6 items-start md:items-center relative z-10">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-carrot-orange/20 to-info/20 border border-border flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(208,129,65,0.2)]">
-                  {vault.name.charAt(0).toUpperCase()}
-                </div>
+                {vault.image_url && vault.image_url.trim() ? (
+                  <button
+                    onClick={() => setIsImageModalOpen(true)}
+                    className="w-24 h-24 rounded-full bg-gradient-to-br from-carrot-orange/20 to-info/20 border border-border flex items-center justify-center shadow-[0_0_30px_rgba(208,129,65,0.2)] overflow-hidden hover:scale-105 transition-transform cursor-pointer"
+                  >
+                    <img
+                      src={vault.image_url}
+                      alt={vault.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-carrot-orange/20 to-info/20 border border-border flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(208,129,65,0.2)]">
+                    <span>{vault.name.charAt(0).toUpperCase()}</span>
+                  </div>
+                )}
                 <div className="space-y-2 flex-1">
                   <h1 className="text-3xl md:text-4xl font-bold font-pixel tracking-tight text-foreground">
                     {vault.name}
                   </h1>
+                  {/* Vault Address with Copy */}
+                  <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mb-2">
+                    <span className="text-white/60">{vault.address}</span>
+                    <button
+                      onClick={handleCopyAddress}
+                      className="p-1 rounded hover:bg-secondary/50 transition-colors flex items-center gap-1 group"
+                      aria-label="Copy address"
+                    >
+                      <Copy className="w-3 h-3 text-muted-foreground group-hover:text-carrot-orange transition-colors" />
+                    </button>
+                    {copyFeedback && (
+                      <span className="text-xs text-carrot-orange font-mono">
+                        {copyFeedback}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-4 text-sm font-mono text-muted-foreground">
-                    <span className="flex items-center gap-1 text-white/80">
-                      {vault.manager}
+                    <span className="text-success flex items-center gap-1">
+                      APY: {vault.performance?.apy?.toFixed(2) ?? 0}%
                     </span>
                     <span className="w-1 h-1 rounded-full bg-border" />
-                    <span className="text-success flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3" />
-                      ROI: {vault.performance.apy}%
+                    <span className={`flex items-center gap-1 ${(vault.performance?.change_24h ?? 0) >= 0 ? "text-success" : "text-error"}`}>
+                      24h: {(vault.performance?.change_24h ?? 0) >= 0 ? "+" : ""}{vault.performance?.change_24h?.toFixed(2) ?? 0}%
                     </span>
                     <span className="w-1 h-1 rounded-full bg-border" />
                     <span className="text-info">
-                      TVL: ${vault.tvl.toLocaleString()}
+                      TVL: ${parseFloat(vault.tvl).toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground max-w-2xl mt-4 leading-relaxed">
-                    {vault.description}
-                  </p>
+
+                  {/* Strategy Description */}
+                  {strategySections ? (
+                    <div className="mt-6 space-y-4 max-w-2xl">
+                      {strategySections.map((section, index) => (
+                        <div key={index} className="space-y-1">
+                          <div className="text-sm text-foreground font-mono whitespace-pre-line">
+                            {section.value}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : vault.description ? (
+                    <p className="text-sm text-muted-foreground max-w-2xl mt-4 leading-relaxed whitespace-pre-line">
+                      {vault.description}
+                    </p>
+                  ) : null}
                 </div>
               </div>
             </motion.div>
 
-            {/* 2. Portfolio Composition Section */}
+            {/* 2. Creator Information Section */}
+            {vault.creator && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-card border border-border rounded-2xl p-8 backdrop-blur-sm"
+              >
+                <h2 className="text-xl font-bold font-pixel mb-6 flex items-center gap-2">
+                  Creator
+                </h2>
+                <div className="flex items-center gap-4">
+                  {vault.creator.image_url && vault.creator.image_url.trim() ? (
+                    <div className="w-16 h-16 rounded-full overflow-hidden bg-carrot-orange/10 flex items-center justify-center ring-2 ring-carrot-orange/20">
+                      <img
+                        src={vault.creator.image_url}
+                        alt={vault.creator.nickname || "Creator"}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-carrot-orange/10 flex items-center justify-center ring-2 ring-carrot-orange/20 text-carrot-orange text-xl font-mono">
+                      ?
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <div className="mb-2">
+                      <p className="text-base font-bold font-pixel">
+                        {vault.creator.nickname?.trim() || vault.name.slice(0, 3)}
+                      </p>
+                    </div>
+                    {vault.creator.memex_link && vault.creator.memex_link.trim() ? (
+                      <a
+                        href={vault.creator.memex_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-xs text-carrot-orange hover:text-carrot-orange/80 transition-colors font-mono"
+                      >
+                        <span>View on Memex</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span className="text-xs text-muted-foreground font-mono">
+                        memex: Not yet
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* 3. Portfolio Composition Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              transition={{ delay: 0.15 }}
               className="bg-card border border-border rounded-2xl p-8 backdrop-blur-sm min-h-[400px]"
             >
               <h2 className="text-xl font-bold font-pixel mb-6 flex items-center gap-2">
@@ -124,44 +309,73 @@ export function VaultDetail() {
                 <Info className="w-4 h-4 text-muted-foreground" />
               </h2>
 
-              <div className="h-[300px] w-full flex items-center justify-center">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={assets}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={80}
-                      outerRadius={120}
-                      paddingAngle={5}
-                      dataKey="value"
-                      stroke="none"
-                    >
-                      {assets.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#1a1924",
-                        borderColor: "#333",
-                        borderRadius: "8px",
-                        color: "#fff",
-                      }}
-                      itemStyle={{ color: "#fff" }}
-                    />
-                    <Legend
-                      verticalAlign="bottom"
-                      height={36}
-                      formatter={(value) => (
-                        <span className="text-foreground font-mono ml-2">
-                          {value}
+              {assets.length > 0 ? (
+                <>
+                  <div className="h-[300px] w-full flex items-center justify-center">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={assets}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={80}
+                          outerRadius={120}
+                          paddingAngle={5}
+                          dataKey="value"
+                          stroke="none"
+                        >
+                          {assets.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: "#1a1924",
+                            borderColor: "#333",
+                            borderRadius: "8px",
+                            color: "#fff",
+                          }}
+                          itemStyle={{ color: "#fff" }}
+                        />
+                        <Legend
+                          verticalAlign="bottom"
+                          height={36}
+                          formatter={(value) => (
+                            <span className="text-foreground font-mono ml-2">
+                              {value}
+                            </span>
+                          )}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  {/* Portfolio List */}
+                  <div className="mt-6 space-y-2">
+                    {vault.portfolio.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-secondary/30 rounded-lg border border-border/50"
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-mono text-sm text-foreground">
+                            {item.address.slice(0, 8)}...{item.address.slice(-6)}
+                          </span>
+                          <span className="font-mono text-xs text-muted-foreground">
+                            Amount: {item.amount}
+                          </span>
+                        </div>
+                        <span className="font-mono text-sm font-bold text-carrot-orange">
+                          {item.weight}%
                         </span>
-                      )}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="h-[300px] w-full flex items-center justify-center text-muted-foreground">
+                  <p className="text-sm font-mono">No portfolio data available</p>
+                </div>
+              )}
             </motion.div>
           </div>
 
@@ -246,6 +460,60 @@ export function VaultDetail() {
           </div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {isImageModalOpen && vault.image_url && vault.image_url.trim() && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setIsImageModalOpen(false)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] p-4 flex flex-col items-center gap-4">
+            <button
+              onClick={() => setIsImageModalOpen(false)}
+              className="absolute top-2 right-2 w-8 h-8 rounded-full bg-card/80 hover:bg-card border border-border flex items-center justify-center text-foreground hover:text-carrot-orange transition-colors z-10"
+              aria-label="Close"
+            >
+              <span className="text-xl">×</span>
+            </button>
+            <img
+              src={vault.image_url}
+              alt={vault.name}
+              className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+            {/* Image URL Link */}
+            <div
+              className="w-full bg-card/80 backdrop-blur-sm border border-border rounded-lg p-4 flex items-center gap-3"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex-1 min-w-0">
+                <div className="text-xs text-muted-foreground font-mono mb-1">Image URL</div>
+                <a
+                  href={vault.image_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-carrot-orange hover:text-carrot-orange/80 font-mono break-all hover:underline flex items-center gap-2"
+                >
+                  <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate">{vault.image_url}</span>
+                </a>
+              </div>
+              <button
+                onClick={handleCopyImageUrl}
+                className="p-2 rounded hover:bg-secondary/50 transition-colors flex items-center gap-2 text-muted-foreground hover:text-carrot-orange"
+                aria-label="Copy image URL"
+              >
+                <Copy className="w-4 h-4" />
+                {imageLinkCopyFeedback && (
+                  <span className="text-xs text-carrot-orange font-mono">
+                    {imageLinkCopyFeedback}
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
