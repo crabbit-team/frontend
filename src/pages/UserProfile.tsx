@@ -60,7 +60,7 @@ export function UserProfile() {
                     console.log("Profile not found, initializing new profile...");
                     p = await initProfile(connectedAddress);
                 }
-                
+
                 if (!cancelled) {
                     setProfile(p);
                     setEditNickname(p.nickname);
@@ -525,7 +525,7 @@ export function UserProfile() {
                         <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
                             {depositedVaults.map((vault, index) => {
                                 const isCreator = vault.creator.address.toLowerCase() === connectedAddress?.toLowerCase();
-                                const frameImage = isCreator 
+                                const frameImage = isCreator
                                     ? "/card/frame/cardFrameOrange.png"
                                     : "/card/frame/cardFrameGreen.png";
                                 const backgroundImage = vault.image_url || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800";
