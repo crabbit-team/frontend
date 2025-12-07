@@ -16,7 +16,7 @@ interface BattleMiniGameProps {
     onComplete?: (result: BattleMiniGameResult) => void;
 }
 
-type ObstacleType = "hole" | "low_obstacle"; // Rabbit hole (jump) or low obstacle (slide)
+type ObstacleType = "hole" | "low_obstacle" | "cactus" | "rock"; // Various obstacles
 
 interface Obstacle {
     id: number;
@@ -133,6 +133,16 @@ export function BattleMiniGame({
                             if (!isSlidingRef.current) {
                                 collided = true;
                             }
+                        } else if (ob.type === "cactus") {
+                            // For cactus: must be jumping to avoid
+                            if (!isJumpingRef.current) {
+                                collided = true;
+                            }
+                        } else if (ob.type === "rock") {
+                            // For rocks: must be sliding to avoid
+                            if (!isSlidingRef.current) {
+                                collided = true;
+                            }
                         }
 
                         if (collided) {
@@ -159,10 +169,18 @@ export function BattleMiniGame({
                         SPAWN_INTERVAL_MIN +
                         Math.random() * (SPAWN_INTERVAL_MAX - SPAWN_INTERVAL_MIN);
 
-                    // Randomly choose obstacle type
+                    // Randomly choose obstacle type with varied distribution
                     const typeRoll = Math.random();
-                    const obstacleType: ObstacleType =
-                        typeRoll > 0.5 ? "hole" : "low_obstacle";
+                    let obstacleType: ObstacleType;
+                    if (typeRoll < 0.25) {
+                        obstacleType = "hole";
+                    } else if (typeRoll < 0.5) {
+                        obstacleType = "low_obstacle";
+                    } else if (typeRoll < 0.75) {
+                        obstacleType = "cactus";
+                    } else {
+                        obstacleType = "rock";
+                    }
                     const width = obstacleType === "hole" ? 60 : 50;
 
                     nextObstacles.push({
@@ -392,47 +410,113 @@ export function BattleMiniGame({
                     }}
                     className="relative w-full h-full"
                 >
-                    {/* Tokki Sprite - Pixel Art Style */}
+                    {/* Tokki Sprite - Cute Rabbit */}
                     <div className="relative w-full h-full">
                         {/* Body */}
-                        <div className="absolute top-6 left-2 w-6 h-8 bg-carrot-orange rounded-sm" />
+                        <div className="absolute top-8 left-1 w-8 h-10 bg-white rounded-full shadow-lg" />
+
                         {/* Head */}
-                        <div className="absolute top-0 left-4 w-8 h-8 bg-carrot-orange rounded-full" />
-                        {/* Ear Left */}
-                        <div className="absolute -top-2 left-2 w-3 h-6 bg-carrot-orange rounded-t-full" />
-                        {/* Ear Right */}
-                        <div className="absolute -top-2 right-2 w-3 h-6 bg-carrot-orange rounded-t-full" />
-                        {/* Eye */}
-                        <div className="absolute top-3 left-6 w-2 h-2 bg-carrot-orange-foreground rounded-full" />
+                        <div className="absolute top-0 left-2 w-10 h-10 bg-white rounded-full shadow-lg" />
+
+                        {/* Ears - with bounce animation */}
+                        <motion.div
+                            className="absolute -top-3 left-1 w-3 h-8 bg-white rounded-t-full border-2 border-pink-300"
+                            animate={{ rotate: isJumping ? [-5, 5] : [0, -2, 0] }}
+                            transition={{
+                                duration: 0.2,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        >
+                            <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-5 bg-pink-200 rounded-t-full" />
+                        </motion.div>
+                        <motion.div
+                            className="absolute -top-3 right-0 w-3 h-8 bg-white rounded-t-full border-2 border-pink-300"
+                            animate={{ rotate: isJumping ? [5, -5] : [0, 2, 0] }}
+                            transition={{
+                                duration: 0.2,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: 0.1,
+                            }}
+                        >
+                            <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-5 bg-pink-200 rounded-t-full" />
+                        </motion.div>
+
+                        {/* Eyes */}
+                        <div className="absolute top-3 left-3 w-2 h-2 bg-black rounded-full" />
+                        <div className="absolute top-3 right-4 w-2 h-2 bg-black rounded-full" />
+
+                        {/* Eye shine */}
+                        <div className="absolute top-3 left-3.5 w-1 h-1 bg-white rounded-full" />
+                        <div className="absolute top-3 right-4.5 w-1 h-1 bg-white rounded-full" />
+
                         {/* Nose */}
-                        <div className="absolute top-5 left-5 w-1 h-1 bg-carrot-orange-foreground" />
+                        <div className="absolute top-5 left-1/2 -translate-x-1/2 w-2 h-1.5 bg-pink-400 rounded-full" />
+
+                        {/* Cheeks - cute blush */}
+                        <div className="absolute top-5 left-1 w-2 h-1 bg-pink-200 rounded-full opacity-60" />
+                        <div className="absolute top-5 right-2 w-2 h-1 bg-pink-200 rounded-full opacity-60" />
+
+                        {/* Tail - fluffy */}
+                        <motion.div
+                            className="absolute top-10 -right-2 w-4 h-4 bg-white rounded-full"
+                            animate={{ scale: [1, 1.1, 1] }}
+                            transition={{
+                                duration: 0.4,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+
                         {/* Legs - Running animation */}
                         {!isJumping && !isSliding && (
                             <>
                                 <motion.div
-                                    className="absolute bottom-0 left-3 w-2 h-4 bg-carrot-orange rounded-sm"
-                                    animate={{ y: [0, -4, 0] }}
+                                    className="absolute bottom-0 left-2 w-2.5 h-5 bg-white rounded-full shadow-sm"
+                                    animate={{ y: [0, -5, 0] }}
                                     transition={{
-                                        duration: 0.3,
+                                        duration: 0.25,
                                         repeat: Infinity,
                                         ease: "easeInOut",
                                     }}
                                 />
                                 <motion.div
-                                    className="absolute bottom-0 right-3 w-2 h-4 bg-carrot-orange rounded-sm"
-                                    animate={{ y: [0, -4, 0] }}
+                                    className="absolute bottom-0 right-2 w-2.5 h-5 bg-white rounded-full shadow-sm"
+                                    animate={{ y: [0, -5, 0] }}
                                     transition={{
-                                        duration: 0.3,
+                                        duration: 0.25,
                                         repeat: Infinity,
                                         ease: "easeInOut",
-                                        delay: 0.15,
+                                        delay: 0.125,
+                                    }}
+                                />
+                                {/* Paws */}
+                                <motion.div
+                                    className="absolute bottom-0 left-2 w-3 h-2 bg-pink-200 rounded-full"
+                                    animate={{ y: [0, -5, 0] }}
+                                    transition={{
+                                        duration: 0.25,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                    }}
+                                />
+                                <motion.div
+                                    className="absolute bottom-0 right-2 w-3 h-2 bg-pink-200 rounded-full"
+                                    animate={{ y: [0, -5, 0] }}
+                                    transition={{
+                                        duration: 0.25,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        delay: 0.125,
                                     }}
                                 />
                             </>
                         )}
+
                         {/* Sliding pose */}
                         {isSliding && (
-                            <div className="absolute bottom-0 left-2 w-8 h-3 bg-carrot-orange rounded-sm" />
+                            <div className="absolute bottom-0 left-1 w-10 h-4 bg-white rounded-full shadow-lg" />
                         )}
                     </div>
                 </motion.div>
@@ -462,11 +546,39 @@ export function BattleMiniGame({
                             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-carrot-orange-foreground/40 rounded-t-full" />
                             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-12 bg-carrot-orange-foreground/60 rounded-t-full" />
                         </div>
-                    ) : (
-                        // Low Obstacle (carrot stump or rock)
+                    ) : ob.type === "low_obstacle" ? (
+                        // Low Obstacle (carrot stump)
                         <div className="absolute bottom-0 w-full flex items-end justify-center">
                             <div className="w-8 h-12 bg-warning rounded-t-lg border-2 border-warning-foreground/30" />
                             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-warning-foreground/20 rounded-full" />
+                        </div>
+                    ) : ob.type === "cactus" ? (
+                        // Cactus (jump to avoid)
+                        <div className="absolute bottom-0 w-full flex items-end justify-center">
+                            <div className="relative w-10 h-16">
+                                {/* Main body */}
+                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-14 bg-success rounded-lg" />
+                                {/* Left arm */}
+                                <div className="absolute bottom-6 left-0 w-4 h-6 bg-success rounded-l-lg" />
+                                {/* Right arm */}
+                                <div className="absolute bottom-8 right-0 w-4 h-6 bg-success rounded-r-lg" />
+                                {/* Spikes */}
+                                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 bg-success-foreground/40 rounded-full" />
+                                <div className="absolute top-6 left-3 w-2 h-2 bg-success-foreground/40 rounded-full" />
+                                <div className="absolute top-10 right-3 w-2 h-2 bg-success-foreground/40 rounded-full" />
+                            </div>
+                        </div>
+                    ) : (
+                        // Rock (slide to avoid)
+                        <div className="absolute bottom-0 w-full flex items-end justify-center">
+                            <div className="relative w-12 h-10">
+                                {/* Main rock */}
+                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-8 bg-muted rounded-[40%] border-2 border-muted-foreground/30" />
+                                {/* Highlight */}
+                                <div className="absolute top-1 left-6 w-3 h-2 bg-white/20 rounded-full" />
+                                {/* Shadow */}
+                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-2 bg-carrot-orange-foreground/20 rounded-full blur-sm" />
+                            </div>
                         </div>
                     )}
                 </div>
