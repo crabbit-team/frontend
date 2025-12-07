@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Swords, Trophy, Coins, ArrowLeft } from "lucide-react";
-import { useAccount, useConnectModal } from "wagmi";
+import { useAccount } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import type { VaultSummary } from "../../api/vault";
 import type { AIBattleStrategy } from "../../api/battle";
 import { CardWithFrame } from "../common/CardWithFrame";

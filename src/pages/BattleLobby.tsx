@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useAccount, useConnectModal } from "wagmi";
+import { useAccount } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useBattleGame } from "../hooks/useBattleGame";
 import { VaultSelectionModal } from "../components/battle/VaultSelectionModal";
 import { OpponentSelectionModal } from "../components/battle/OpponentSelectionModal";
