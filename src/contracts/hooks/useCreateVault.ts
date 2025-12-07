@@ -7,12 +7,12 @@ import { useTokenAllowance } from "./useTokenAllowance";
 import MemeVaultFactoryABI from "../abi/MemeVaultFactory.json";
 
 /**
- * Vault 생성 (Create Vault) - useWriteContract 사용
- * 
+ * Vault 생성 (Create Vault with Base) - useWriteContract 사용
+ *
  * 플로우:
  * 1. CRT 토큰 승인 (1,000 CRT)
- * 2. 포트폴리오 토큰들 승인
- * 3. createVault 호출
+ * 2. USDC 승인
+ * 3. createVaultWithBase 호출 (USDC로 포트폴리오 토큰 자동 구매)
  */
 export function useCreateVault() {
   const { address } = useAccount();
@@ -78,29 +78,32 @@ export function useCreateVault() {
   }, [receipt]);
 
   /**
-   * Vault 생성 실행
+   * Vault 생성 실행 (createVaultWithBase 사용)
    */
   const createVaultWithParams = async ({
     name,
     symbol,
     description,
-    portfolioTokens: tokens, // { address, amount, decimals }[]
+    imageURI,
+    baseAmount, // USDC amount
+    portfolioTokens: tokens, // { address, weightBps }[]
   }: {
     name: string;
     symbol: string;
     description: string;
-    portfolioTokens: { address: Address; amount: string; decimals: number }[]; // amount는 문자열, decimals는 토큰의 소수점 자릿수
+    imageURI?: string; // 전략 이미지 URL
+    baseAmount: string; // USDC 금액 (예: "1000")
+    portfolioTokens: { address: Address; weightBps: number }[]; // weightBps: 가중치 (총합 10000)
   }) => {
     if (!address) {
       throw new Error("지갑이 연결되지 않았습니다.");
     }
 
-    // 포트폴리오 토큰들을 BigInt로 변환 (각 토큰의 decimals 사용)
-    const tokensWithBigInt = tokens.map((token) => ({
-      address: token.address,
-      amount: parseUnits(token.amount, token.decimals), // 각 토큰의 decimals 사용
-    }));
-
+    // 가중치 총합 검증
+    const totalWeight = tokens.reduce((sum, t) => sum + t.weightBps, 0);
+    if (totalWeight !== 10000) {
+      throw new Error(`포트폴리오 가중치 총합은 10000이어야 합니다. 현재: ${totalWeight}`);
+    }
 
     // 1. CRT 토큰 승인 (1,000 CRT)
     const createFee = parseEther("1000");
@@ -111,32 +114,32 @@ export function useCreateVault() {
         spenderAddress: CONTRACT_ADDRESSES.MemeVaultFactory,
         amount: createFee,
       });
-      // approve 완료 대기 (isApproved 확인 필요)
-      // TODO: isApproved를 확인하는 로직 추가 필요
       await refetchCrtAllowance();
     }
 
-    // 2. 포트폴리오 토큰들 승인 (각 토큰별로)
-    // 각 토큰에 대해 allowance 확인 및 승인
-    // Note: useTokenAllowance는 hook이므로 반복문 안에서 직접 사용할 수 없음
-    // 대신 각 토큰에 대해 순차적으로 approve 처리
-    // 실제로는 컨트랙트에서 이미 승인된 경우를 처리하므로, 여기서는 일단 승인만 시도
-    // TODO: 각 토큰의 allowance를 확인하는 로직 추가 (useReadContract 사용)
+    // 2. USDC 승인
+    const baseAmountBN = parseUnits(baseAmount, 6); // USDC는 6 decimals
+    approveToken({
+      tokenAddress: CONTRACT_ADDRESSES.USDC,
+      spenderAddress: CONTRACT_ADDRESSES.MemeVaultFactory,
+      amount: baseAmountBN,
+    });
 
-    // 3. createVault 호출
-    // ABI에 따르면 createVault는 (name, symbol, baseAsset, priceOracle, description, imageURI, portfolioTokens, amounts) 순서
+    // 3. createVaultWithBase 호출
+    // ABI에 따르면 createVaultWithBase는 (name, symbol, baseAsset, priceOracle, description, imageURI, baseAmount, portfolioTokens, targetWeightsBps) 순서
     createVault({
       ...CONTRACT_CONFIGS.MemeVaultFactory,
-      functionName: "createVault",
+      functionName: "createVaultWithBase",
       args: [
         name,
         symbol,
         CONTRACT_ADDRESSES.USDC, // baseAsset
         CONTRACT_ADDRESSES.UniswapV3TWAPOracle, // priceOracle
         description,
-        "", // imageURI (빈 문자열)
-        tokensWithBigInt.map((t) => t.address), // portfolioTokens
-        tokensWithBigInt.map((t) => t.amount), // amounts
+        imageURI || "", // imageURI
+        baseAmountBN, // baseAmount (USDC)
+        tokens.map((t) => t.address), // portfolioTokens
+        tokens.map((t) => t.weightBps), // targetWeightsBps
       ],
     });
   };
