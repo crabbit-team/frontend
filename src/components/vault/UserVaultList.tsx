@@ -59,7 +59,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
             Total Value Locked
           </span>
           <span className="font-mono text-sm text-white">
-            {formatTvl(vault.tvl)}
+            {formatTvl(typeof vault.tvl === 'string' ? parseFloat(vault.tvl) || 0 : vault.tvl)}
           </span>
         </div>
 

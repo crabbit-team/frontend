@@ -6,9 +6,6 @@ export type BattleGameState = 'idle' | 'selectingVault' | 'selectingOpponent' | 
 
 export interface BattleResult {
     playerWon: boolean;
-    playerReturn: number;
-    opponentReturn: number;
-    reward: number;
     playerROI: number;
     opponentROI: number;
     rewardAmount: number;

@@ -7,9 +7,6 @@ import { useEffect, useState } from "react";
 
 export interface BattleResult {
     playerWon: boolean;
-    playerReturn: number;
-    opponentReturn: number;
-    reward: number;
     playerROI: number;
     opponentROI: number;
     rewardAmount: number;

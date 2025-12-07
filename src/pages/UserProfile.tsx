@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Users, Wallet, Pencil, Copy } from "lucide-react";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount } from "wagmi";
 import {
     getProfile,
     initProfile,
@@ -29,7 +29,6 @@ export function UserProfile() {
 
     const navigate = useNavigate();
     const { address: connectedAddress } = useAccount();
-    const { disconnect } = useDisconnect();
     const { setProfile: setSharedProfile } = useProfileContext();
 
     useEffect(() => {
@@ -215,13 +214,6 @@ export function UserProfile() {
         }
     };
 
-    const handleLogout = () => {
-        // Disconnect wallet session and clear profile state
-        disconnect();
-        setSharedProfile(null);
-        setProfile(null);
-        navigate("/", { replace: true });
-    };
 
     return (
         <div className="space-y-8">

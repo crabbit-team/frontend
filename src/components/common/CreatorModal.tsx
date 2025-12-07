@@ -5,9 +5,10 @@ interface CreatorModalProps {
     isOpen: boolean;
     onClose: () => void;
     creator: VaultCreator;
+    vaultName?: string;
 }
 
-export function CreatorModal({ isOpen, onClose, creator }: CreatorModalProps) {
+export function CreatorModal({ isOpen, onClose, creator, vaultName: _vaultName }: CreatorModalProps) {
     if (!isOpen) return null;
 
     const handleMemexLink = () => {
