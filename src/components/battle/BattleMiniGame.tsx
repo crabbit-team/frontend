@@ -289,15 +289,30 @@ export function BattleMiniGame({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.code === "Space" || e.key === " " || e.key === "ArrowUp" || e.key === "ArrowDown") {
+            e.preventDefault(); // Always prevent default for game controls
+        }
+
         if (!isPlaying) return;
-        if (e.code === "Space" || e.key === "ArrowUp") {
-            e.preventDefault();
+
+        if (e.code === "Space" || e.key === " " || e.key === "ArrowUp") {
             handleJump();
         } else if (e.key === "ArrowDown") {
-            e.preventDefault();
             handleSlide();
         }
     };
+
+    // Global keydown handler to prevent space from scrolling
+    useEffect(() => {
+        const handleGlobalKeyDown = (e: KeyboardEvent) => {
+            if (isPlaying && (e.code === "Space" || e.key === " ")) {
+                e.preventDefault();
+            }
+        };
+
+        window.addEventListener("keydown", handleGlobalKeyDown);
+        return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+    }, [isPlaying]);
 
     const remainingSeconds = Math.max(0, Math.ceil((durationMs - elapsed) / 1000));
 
