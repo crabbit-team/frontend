@@ -21,6 +21,7 @@ import {
 import { useState, useEffect } from "react";
 import { getVaultByAddress, type VaultDetail } from "../api/vault";
 import { CHART_COLOR_PALETTE } from "../lib/utils";
+import { issueWithBase } from "../contracts/vault/issueWithBase";
 
 export function VaultDetail() {
   const { id } = useParams();
@@ -31,6 +32,46 @@ export function VaultDetail() {
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [imageLinkCopyFeedback, setImageLinkCopyFeedback] = useState<string | null>(null);
+  const [isDepositing, setIsDepositing] = useState(false);
+  const [depositError, setDepositError] = useState<string | null>(null);
+  const [depositSuccess, setDepositSuccess] = useState<string | null>(null);
+
+  const handleDeposit = async () => {
+    if (!id) {
+      setDepositError("Vault address is required");
+      return;
+    }
+
+    const amountNum = Number(amount);
+    if (!Number.isFinite(amountNum) || amountNum <= 0) {
+      setDepositError("Enter a valid deposit amount");
+      return;
+    }
+
+    try {
+      setIsDepositing(true);
+      setDepositError(null);
+      setDepositSuccess(null);
+
+      const result = await issueWithBase({
+        vaultAddress: id,
+        usdcAmount: amountNum,
+        slippageBps: 500, // 5% slippage tolerance
+      });
+
+      setDepositSuccess(
+        `Deposit successful! Shares received: ${result.sharesReceived?.toString() || 'N/A'}`
+      );
+      setAmount(""); // Clear input
+    } catch (err) {
+      console.error("Deposit failed:", err);
+      setDepositError(
+        err instanceof Error ? err.message : "Deposit failed. Please try again."
+      );
+    } finally {
+      setIsDepositing(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchVault() {
@@ -444,10 +485,26 @@ export function VaultDetail() {
                 </div>
 
                 {/* Action Button */}
-                <button className="w-full py-4 rounded-xl bg-gradient-to-r from-carrot-orange to-carrot-orange text-carrot-orange-foreground font-bold text-sm tracking-wide hover:shadow-[0_0_20px_rgba(208,129,65,0.4)] transition-all flex items-center justify-center gap-2 group">
+                <button
+                  onClick={handleDeposit}
+                  disabled={isDepositing || !amount}
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-carrot-orange to-carrot-orange text-carrot-orange-foreground font-bold text-sm tracking-wide hover:shadow-[0_0_20px_rgba(208,129,65,0.4)] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   <Wallet className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  DEPOSIT USDC
+                  {isDepositing ? "DEPOSITING..." : "DEPOSIT USDC"}
                 </button>
+
+                {/* Error/Success Messages */}
+                {depositError && (
+                  <div className="p-3 bg-error/10 border border-error/20 rounded-lg text-xs text-error text-center font-mono">
+                    {depositError}
+                  </div>
+                )}
+                {depositSuccess && (
+                  <div className="p-3 bg-success/10 border border-success/20 rounded-lg text-xs text-success text-center font-mono">
+                    {depositSuccess}
+                  </div>
+                )}
 
                 {/* Empty State / Info */}
                 <div className="pt-4 border-t border-border text-center">
