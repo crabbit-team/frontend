@@ -4,6 +4,7 @@ import { Users, Wallet, Pencil, Copy } from "lucide-react";
 import { useAccount, useDisconnect } from "wagmi";
 import {
     getProfile,
+    initProfile,
     updateProfile,
     updateProfileImage,
     type UserProfile,
@@ -44,7 +45,16 @@ export function UserProfile() {
             setIsLoading(true);
             setError(null);
             try {
-                const p = await getProfile(connectedAddress);
+                let p: UserProfile;
+                try {
+                    // 먼저 프로필 조회 시도
+                    p = await getProfile(connectedAddress);
+                } catch (getErr) {
+                    // 프로필이 없으면 자동으로 생성
+                    console.log("Profile not found, initializing new profile...");
+                    p = await initProfile(connectedAddress);
+                }
+                
                 if (!cancelled) {
                     setProfile(p);
                     setEditNickname(p.nickname);
@@ -61,7 +71,7 @@ export function UserProfile() {
                     }
                 }
             } catch (err) {
-                console.error("Failed to fetch profile", err);
+                console.error("Failed to fetch or init profile", err);
                 if (!cancelled) {
                     setError(
                         err instanceof Error
@@ -216,15 +226,6 @@ export function UserProfile() {
     return (
         <div className="space-y-8">
             <div className="bg-card border border-border rounded-lg p-8 relative">
-                {canEdit && (
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="absolute top-3 right-3 text-[10px] font-mono text-muted-foreground hover:text-error transition-colors"
-                    >
-                        logout
-                    </button>
-                )}
                 <div className="flex flex-col md:flex-row items-center gap-6">
                     <div className="relative w-24 h-24">
                         <div className="w-24 h-24 rounded-full bg-carrot-orange/10 flex items-center justify-center text-3xl font-bold overflow-hidden">
@@ -368,7 +369,7 @@ export function UserProfile() {
                 </div>
             </div>
 
-                <UserVaultList addresses={profile.vault_addresses ?? []} />
+                <UserVaultList addresses={[]} />
             </div>
         </div>
     );
