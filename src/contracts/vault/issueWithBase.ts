@@ -92,7 +92,10 @@ export async function issueWithBase(params: IssueWithBaseParams) {
 
   // 5) 이벤트에서 수령한 지분 파싱
   const event = receipt.events?.find((e: any) => e.event === "IssueWithBase");
-  const sharesReceived = event?.args?.shares as ethers.BigNumber | undefined;
+  const sharesReceived = event?.args?.sharesMinted as ethers.BigNumber | undefined;
+
+  console.log("IssueWithBase event:", event);
+  console.log("Shares received:", sharesReceived?.toString());
 
   return {
     tx,

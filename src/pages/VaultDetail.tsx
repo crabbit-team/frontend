@@ -91,8 +91,18 @@ export function VaultDetail() {
         slippageBps: 2000, // 20% slippage tolerance (더 관대한 설정)
       });
 
+      console.log("Deposit result:", result);
+
+      // Format shares for display
+      const sharesFormatted = result.sharesReceived
+        ? (parseFloat(formatUnits(result.sharesReceived, 18))).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 6,
+          })
+        : "N/A";
+
       setDepositSuccess(
-        `Deposit successful! Shares received: ${result.sharesReceived?.toString() || 'N/A'}`
+        `Deposit successful! ${amountNum} USDC deposited. Shares received: ${sharesFormatted}`
       );
       setAmount(""); // Clear input
     } catch (err) {
