@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { Swords, Trophy, Coins, ArrowLeft } from "lucide-react";
-import { useAccount } from "wagmi";
+import { useAccount, useConnectModal } from "wagmi";
 import type { VaultSummary } from "../../api/vault";
 import type { AIBattleStrategy } from "../../api/battle";
 import { CardWithFrame } from "../common/CardWithFrame";
-import { TierBadge } from "../common/TierBadge";
 
 interface BattleArenaProps {
     vault: VaultSummary;
@@ -28,7 +27,8 @@ function formatTVL(tvlString: string): string {
 }
 
 export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleArenaProps) {
-    const { address: connectedAddress } = useAccount();
+    const { address: connectedAddress, isConnected } = useAccount();
+    const { openConnectModal } = useConnectModal();
 
     // 내 전략 카드: creator/deposit 구분 없이 표시 (기본적으로 orange 프레임 사용)
     const myStrategyFrameImage = "/card/frame/cardFrameOrange.png";
@@ -122,11 +122,6 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                                 backgroundSize="cover"
                                 animationDelay={0.4}
                             >
-                                {/* Tier Badge - 왼쪽 위 */}
-                                <div className="absolute top-4 left-4 z-30">
-                                    <TierBadge tier={vault.tier || "iron"} />
-                                </div>
-                                
                                 {/* 카드 정보 - 하단 */}
                                 <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
                                     <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
@@ -171,11 +166,6 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                                 backgroundSize="cover"
                                 animationDelay={0.4}
                             >
-                                {/* Tier Badge - 왼쪽 위 (AI는 기본적으로 bronze tier) */}
-                                <div className="absolute top-4 left-4 z-30">
-                                    <TierBadge tier="bronze" />
-                                </div>
-                                
                                 {/* 카드 정보 - 하단 */}
                                 <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
                                     <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
@@ -215,12 +205,21 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                     className="text-center"
                 >
                     <button
-                        onClick={onStartBattle}
-                        className="px-16 py-6 bg-gradient-to-r from-carrot-orange via-pink to-carrot-orange bg-size-200 bg-pos-0 hover:bg-pos-100 text-carrot-orange-foreground font-bold font-pixel text-2xl rounded-xl shadow-[0_0_50px_rgba(208,129,65,0.6)] hover:shadow-[0_0_70px_rgba(208,129,65,0.8)] transition-all duration-500 transform hover:scale-105 animate-pulse"
+                        onClick={isConnected ? onStartBattle : () => openConnectModal?.()}
+                        disabled={!isConnected}
+                        className={`px-16 py-6 font-bold font-pixel text-2xl rounded-xl transition-all duration-500 ${
+                            isConnected
+                                ? "bg-gradient-to-r from-carrot-orange via-pink to-carrot-orange bg-size-200 bg-pos-0 hover:bg-pos-100 text-carrot-orange-foreground shadow-[0_0_50px_rgba(208,129,65,0.6)] hover:shadow-[0_0_70px_rgba(208,129,65,0.8)] transform hover:scale-105 animate-pulse cursor-pointer"
+                                : "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
+                        }`}
                     >
                         START BATTLE
                     </button>
-                    <p className="text-sm text-muted-foreground font-mono mt-4">The battle will last 60 seconds</p>
+                    {!isConnected ? (
+                        <p className="text-sm text-muted-foreground font-mono mt-4">Please connect your wallet to start a battle</p>
+                    ) : (
+                        <p className="text-sm text-muted-foreground font-mono mt-4">The battle will last 60 seconds</p>
+                    )}
                 </motion.div>
             </div>
         </div>

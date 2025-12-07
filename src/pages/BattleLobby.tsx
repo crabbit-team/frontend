@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { useAccount, useConnectModal } from "wagmi";
 import { useBattleGame } from "../hooks/useBattleGame";
 import { VaultSelectionModal } from "../components/battle/VaultSelectionModal";
 import { OpponentSelectionModal } from "../components/battle/OpponentSelectionModal";
@@ -10,6 +11,8 @@ import { RewardPopup } from "../components/battle/RewardPopup";
 
 export function BattleLobby() {
     const [showRewardPopup, setShowRewardPopup] = useState(false);
+    const { isConnected } = useAccount();
+    const { openConnectModal } = useConnectModal();
 
     const {
         gameState,
@@ -72,13 +75,25 @@ export function BattleLobby() {
                         </p>
                     </div>
 
-                    <button
-                        onClick={startVaultSelection}
-                        className="bg-carrot-orange text-carrot-orange-foreground px-5 py-3 rounded-none font-pixel text-xs flex items-center gap-2 hover:bg-carrot-orange/90 transition-all clip-path-polygon"
-                    >
-                        <Plus className="w-4 h-4" />
-                        START_BATTLE
-                    </button>
+                    <div className="flex flex-col items-end gap-2">
+                        <button
+                            onClick={isConnected ? startVaultSelection : () => openConnectModal?.()}
+                            disabled={!isConnected}
+                            className={`px-5 py-3 rounded-none font-pixel text-xs flex items-center gap-2 transition-all clip-path-polygon ${
+                                isConnected
+                                    ? "bg-carrot-orange text-carrot-orange-foreground hover:bg-carrot-orange/90 cursor-pointer"
+                                    : "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
+                            }`}
+                        >
+                            <Plus className="w-4 h-4" />
+                            START_BATTLE
+                        </button>
+                        {!isConnected && (
+                            <p className="text-xs text-muted-foreground font-mono text-right">
+                                Please connect your wallet to start a battle
+                            </p>
+                        )}
+                    </div>
                 </div>
 
                 {/* Battle Tutorial */}
