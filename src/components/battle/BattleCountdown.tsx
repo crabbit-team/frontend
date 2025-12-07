@@ -8,6 +8,7 @@ interface BattleCountdownProps {
     countdown: number;
     vault: VaultSummary;
     opponent: AIBattleStrategy;
+    onMiniGameComplete: (won: boolean) => void;
 }
 
 // Mock battle log messages
@@ -16,7 +17,7 @@ const battleLogMessages = [
     "AI calculating optimal entry points...",
     "Your strategy deploying capital...",
     "AI adjusting portfolio allocation...",
-    "Market volatility detected!",
+    "Market volatility detected...",
     "Your vault executing trades...",
     "AI opponent taking position...",
     "Both strategies adapting to trends...",
@@ -24,50 +25,16 @@ const battleLogMessages = [
     "Final countdown to results..."
 ];
 
-export function BattleCountdown({ countdown }: BattleCountdownProps) {
+export function BattleCountdown({ countdown, onMiniGameComplete }: BattleCountdownProps) {
     const progress = ((60 - countdown) / 60) * 100;
     const currentMessageIndex = Math.floor(((60 - countdown) / 60) * battleLogMessages.length);
     const currentMessage = battleLogMessages[Math.min(currentMessageIndex, battleLogMessages.length - 1)];
 
     const handleMiniGameComplete = (result: BattleMiniGameResult) => {
-        // Stub reward / result handlers for now – parent battle flow still uses ROI logic.
-        if (result.result === "user_win") {
-            // Example: grant CVT rewards equivalent to 1 USDT
-            grantBattleReward({
-                token: "CVT",
-                usdtValue: 1,
-                result: result.result,
-                userClearedCount: result.userClearedCount,
-                aiClearedCount: result.aiClearedCount,
-            });
-        } else {
-            handleBattleResult({
-                result: result.result,
-                userClearedCount: result.userClearedCount,
-                aiClearedCount: result.aiClearedCount,
-            });
-        }
+        onMiniGameComplete(result.result === "user_win");
     };
 
-    // Simple stubs to demonstrate how reward / result callbacks could be wired.
-    const grantBattleReward = (payload: {
-        token: string;
-        usdtValue: number;
-        result: "user_win";
-        userClearedCount: number;
-        aiClearedCount: number;
-    }) => {
-        // In a real implementation, this would trigger on-chain / backend reward logic.
-        console.log("grantBattleReward", payload);
-    };
 
-    const handleBattleResult = (payload: {
-        result: "ai_win" | "draw";
-        userClearedCount: number;
-        aiClearedCount: number;
-    }) => {
-        console.log("handleBattleResult", payload);
-    };
 
     return (
         <div className="min-h-screen bg-background text-foreground p-6 flex items-center justify-center">

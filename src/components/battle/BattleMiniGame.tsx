@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export type BattleMiniGameResultType = "user_win" | "ai_win" | "draw";
 
@@ -16,7 +16,7 @@ interface BattleMiniGameProps {
     onComplete?: (result: BattleMiniGameResult) => void;
 }
 
-type ObstacleType = "hole" | "low_obstacle"; // Rabbit hole (jump) or low obstacle (slide)
+type ObstacleType = "hole" | "low_obstacle" | "cactus" | "rock";
 
 interface Obstacle {
     id: number;
@@ -25,24 +25,35 @@ interface Obstacle {
     width: number;
 }
 
-const GAME_SPEED = 6; // Horizontal scroll speed
-const JUMP_DURATION = 600; // ms
-const SLIDE_DURATION = 500; // ms
+const INITIAL_SPEED = 6;
+const ACCELERATION = 0.05; // Speed increase per second
+const MAX_SPEED = 15;
+const JUMP_DURATION = 600;
+const SLIDE_DURATION = 600;
 const SPAWN_INTERVAL_MIN = 1200;
 const SPAWN_INTERVAL_MAX = 2500;
-const SURVIVAL_TIME = 60_000; // 60 seconds
+const SURVIVAL_TIME = 60_000;
 
-// Character position (fixed on screen, world scrolls)
-const CHARACTER_X = 120; // Fixed horizontal position
-const GROUND_Y = 280; // Ground level
-const JUMP_HEIGHT = 100; // Jump height in pixels
+const CHARACTER_X = 100;
+const CHARACTER_WIDTH = 60;
+const CHARACTER_HEIGHT = 60;
+const HITBOX_PADDING = 15;
+const GROUND_Y = 100;
+const JUMP_HEIGHT = 150;
 
 export function BattleMiniGame({
     durationMs = SURVIVAL_TIME,
     userLaneLabel = "You",
     onComplete,
 }: BattleMiniGameProps) {
-    const [obstacles, setObstacles] = useState<Obstacle[]>([]);
+    const [obstacles, setObstacles] = useState<Obstacle[]>([
+        {
+            id: 0,
+            x: 600, // Visible immediately
+            type: "low_obstacle",
+            width: 50
+        }
+    ]);
     const [isJumping, setIsJumping] = useState(false);
     const [isSliding, setIsSliding] = useState(false);
     const [gameOver, setGameOver] = useState(false);
@@ -50,7 +61,12 @@ export function BattleMiniGame({
     const [elapsed, setElapsed] = useState(0);
     const [score, setScore] = useState(0);
 
-    const gameRunningRef = useRef(true);
+    // New States
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [startCountdown, setStartCountdown] = useState(3);
+    const [currentSpeed, setCurrentSpeed] = useState(INITIAL_SPEED);
+
+    const gameRunningRef = useRef(false);
     const lastSpawnRef = useRef(0);
     const nextSpawnRef = useRef(SPAWN_INTERVAL_MIN);
     const lastTimestampRef = useRef<number | null>(null);
@@ -58,16 +74,30 @@ export function BattleMiniGame({
     const obstacleIdRef = useRef(1);
     const isJumpingRef = useRef(false);
     const isSlidingRef = useRef(false);
+    const elapsedRef = useRef(0); // Track elapsed time in ref for loop access
 
-    // Handle game loop
+    // Start Countdown Effect
     useEffect(() => {
-        gameRunningRef.current = true;
+        if (startCountdown > 0) {
+            const timer = setTimeout(() => {
+                setStartCountdown(prev => prev - 1);
+            }, 1000);
+            return () => clearTimeout(timer);
+        } else if (startCountdown === 0 && !isPlaying && !gameOver && !gameWon) {
+            setIsPlaying(true);
+            gameRunningRef.current = true;
+            elapsedRef.current = 0; // Reset elapsed ref
+            lastSpawnRef.current = 0;
+            nextSpawnRef.current = 1000; // Start spawning sooner
+        }
+    }, [startCountdown, isPlaying, gameOver, gameWon]);
+
+    // Game Loop
+    useEffect(() => {
+        if (!isPlaying) return;
+
+        gameRunningRef.current = true; // Ensure flag is true when effect starts
         lastTimestampRef.current = null;
-        setGameOver(false);
-        setGameWon(false);
-        setElapsed(0);
-        setScore(0);
-        setObstacles([]);
 
         const loop = (timestamp: number) => {
             if (!gameRunningRef.current || gameOver || gameWon) return;
@@ -82,100 +112,125 @@ export function BattleMiniGame({
             lastTimestampRef.current = timestamp;
 
             // Update elapsed time
-            setElapsed((prev) => {
-                const next = prev + delta;
-                if (next >= durationMs) {
-                    // Win condition: survived 60 seconds
-                    gameRunningRef.current = false;
-                    setGameWon(true);
-                }
-                return next;
-            });
+            elapsedRef.current += delta;
+            setElapsed(elapsedRef.current);
+
+            if (elapsedRef.current >= durationMs) {
+                gameRunningRef.current = false;
+                setGameWon(true);
+                setIsPlaying(false);
+                return;
+            }
+
+            // Calculate current speed based on elapsed time
+            // Speed increases linearly
+            const newSpeed = Math.min(
+                INITIAL_SPEED + (elapsedRef.current / 1000) * ACCELERATION,
+                MAX_SPEED
+            );
+            setCurrentSpeed(newSpeed);
 
             // Update spawn timer
             lastSpawnRef.current += delta;
+
+            // Spawn Logic
+            let newObstacle: Obstacle | null = null;
+            const containerWidth = containerRef.current?.clientWidth || window.innerWidth || 800;
+
+            // Adjust spawn interval based on speed (faster speed = faster spawn)
+            const speedMultiplier = INITIAL_SPEED / newSpeed;
+            const currentSpawnMin = SPAWN_INTERVAL_MIN * speedMultiplier;
+            const currentSpawnMax = SPAWN_INTERVAL_MAX * speedMultiplier;
+
+            if (
+                lastSpawnRef.current >= nextSpawnRef.current &&
+                gameRunningRef.current
+            ) {
+                lastSpawnRef.current = 0;
+                nextSpawnRef.current =
+                    currentSpawnMin +
+                    Math.random() * (currentSpawnMax - currentSpawnMin);
+
+                const typeRoll = Math.random();
+                let obstacleType: ObstacleType;
+                let width = 50;
+
+                if (typeRoll < 0.3) {
+                    obstacleType = "hole";
+                    width = 70;
+                } else if (typeRoll < 0.6) {
+                    obstacleType = "cactus";
+                    width = 40;
+                } else if (typeRoll < 0.8) {
+                    obstacleType = "low_obstacle";
+                    width = 50;
+                } else {
+                    obstacleType = "rock";
+                    width = 60;
+                }
+
+                newObstacle = {
+                    id: obstacleIdRef.current++,
+                    x: containerWidth + 50,
+                    type: obstacleType,
+                    width,
+                };
+            }
 
             // Update obstacles
             setObstacles((prev) => {
                 const nextObstacles: Obstacle[] = [];
                 let scoreDelta = 0;
 
-                // Move existing obstacles
                 for (const ob of prev) {
-                    const newX = ob.x - GAME_SPEED;
+                    const newX = ob.x - newSpeed; // Use dynamic speed
 
-                    // Remove obstacles that are off-screen
-                    if (newX + ob.width < 0) {
-                        // Obstacle passed safely - increment score
-                        if (newX + ob.width < CHARACTER_X - 20) {
-                            scoreDelta += 1;
-                        }
+                    // Remove off-screen obstacles
+                    if (newX + ob.width < -100) {
                         continue;
                     }
 
-                    // Collision detection
-                    const obStart = newX;
-                    const obEnd = newX + ob.width;
-                    const charStart = CHARACTER_X;
-                    const charEnd = CHARACTER_X + 50; // Character width
+                    // Score increment
+                    if (newX + ob.width < CHARACTER_X && ob.x + ob.width >= CHARACTER_X - newSpeed) {
+                        scoreDelta += 1;
+                    }
 
-                    // Check if obstacle overlaps with character
-                    if (obEnd > charStart && obStart < charEnd) {
+                    // Collision Detection
+                    const charLeft = CHARACTER_X + HITBOX_PADDING;
+                    const charRight = CHARACTER_X + CHARACTER_WIDTH - HITBOX_PADDING;
+                    const obLeft = newX + 5;
+                    const obRight = newX + ob.width - 5;
+
+                    const horizontalOverlap = obRight > charLeft && obLeft < charRight;
+
+                    if (horizontalOverlap) {
                         let collided = false;
 
                         if (ob.type === "hole") {
-                            // For holes: must be jumping to avoid
-                            if (!isJumpingRef.current) {
-                                collided = true;
-                            }
-                        } else if (ob.type === "low_obstacle") {
-                            // For low obstacles: must be sliding to avoid
-                            if (!isSlidingRef.current) {
-                                collided = true;
-                            }
+                            if (!isJumpingRef.current) collided = true;
+                        } else if (ob.type === "low_obstacle" || ob.type === "cactus") {
+                            if (!isJumpingRef.current) collided = true;
+                        } else if (ob.type === "rock") {
+                            if (!isSlidingRef.current) collided = true;
                         }
 
                         if (collided) {
-                            // Game over!
+                            console.log("COLLISION!", ob.type);
                             gameRunningRef.current = false;
+                            setIsPlaying(false);
                             setGameOver(true);
-                            return prev; // Stop updating
+                            return prev;
                         }
                     }
 
                     nextObstacles.push({ ...ob, x: newX });
                 }
 
-                // Spawn new obstacles
-                const containerWidth = containerRef.current?.clientWidth || 800;
-                const spawnX = containerWidth + 50;
-
-                if (
-                    lastSpawnRef.current >= nextSpawnRef.current &&
-                    gameRunningRef.current
-                ) {
-                    lastSpawnRef.current = 0;
-                    nextSpawnRef.current =
-                        SPAWN_INTERVAL_MIN +
-                        Math.random() * (SPAWN_INTERVAL_MAX - SPAWN_INTERVAL_MIN);
-
-                    // Randomly choose obstacle type
-                    const typeRoll = Math.random();
-                    const obstacleType: ObstacleType =
-                        typeRoll > 0.5 ? "hole" : "low_obstacle";
-                    const width = obstacleType === "hole" ? 60 : 50;
-
-                    nextObstacles.push({
-                        id: obstacleIdRef.current++,
-                        x: spawnX,
-                        type: obstacleType,
-                        width,
-                    });
+                if (newObstacle) {
+                    nextObstacles.push(newObstacle);
                 }
 
-                if (scoreDelta > 0) {
-                    setScore((s) => s + scoreDelta);
-                }
+                if (scoreDelta > 0) setScore(s => s + scoreDelta);
 
                 return nextObstacles;
             });
@@ -185,38 +240,36 @@ export function BattleMiniGame({
             }
         };
 
-        requestAnimationFrame(loop);
+        const animationId = requestAnimationFrame(loop);
 
         return () => {
             gameRunningRef.current = false;
+            cancelAnimationFrame(animationId);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [durationMs, gameOver, gameWon]);
+    }, [isPlaying, durationMs, gameOver, gameWon]); // Removed elapsed from dependencies
 
-    // Handle game completion
+    // Game Completion Handler
     useEffect(() => {
         if (!gameWon && !gameOver) return;
 
-        const resultType: BattleMiniGameResultType = gameWon
-            ? "user_win"
-            : "ai_win";
-
+        const resultType: BattleMiniGameResultType = gameWon ? "user_win" : "ai_win";
         const payload: BattleMiniGameResult = {
             result: resultType,
             userClearedCount: score,
             aiClearedCount: 0,
-            reward: gameWon ? "1 Carrot" : undefined,
+            reward: gameWon ? "100 CRT" : undefined,
         };
 
-        // Delay callback to show result screen
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             onComplete?.(payload);
-        }, 2000);
+        }, 2500);
+
+        return () => clearTimeout(timer);
     }, [gameWon, gameOver, score, onComplete]);
 
+    // Controls
     const handleJump = () => {
-        if (isJumpingRef.current || isSlidingRef.current || gameOver || gameWon)
-            return;
+        if (!isPlaying || isJumpingRef.current || isSlidingRef.current) return;
         isJumpingRef.current = true;
         setIsJumping(true);
         setTimeout(() => {
@@ -226,8 +279,7 @@ export function BattleMiniGame({
     };
 
     const handleSlide = () => {
-        if (isJumpingRef.current || isSlidingRef.current || gameOver || gameWon)
-            return;
+        if (!isPlaying || isJumpingRef.current || isSlidingRef.current) return;
         isSlidingRef.current = true;
         setIsSliding(true);
         setTimeout(() => {
@@ -237,301 +289,283 @@ export function BattleMiniGame({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (gameOver || gameWon) return;
+        if (e.code === "Space" || e.key === " " || e.key === "ArrowUp" || e.key === "ArrowDown") {
+            e.preventDefault(); // Always prevent default for game controls
+        }
+
+        if (!isPlaying) return;
 
         if (e.code === "Space" || e.key === " " || e.key === "ArrowUp") {
-            e.preventDefault();
             handleJump();
-        } else if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
-            e.preventDefault();
+        } else if (e.key === "ArrowDown") {
             handleSlide();
         }
     };
 
-    const remainingSeconds = Math.max(
-        0,
-        Math.ceil((durationMs - elapsed) / 1000)
-    );
+    // Global keydown handler to prevent space from scrolling
+    useEffect(() => {
+        const handleGlobalKeyDown = (e: KeyboardEvent) => {
+            if (isPlaying && (e.code === "Space" || e.key === " ")) {
+                e.preventDefault();
+            }
+        };
+
+        window.addEventListener("keydown", handleGlobalKeyDown);
+        return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+    }, [isPlaying]);
+
+    const remainingSeconds = Math.max(0, Math.ceil((durationMs - elapsed) / 1000));
+
+    // Retry Handler
+    const handleRetry = () => {
+        setObstacles([
+            {
+                id: 0,
+                x: 600,
+                type: "low_obstacle",
+                width: 50
+            }
+        ]);
+        setScore(0);
+        setElapsed(0);
+        setGameOver(false);
+        setGameWon(false);
+        setIsPlaying(false);
+        setStartCountdown(3);
+        setCurrentSpeed(INITIAL_SPEED);
+
+        // Reset refs
+        gameRunningRef.current = false;
+        lastSpawnRef.current = 0;
+        nextSpawnRef.current = SPAWN_INTERVAL_MIN;
+        elapsedRef.current = 0;
+        obstacleIdRef.current = 1;
+        isJumpingRef.current = false;
+        isSlidingRef.current = false;
+    };
 
     return (
         <div
             ref={containerRef}
-            className="w-full max-w-4xl mx-auto mt-4 rounded-xl relative overflow-hidden shadow-2xl select-none outline-none font-pixel"
+            className="w-full max-w-4xl mx-auto mt-4 rounded-xl relative overflow-hidden shadow-2xl select-none outline-none font-pixel group"
             tabIndex={0}
             onKeyDown={handleKeyDown}
             style={{
                 height: "400px",
-                background:
-                    "linear-gradient(to bottom, hsl(var(--carrot-green)) 0%, hsl(var(--carrot-green)) 30%, hsl(var(--success)) 30%, hsl(var(--success)) 100%)",
+                background: "linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%)",
             }}
         >
-            {/* Parallax Background - Carrot Farm */}
-            {/* Sky gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-carrot-green/20 via-success/30 to-carrot-green/40" />
+            {/* --- Background Elements --- */}
 
-            {/* Clouds */}
+            {/* Sun */}
+            <div className="absolute top-8 right-16 w-16 h-16 bg-yellow-400 rounded-full blur-sm animate-pulse opacity-80" />
+
+            {/* Clouds (Parallax) */}
             <motion.div
-                className="absolute top-8 left-[10%] text-white/40 text-5xl"
-                animate={{ x: [0, 1000] }}
-                transition={{
-                    duration: 40,
-                    repeat: Infinity,
-                    ease: "linear",
-                }}
+                className="absolute top-12 left-0 text-white/60 text-6xl"
+                animate={{ x: ["100%", "-20%"] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             >
                 ☁
             </motion.div>
             <motion.div
-                className="absolute top-16 left-[60%] text-white/30 text-4xl"
-                animate={{ x: [0, -1000] }}
-                transition={{
-                    duration: 50,
-                    repeat: Infinity,
-                    ease: "linear",
-                }}
+                className="absolute top-24 left-0 text-white/40 text-4xl"
+                animate={{ x: ["100%", "-20%"] }}
+                transition={{ duration: 35, repeat: Infinity, ease: "linear", delay: 5 }}
             >
                 ☁
             </motion.div>
 
-            {/* Distant carrots (parallax) */}
-            <div className="absolute bottom-24 left-0 right-0 h-32 overflow-hidden">
-                {Array.from({ length: 8 }).map((_, i) => (
-                    <motion.div
-                        key={`carrot-bg-${i}`}
-                        className="absolute bottom-0"
-                        style={{
-                            left: `${i * 200}px`,
-                        }}
-                        animate={{ x: [0, -1600] }}
-                        transition={{
-                            duration: 20,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
-                    >
-                        <div className="text-2xl opacity-20">🥕</div>
-                    </motion.div>
-                ))}
+            {/* Mountains/Hills (Parallax) */}
+            <div className="absolute bottom-[100px] left-0 right-0 h-32 opacity-60">
+                <motion.div
+                    className="absolute bottom-0 w-[200%] h-full flex"
+                    animate={{ x: ["0%", "-50%"] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                >
+                    {Array.from({ length: 10 }).map((_, i) => (
+                        <div key={i} className="w-64 h-32 bg-emerald-600/30 rounded-t-full -ml-12 transform scale-y-75" />
+                    ))}
+                </motion.div>
             </div>
 
             {/* Ground */}
-            <div
-                className="absolute bottom-0 left-0 right-0 h-32"
-                style={{
-                    background:
-                        "linear-gradient(to top, hsl(var(--carrot-orange)) 0%, hsl(var(--carrot-orange)) 60%, hsl(var(--warning)) 60%, hsl(var(--warning)) 100%)",
-                }}
-            >
-                {/* Ground texture - moving dots */}
-                <div className="absolute inset-0 overflow-hidden opacity-30">
-                    <motion.div
-                        className="absolute inset-0 flex"
-                        animate={{ x: [0, -100] }}
-                        transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
-                    >
-                        {Array.from({ length: 20 }).map((_, i) => (
-                            <div
-                                key={`dot-${i}`}
-                                className="w-2 h-2 bg-carrot-orange-foreground/40 rounded-full mx-12 mt-8"
-                            />
-                        ))}
-                    </motion.div>
-                </div>
+            <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-[#5D4037] border-t-4 border-[#3E2723] z-10">
+                {/* Grass Top */}
+                <div className="absolute top-0 left-0 right-0 h-4 bg-[#7CB342]" />
+                {/* Moving Ground Texture */}
+                <motion.div
+                    className="absolute top-4 left-0 w-[200%] h-full flex opacity-30"
+                    animate={{ x: ["0%", "-50%"] }}
+                    transition={{
+                        duration: isPlaying ? 2 * (INITIAL_SPEED / currentSpeed) : 0, // Speed up texture
+                        repeat: Infinity,
+                        ease: "linear"
+                    }}
+                >
+                    {Array.from({ length: 20 }).map((_, i) => (
+                        <div key={i} className="w-8 h-2 bg-[#3E2723] rounded-full mx-12 mt-4" />
+                    ))}
+                </motion.div>
             </div>
 
-            {/* HUD */}
-            <div className="absolute top-0 inset-x-0 p-4 flex justify-between items-start z-30 text-carrot-orange-foreground">
-                <div className="flex flex-col bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-carrot-orange/30">
-                    <span className="text-xs uppercase tracking-widest opacity-70">
-                        Score
-                    </span>
-                    <span className="text-2xl">{score.toString().padStart(3, "0")}</span>
+            {/* --- HUD --- */}
+            <div className="absolute top-4 left-4 right-4 flex justify-between z-30 font-bold text-white drop-shadow-md">
+                <div className="bg-black/40 px-4 py-2 rounded-full backdrop-blur-sm border border-white/20">
+                    SCORE: <span className="text-yellow-400 text-xl">{score}</span>
                 </div>
-
-                <div className="flex flex-col items-center bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-carrot-orange/30">
-                    <span className="text-xs uppercase tracking-widest opacity-70">
-                        Time
-                    </span>
-                    <span className="text-xl">{remainingSeconds}s</span>
-                </div>
-
-                <div className="flex flex-col items-end bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-carrot-orange/30">
-                    <span className="text-xs uppercase tracking-widest opacity-70">
-                        {userLaneLabel}
-                    </span>
-                    <span className="text-2xl">🏃</span>
-                </div>
+                {/* Time removed as requested */}
             </div>
 
-            {/* Tokki Character */}
+            {/* --- Character --- */}
             <div
                 className="absolute z-20"
                 style={{
                     left: `${CHARACTER_X}px`,
                     bottom: `${GROUND_Y}px`,
-                    width: "50px",
-                    height: "60px",
+                    width: `${CHARACTER_WIDTH}px`,
+                    height: `${CHARACTER_HEIGHT}px`,
                 }}
             >
                 <motion.div
                     animate={{
                         y: isJumping ? -JUMP_HEIGHT : isSliding ? 20 : 0,
                         scaleY: isSliding ? 0.5 : 1,
+                        rotate: isJumping ? -10 : 0,
                     }}
                     transition={{
-                        duration: isJumping
-                            ? JUMP_DURATION / 1000
-                            : isSliding
-                            ? SLIDE_DURATION / 1000
-                            : 0.1,
-                        ease: isJumping ? "easeOut" : "easeInOut",
+                        type: "tween",
+                        duration: isJumping ? JUMP_DURATION / 1000 : isSliding ? SLIDE_DURATION / 1000 : 0.1,
                     }}
-                    className="relative w-full h-full"
+                    className="w-full h-full relative"
                 >
-                    {/* Tokki Sprite - Pixel Art Style */}
-                    <div className="relative w-full h-full">
-                        {/* Body */}
-                        <div className="absolute top-6 left-2 w-6 h-8 bg-carrot-orange rounded-sm" />
-                        {/* Head */}
-                        <div className="absolute top-0 left-4 w-8 h-8 bg-carrot-orange rounded-full" />
-                        {/* Ear Left */}
-                        <div className="absolute -top-2 left-2 w-3 h-6 bg-carrot-orange rounded-t-full" />
-                        {/* Ear Right */}
-                        <div className="absolute -top-2 right-2 w-3 h-6 bg-carrot-orange rounded-t-full" />
-                        {/* Eye */}
-                        <div className="absolute top-3 left-6 w-2 h-2 bg-carrot-orange-foreground rounded-full" />
-                        {/* Nose */}
-                        <div className="absolute top-5 left-5 w-1 h-1 bg-carrot-orange-foreground" />
-                        {/* Legs - Running animation */}
-                        {!isJumping && !isSliding && (
-                            <>
-                                <motion.div
-                                    className="absolute bottom-0 left-3 w-2 h-4 bg-carrot-orange rounded-sm"
-                                    animate={{ y: [0, -4, 0] }}
-                                    transition={{
-                                        duration: 0.3,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                />
-                                <motion.div
-                                    className="absolute bottom-0 right-3 w-2 h-4 bg-carrot-orange rounded-sm"
-                                    animate={{ y: [0, -4, 0] }}
-                                    transition={{
-                                        duration: 0.3,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                        delay: 0.15,
-                                    }}
-                                />
-                            </>
-                        )}
-                        {/* Sliding pose */}
-                        {isSliding && (
-                            <div className="absolute bottom-0 left-2 w-8 h-3 bg-carrot-orange rounded-sm" />
-                        )}
-                    </div>
+                    <img
+                        src="/logos/Tokki.png"
+                        alt="Player"
+                        className="w-full h-full object-contain drop-shadow-lg"
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.parentElement!.style.backgroundColor = '#FF9800';
+                            e.currentTarget.parentElement!.style.borderRadius = '8px';
+                        }}
+                    />
+                    {isSliding && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 0 }}
+                            animate={{ opacity: 1, y: -10 }}
+                            className="absolute -top-4 right-0 text-blue-400 text-lg font-bold"
+                        >
+                            💦
+                        </motion.div>
+                    )}
                 </motion.div>
             </div>
 
-            {/* Obstacles */}
-            {obstacles.map((ob) => (
-                <div
-                    key={ob.id}
-                    className="absolute z-10"
-                    style={{
-                        left: `${ob.x}px`,
-                        bottom: `${GROUND_Y}px`,
-                        width: `${ob.width}px`,
-                    }}
-                >
-                    {ob.type === "hole" ? (
-                        // Rabbit Hole
-                        <div
-                            className="absolute bottom-0 w-full"
-                            style={{
-                                height: "80px",
-                                background:
-                                    "radial-gradient(ellipse 60% 100% at 50% 100%, hsl(var(--carrot-orange-foreground)) 0%, transparent 70%)",
-                            }}
-                        >
-                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-carrot-orange-foreground/40 rounded-t-full" />
-                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-12 bg-carrot-orange-foreground/60 rounded-t-full" />
-                        </div>
-                    ) : (
-                        // Low Obstacle (carrot stump or rock)
-                        <div className="absolute bottom-0 w-full flex items-end justify-center">
-                            <div className="w-8 h-12 bg-warning rounded-t-lg border-2 border-warning-foreground/30" />
-                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-warning-foreground/20 rounded-full" />
-                        </div>
-                    )}
-                </div>
-            ))}
-
-            {/* Instructions */}
-            {elapsed < 3000 && !gameOver && !gameWon && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="bg-card/90 backdrop-blur-sm text-carrot-orange-foreground px-6 py-4 rounded-lg border-2 border-carrot-orange shadow-lg"
+            {/* --- Obstacles --- */}
+            <AnimatePresence>
+                {obstacles.map((ob) => (
+                    <div
+                        key={ob.id}
+                        className="absolute z-10 flex items-end justify-center"
+                        style={{
+                            left: `${ob.x}px`,
+                            bottom: `${GROUND_Y}px`,
+                            width: `${ob.width}px`,
+                            height: ob.type === "rock" ? "140px" : "80px",
+                        }}
                     >
-                        <div className="text-sm mb-2">↑ SPACE: JUMP</div>
-                        <div className="text-sm">↓ DOWN: SLIDE</div>
-                        <div className="text-xs mt-2 opacity-70">
-                            Survive 60 seconds!
-                        </div>
+                        {ob.type === "hole" && (
+                            <div className="w-full h-4 bg-black/60 rounded-[50%] absolute -bottom-2 blur-sm scale-x-150" />
+                        )}
+
+                        {ob.type === "hole" ? (
+                            <div className="w-full h-12 bg-[#3E2723] rounded-t-full border-4 border-[#5D4037] relative overflow-hidden translate-y-8">
+                                <div className="absolute inset-0 bg-black/40" />
+                            </div>
+                        ) : ob.type === "cactus" ? (
+                            <div className="w-8 h-16 bg-green-600 rounded-t-full relative border-2 border-green-800">
+                                <div className="absolute top-4 -left-3 w-3 h-6 bg-green-600 rounded-l-full border-2 border-green-800 border-r-0" />
+                                <div className="absolute top-8 -right-3 w-3 h-6 bg-green-600 rounded-r-full border-2 border-green-800 border-l-0" />
+                            </div>
+                        ) : ob.type === "rock" ? (
+                            <div className="w-16 h-12 bg-gray-500 rounded-full border-2 border-gray-700 relative top-0 mb-auto">
+                                <div className="absolute -left-4 top-2 w-6 h-4 bg-gray-400 rounded-full animate-pulse" />
+                                <div className="absolute -right-4 top-2 w-6 h-4 bg-gray-400 rounded-full animate-pulse" />
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-white">🦅</div>
+                            </div>
+                        ) : (
+                            <div className="w-10 h-10 bg-[#795548] rounded-sm border-2 border-[#5D4037] relative">
+                                <div className="absolute top-0 w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_5px,#5D4037_5px,#5D4037_10px)] opacity-20" />
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </AnimatePresence>
+
+            {/* --- Overlays --- */}
+
+            {/* Countdown Overlay */}
+            {startCountdown > 0 && !gameOver && !gameWon && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-50 backdrop-blur-sm">
+                    <motion.div
+                        key={startCountdown}
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1.5, opacity: 1 }}
+                        exit={{ scale: 2, opacity: 0 }}
+                        className="text-8xl font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]"
+                    >
+                        {startCountdown}
                     </motion.div>
                 </div>
             )}
 
-            {/* Game Over Screen */}
+            {/* GO! Overlay */}
+            {startCountdown === 0 && elapsed < 1000 && !gameOver && !gameWon && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
+                    <motion.div
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 2, opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-8xl font-black text-yellow-400 drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]"
+                    >
+                        GO!
+                    </motion.div>
+                </div>
+            )}
+
+            {/* Game Over Overlay */}
             {gameOver && (
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="absolute inset-0 flex items-center justify-center z-50 bg-background/90 backdrop-blur-sm"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="absolute inset-0 flex items-center justify-center bg-black/70 z-50 backdrop-blur-md"
                 >
-                    <div className="bg-card border-2 border-error p-8 rounded-2xl shadow-2xl text-center">
+                    <div className="text-center">
                         <div className="text-6xl mb-4">💥</div>
-                        <h2 className="text-3xl font-bold text-error mb-2">
-                            GAME OVER
-                        </h2>
-                        <div className="text-carrot-orange-foreground font-mono mb-4">
-                            Score: {score}
-                        </div>
-                        <div className="text-xs text-muted-foreground animate-pulse">
-                            Redirecting...
-                        </div>
+                        <h2 className="text-5xl font-black text-red-500 mb-2 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">GAME OVER</h2>
+                        <p className="text-2xl text-white mb-6">Score: {score}</p>
+                        <button
+                            onClick={handleRetry}
+                            className="px-6 py-2 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform"
+                        >
+                            Try Again
+                        </button>
                     </div>
                 </motion.div>
             )}
 
-            {/* Victory Screen */}
+            {/* Victory Overlay */}
             {gameWon && (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="absolute inset-0 flex items-center justify-center z-50 bg-background/90 backdrop-blur-sm"
+                    className="absolute inset-0 flex items-center justify-center bg-black/70 z-50 backdrop-blur-md"
                 >
-                    <div className="bg-card border-2 border-success p-8 rounded-2xl shadow-2xl text-center">
+                    <div className="text-center">
                         <div className="text-6xl mb-4">🏆</div>
-                        <h2 className="text-3xl font-bold text-success mb-2">
-                            VICTORY!
-                        </h2>
-                        <div className="text-carrot-orange-foreground font-mono mb-4">
-                            Score: {score}
-                        </div>
-                        <div className="text-sm text-success mb-2">
-                            Tokki survived 60 seconds!
-                        </div>
-                        <div className="text-xs text-muted-foreground animate-pulse">
-                            You win the AI battle!
-                        </div>
+                        <h2 className="text-5xl font-black text-yellow-400 mb-2 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">VICTORY!</h2>
+                        <p className="text-2xl text-white mb-6">You survived!</p>
+                        <div className="text-emerald-400 font-mono text-xl">Reward: 100 CRT</div>
                     </div>
                 </motion.div>
             )}

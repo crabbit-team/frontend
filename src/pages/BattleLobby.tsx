@@ -26,7 +26,8 @@ export function BattleLobby() {
         startBattle,
         resetGame,
         goBackToVaultSelection,
-        goBackToOpponentSelection
+        goBackToOpponentSelection,
+        setMiniGameResult
     } = useBattleGame();
 
     const handleClaimReward = () => {
@@ -56,6 +57,7 @@ export function BattleLobby() {
                 countdown={countdown}
                 vault={selectedVault}
                 opponent={selectedOpponent}
+                onMiniGameComplete={setMiniGameResult}
             />
         );
     }
