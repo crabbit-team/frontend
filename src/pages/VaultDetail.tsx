@@ -188,9 +188,9 @@ export function VaultDetail() {
                     />
                   </button>
                 ) : (
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-carrot-orange/20 to-info/20 border border-border flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(208,129,65,0.2)]">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-carrot-orange/20 to-info/20 border border-border flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(208,129,65,0.2)]">
                     <span>{vault.name.charAt(0).toUpperCase()}</span>
-                  </div>
+                </div>
                 )}
                 <div className="space-y-2 flex-1">
                   <h1 className="text-3xl md:text-4xl font-bold font-pixel tracking-tight text-foreground">
@@ -222,7 +222,7 @@ export function VaultDetail() {
                     </span>
                     <span className="w-1 h-1 rounded-full bg-border" />
                     <span className="text-info">
-                      TVL: ${parseFloat(vault.tvl).toLocaleString()}
+                      TVL: ${parseFloat(vault.tvl).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </div>
 

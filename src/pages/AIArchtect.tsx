@@ -136,9 +136,9 @@ export function AIArchitect () {
                 {/* bg-carrot-orange/20: carrot-orange 색상의 20% 투명도 (HSL: 26 65% 54% / 0.2) */}
                 {/* blur-[120px]: 120px 블러 효과로 부드러운 그라디언트 생성 */}
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-carrot-orange/20 rounded-full blur-[120px]" />
-                {/* 오른쪽 하단 파란색(정보) 그라디언트 효과 */}
-                {/* bg-info/20: info 색상의 20% 투명도 (HSL: 210 100% 50% / 0.2) */}
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-info/20 rounded-full blur-[120px]" />
+                {/* 오른쪽 하단 (정보) 그라디언트 효과 */}
+               
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-carrot-green/20 rounded-full blur-[120px]" />
             </div>
 
             {/* 메인 콘텐츠 영역: 컨테이너 중앙 정렬, 패딩, z-index 설정 */}

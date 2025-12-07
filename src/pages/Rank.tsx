@@ -12,46 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { getVaults, type VaultSummary, type VaultCreator } from "../api/vault";
 import { CardWithFrame } from "../components/common/CardWithFrame";
 import { CreatorModal } from "../components/common/CreatorModal";
+import { TierBadge } from "../components/common/TierBadge";
 
-/**
- * Tier에 따른 색상 스타일 반환
- */
-function getTierStyles(tier: string): { backgroundColor: string; color: string } {
-    const tierLower = tier.toLowerCase();
-    
-    switch (tierLower) {
-        case "iron":
-            return {
-                backgroundColor: `hsl(var(--tier-iron) / 0.2)`,
-                color: `hsl(var(--tier-iron))`,
-            };
-        case "bronze":
-            return {
-                backgroundColor: `hsl(var(--tier-bronze) / 0.2)`,
-                color: `hsl(var(--tier-bronze))`,
-            };
-        case "silver":
-            return {
-                backgroundColor: `hsl(var(--tier-silver) / 0.2)`,
-                color: `hsl(var(--tier-silver))`,
-            };
-        case "gold":
-            return {
-                backgroundColor: `hsl(var(--tier-gold) / 0.2)`,
-                color: `hsl(var(--tier-gold))`,
-            };
-        case "diamond":
-            return {
-                backgroundColor: `hsl(var(--tier-diamond) / 0.2)`,
-                color: `hsl(var(--tier-diamond))`,
-            };
-        default:
-            return {
-                backgroundColor: `hsl(var(--carrot-orange) / 0.2)`,
-                color: `hsl(var(--carrot-orange))`,
-            };
-    }
-}
 
 /**
  * Rank 메인 컴포넌트
@@ -72,7 +34,32 @@ export function Rank() {
             try {
                 setIsLoading(true);
                 const response = await getVaults();
-                setVaults(response.vaults);
+                
+                // willDelete: 테스트용 mock data
+                // TVL: 1000000 = 1.000000 (뒤 6자리가 decimals)
+                const mockVault: VaultSummary = {
+                    address: "0x1234567890123456789012345678901234567890",
+                    name: "Test Vault",
+                    symbol: "TEST",
+                    image_url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
+                    creator: {
+                        address: "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+                        nickname: "Test Creator",
+                        image_url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
+                        memex_link: "https://example.com",
+                    },
+                    tvl: "1.00", // TVL은 "00000.00" 형식
+                    share_price: "1.0",
+                    share_price_decimals: 18,
+                    performance: {
+                        apy: 15.5,
+                        change_24h: 2.3,
+                    },
+                    tier: "gold",
+                    explorer_url: "https://etherscan.io/address/0x1234567890123456789012345678901234567890",
+                };
+                
+                setVaults([mockVault, ...response.vaults]);
             } catch (error) {
                 console.error("Failed to fetch vaults:", error);
             } finally {
@@ -82,7 +69,7 @@ export function Rank() {
         fetchVaults();
     }, []);
 
-    // Deposit 버튼 클릭 핸들러
+    // Deposit 버튼 클릭 핸들러 - VaultDetail로 이동
     const handleDepositClick = (e: React.MouseEvent, vault: VaultSummary) => {
         e.stopPropagation(); // 행 클릭 이벤트 방지
         navigate(`/vaults/${vault.address}`);
@@ -104,7 +91,7 @@ export function Rank() {
                 {/* 왼쪽 상단 당근 오렌지 그라디언트 효과 */}
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-carrot-orange/20 rounded-full blur-[120px] border-glow" />
                 {/* 오른쪽 하단 파란색(정보) 그라디언트 효과 */}
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-info/20 rounded-full blur-[120px]" />
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-carrot-green/20 rounded-full blur-[120px]" />
             </div>
 
             {/* 메인 콘텐츠 영역: 컨테이너 중앙 정렬, 패딩, z-index 설정 */}
@@ -112,9 +99,11 @@ export function Rank() {
                 {/* 1. 페이지 제목 섹션 */}
                 <div className="mb-16 space-y-2">
                     {/* 메인 제목: 그라디언트 텍스트 효과 (흰색 → 당근 오렌지) */}
-                    <h1 className="text-4xl md:text-5xl font-bold font-pixel tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-carrot-orange">
-                        Strategy Rank
-                    </h1>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-4xl md:text-5xl font-bold font-pixel tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-carrot-orange">
+                            Strategy Rank
+                        </h1>
+                    </div>
                     {/* 설명 텍스트: 랭킹 생성 기준 및 업데이트 주기 안내 */}
                     <p className="text-muted-foreground font-mono text-sm tracking-wider">
                         Rank is generated from the strategy owner's historical average ROI. <br />
@@ -123,38 +112,45 @@ export function Rank() {
                 </div>
 
                 {/* 2. 상위 3개 전략 쇼케이스 (중앙 하이라이트) */}
-                {!isLoading && vaults.length >= 3 && (
-                    <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[200px]">
-                        {/* 상위 3개 전략을 추출하고 순서 재배치 */}
-                        {(() => {
-                            const top3 = vaults.slice(0, 3);
-                            if (top3.length < 3) return null;
-
-                            // 포디움 형태로 배치하기 위한 순서 재배치
-                            // 1위는 중앙, 2위는 왼쪽, 3위는 오른쪽
-                            const spotlight = [
-                                { vault: top3[1], rank: 2, position: "left" as const, delay: 0.3 },
-                                { vault: top3[0], rank: 1, position: "center" as const, delay: 0.2 },
-                                { vault: top3[2], rank: 3, position: "right" as const, delay: 0.4 },
-                            ];
-
-                            return spotlight.map(({ vault, rank, position, delay }) => (
-                                <RankingCard
-                                    key={vault.address}
-                                    vault={vault}
-                                    rank={rank}
-                                    position={position}
-                                    delay={delay}
-                                />
-                            ));
-                        })()}
-                    </div>
-                )}
+                <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[200px]">
+                    {/* 목 데이터 하드코딩 - 테스트용 */}
+                    <CardWithFrame
+                        frameImage="/card/frame/cardFrameGold.png"
+                        backgroundImage="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800"
+                        size="large"
+                        onClick={() => navigate("/vaults/0x123")}
+                        animationDelay={0.2}
+                        isCenter={true}
+                        backgroundSize="cover"
+                    >
+                        {/* 텍스트 레이어: 하단에 정보 표시 */}
+                        <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+                            <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
+                                    <span className="text-sm font-bold font-pixel text-white">CRT</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs text-muted-foreground font-mono uppercase">Rank</span>
+                                    <span className="text-sm font-bold font-pixel text-white">#1</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
+                                    <span className="text-sm font-bold font-pixel text-success">+25.50%</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
+                                    <span className="text-sm font-bold font-pixel text-white">$2.5M USDC</span>
+                                </div>
+                            </div>
+                        </div>
+                    </CardWithFrame>
+                </div>
 
                 {/* 3. 전체 랭킹 테이블 */}
                 <div className="bg-card border border-border rounded-2xl overflow-hidden backdrop-blur-sm shadow-2xl">
                     {/* 테이블 헤더 */}
-                    <div className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px] gap-4 p-6 text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border">
+                    <div className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px_100px] gap-4 p-6 text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border">
                         <div>Rank</div>
                         <div>Strategy</div>
                         <div className="text-center">Creator</div>
@@ -163,6 +159,7 @@ export function Rank() {
                         <div className="text-right">TVL</div>
                         <div className="text-center">Tier</div>
                         <div className="text-center">Deposit</div>
+                        <div className="text-center">History</div>
                     </div>
 
                     {/* 테이블 바디 */}
@@ -176,7 +173,9 @@ export function Rank() {
                                 const rank = index + 1;
                                 const apy = vault.performance?.apy ?? 0;
                                 const change24h = vault.performance?.change_24h ?? 0;
-                                const tvlLabel = `$${vault.tvl.toLocaleString()}`;
+                                // TVL: "00000.00" 형식의 문자열로 오므로 파싱해서 표시
+                                const tvlValue = parseFloat(vault.tvl);
+                                const tvlLabel = `$${tvlValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                                 const tier = vault.tier;
                                 const creatorImage = vault.creator?.image_url;
                                 const creator = vault.creator;
@@ -184,7 +183,7 @@ export function Rank() {
                                 return (
                                     <div
                                         key={vault.address}
-                                        className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px] gap-4 px-6 py-4 text-sm items-center hover:bg-secondary/50 transition-colors"
+                                        className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px_100px] gap-4 px-6 py-4 text-sm items-center hover:bg-secondary/50 transition-colors"
                                         onClick={() => navigate(`/vaults/${vault.address}`)}
                                     >
                                         {/* Rank */}
@@ -259,20 +258,7 @@ export function Rank() {
 
                                         {/* Tier */}
                                         <div className="text-center">
-                                            {(() => {
-                                                const tierStyles = getTierStyles(tier);
-                                                return (
-                                                    <span 
-                                                        className="inline-flex items-center justify-center font-bold text-sm font-mono px-2 py-1 rounded"
-                                                        style={{
-                                                            backgroundColor: tierStyles.backgroundColor,
-                                                            color: tierStyles.color,
-                                                        }}
-                                                    >
-                                                        {tier}
-                                                    </span>
-                                                );
-                                            })()}
+                                            <TierBadge tier={tier} />
                                         </div>
 
                                         {/* Deposit Button */}
@@ -283,6 +269,26 @@ export function Rank() {
                                             >
                                                 Deposit
                                             </button>
+                                        </div>
+
+                                        {/* History Button */}
+                                        <div className="text-center">
+                                            {vault.explorer_url && vault.explorer_url.trim() ? (
+                                                <a
+                                                    href={vault.explorer_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary text-foreground hover:bg-secondary/80 rounded-md text-xs font-mono font-medium transition-colors"
+                                                >
+                                                    <span>View</span>
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                    </svg>
+                                                </a>
+                                            ) : (
+                                                <span className="text-xs text-muted-foreground font-mono">-</span>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -309,44 +315,95 @@ export function Rank() {
     );
 }
 
-/**
- * RankingCard 컴포넌트
- * 
- * 상위 3개 전략을 카드 형태로 표시하는 컴포넌트입니다.
- * CardWithFrame 컴포넌트를 사용하여 렌더링합니다.
- * 
- * @param vault - 전략 정보 객체 (VaultSummary)
- * @param rank - 순위
- * @param position - 카드 위치 ('left' | 'center' | 'right')
- * @param delay - 애니메이션 시작 지연 시간 (초)
- */
-function RankingCard({ 
-    vault, 
-    position, 
-    delay 
-}: { 
-    vault: VaultSummary; 
-    rank: number; 
-    position: 'left' | 'center' | 'right'; 
-    delay: number;
-}) {
-    const isCenter = position === 'center';
-    const navigate = useNavigate();
-    
-    // 1위는 오렌지 프레임, 2-3위는 그린 프레임 사용
-    const frameImage = isCenter 
-        ? "/card/frame/cardFrameOrange.png"
-        : "/card/frame/cardFrameGreen.png";
+// /**
+//  * TVL 값을 축약된 형식으로 포맷팅
+//  */
+// function formatTVL(tvl: number): string {
+//     if (tvl >= 1_000_000_000) {
+//         return `$${(tvl / 1_000_000_000).toFixed(1)}B`;
+//     }
+//     if (tvl >= 1_000_000) {
+//         return `$${(tvl / 1_000_000).toFixed(1)}M`;
+//     }
+//     if (tvl >= 1_000) {
+//         return `$${(tvl / 1_000).toFixed(1)}K`;
+//     }
+//     return `$${tvl.toLocaleString()}`;
+// }
 
-    return (
-        <CardWithFrame
-            frameImage={frameImage}
-            backgroundImage="/card/background/cardBgWhale.png"
-            text={vault.name}
-            size={isCenter ? "large" : "small"}
-            onClick={() => navigate(`/vaults/${vault.address}`)}
-            animationDelay={delay}
-            isCenter={isCenter}
-        />
-    );
-}
+// /**
+//  * RankingCard 컴포넌트
+//  * 
+//  * 상위 3개 전략을 카드 형태로 표시하는 컴포넌트입니다.
+//  * 
+//  * @param vault - 전략 정보 객체 (VaultSummary)
+//  * @param rank - 순위 (1, 2, 3)
+//  * @param position - 카드 위치 ('left' | 'center' | 'right')
+//  * @param delay - 애니메이션 시작 지연 시간 (초)
+//  */
+// function RankingCard({ 
+//     vault, 
+//     rank,
+//     position, 
+//     delay 
+// }: { 
+//     vault: VaultSummary; 
+//     rank: number; 
+//     position: 'left' | 'center' | 'right'; 
+//     delay: number;
+// }) {
+//     const isCenter = position === 'center';
+//     const navigate = useNavigate();
+    
+//     // Rank에 따른 프레임 이미지 선택
+//     const frameImage = 
+//         rank === 1 ? "/card/frame/cardFrameGold.png"
+//         : rank === 2 ? "/card/frame/cardFrameSilver.png"
+//         : "/card/frame/cardFrameBronze.png";
+    
+//     // 배경 이미지: vault.image_url 사용
+//     const backgroundImage = vault.image_url || "/card/background/cardBgWhale.png";
+    
+//     // ROI (APY)
+//     const roi = vault.performance?.apy ?? 0;
+    
+//     // TVL
+//     const tvl = vault.tvl;
+//     const tvlFormatted = formatTVL(tvl);
+
+//     return (
+//         <CardWithFrame
+//             frameImage={frameImage}
+//             backgroundImage={backgroundImage}
+//             size={isCenter ? "large" : "small"}
+//             onClick={() => navigate(`/vaults/${vault.address}`)}
+//             animationDelay={delay}
+//             isCenter={isCenter}
+//             backgroundSize="cover"
+//         >
+//             {/* 텍스트 레이어: 하단에 정보 표시 */}
+//             <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+//                 <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+//                     <div className="flex items-center justify-between">
+//                         <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
+//                         <span className="text-sm font-bold font-pixel text-white">{vault.symbol}</span>
+//                     </div>
+//                     <div className="flex items-center justify-between">
+//                         <span className="text-xs text-muted-foreground font-mono uppercase">Rank</span>
+//                         <span className="text-sm font-bold font-pixel text-white">#{rank}</span>
+//                     </div>
+//                     <div className="flex items-center justify-between">
+//                         <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
+//                         <span className="text-sm font-bold font-pixel text-success">
+//                             {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
+//                         </span>
+//                     </div>
+//                     <div className="flex items-center justify-between">
+//                         <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
+//                         <span className="text-sm font-bold font-pixel text-white">{tvlFormatted} USDC</span>
+//                     </div>
+//                 </div>
+//             </div>
+//         </CardWithFrame>
+//     );
+// }

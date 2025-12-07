@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Users, Wallet, Pencil, Copy } from "lucide-react";
+import { Users, Wallet, Pencil, Copy, ExternalLink } from "lucide-react";
 import { useAccount } from "wagmi";
 import {
     getProfile,
@@ -290,6 +290,17 @@ export function UserProfile() {
                                 Profile created at{" "}
                                 {new Date(profile.created_at).toLocaleString()}
                             </span>
+                            {profile.explorer_url && profile.explorer_url.trim() && (
+                                <a
+                                    href={profile.explorer_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary text-foreground hover:bg-secondary/80 rounded-md text-xs font-mono font-medium transition-colors"
+                                >
+                                    <span>History</span>
+                                    <ExternalLink className="w-3 h-3" />
+                                </a>
+                            )}
                         </div>
                     </div>
                 </div>
