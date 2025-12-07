@@ -1,0 +1,1290 @@
+{
+  "abi": [
+    {
+      "type": "constructor",
+      "inputs": [
+        {
+          "name": "_crtToken",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_treasury",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_buybackWallet",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_owner",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "BPS_DENOMINATOR",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "BURN_BPS",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "BUYBACK_BPS",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "TREASURY_BPS",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "buybackWallet",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "collectFees",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "crtToken",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "contract CrtToken"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "distributeCRTFees",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "distributeTokenFees",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "emergencyWithdraw",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "to",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "getPendingFees",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "owner",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "pendingFees",
+      "inputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "renounceOwnership",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setBuybackWallet",
+      "inputs": [
+        {
+          "name": "_buybackWallet",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setTreasury",
+      "inputs": [
+        {
+          "name": "_treasury",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "transferOwnership",
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "treasury",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "event",
+      "name": "BuybackWalletUpdated",
+      "inputs": [
+        {
+          "name": "oldWallet",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "newWallet",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "CRTFeesDistributed",
+      "inputs": [
+        {
+          "name": "treasuryAmount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        },
+        {
+          "name": "buybackAmount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        },
+        {
+          "name": "burnAmount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "FeesCollected",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        },
+        {
+          "name": "from",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "FeesDistributed",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "treasuryAmount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        },
+        {
+          "name": "buybackAmount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "OwnershipTransferred",
+      "inputs": [
+        {
+          "name": "previousOwner",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "newOwner",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "TreasuryUpdated",
+      "inputs": [
+        {
+          "name": "oldTreasury",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "newTreasury",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "error",
+      "name": "AddressEmptyCode",
+      "inputs": [
+        {
+          "name": "target",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "AddressInsufficientBalance",
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "FailedInnerCall",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "InsufficientBalance",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "OwnableInvalidOwner",
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "OwnableUnauthorizedAccount",
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "SafeERC20FailedOperation",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "ZeroAddress",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "ZeroAmount",
+      "inputs": []
+    }
+  ],
+  "bytecode": {
+    "object": "0x60a03461015b57601f610c3d38819003918201601f191683019291906001600160401b0384118385101761015f57816080928492604096875283398101031261015b5761004b81610173565b9061005860208201610173565b906060610066858301610173565b916001600160a01b0391829161007c9101610173565b1692831561014457815f549560018060a01b03199580878916175f5582895198167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a31694851561013557508116918215610124571692831561011357608052816001541617600155600254161760025551610ab5908161018882396080518181816104da015281816106da01526107db0152f35b845163d92e233d60e01b8152600490fd5b855163d92e233d60e01b8152600490fd5b63d92e233d60e01b8152600490fd5b8551631e4fbdf760e01b81525f6004820152602490fd5b5f80fd5b634e487b7160e01b5f52604160045260245ffd5b51906001600160a01b038216820361015b5756fe60806040818152600480361015610014575f80fd5b5f925f3560e01c9081631a17db671461077c575080631d0adc071461070957806320ed8a1d146106c657806325d2a3f31461068f5780634c25d197146106735780634e59daca146104bd57806361d027b314610494578063715018a61461043b5780638a718d54146104165780638da5cb5b146103ee578063a033fcd4146102f9578063a37a9fc0146102dc578063a4bf34ba146102a4578063deab8aea1461027b578063e1a452181461025e578063e63ea408146101f2578063f0f44260146101715763f2fde38b146100e6575f80fd5b3461016d57602036600319011261016d576100ff610796565b906101086108c4565b6001600160a01b039182169283156101575750505f54826001600160601b0360a01b8216175f55167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a380f35b51631e4fbdf760e01b8152908101849052602490fd5b8280fd5b503461016d57602036600319011261016d5761018b610796565b906101946108c4565b6001600160a01b039182169283156101e5575050600154826001600160601b0360a01b821617600155167f4ab5be82436d353e61ca18726e984e561f5c1cc7c6d38b29d2553c790434705a8380a380f35b5163d92e233d60e01b8152fd5b5091903461025a57606036600319011261025a5761020e610796565b90602435906001600160a01b03908183168084036102565761022e6108c4565b15610247575061024493945060443592166108ef565b80f35b5163d92e233d60e01b81528590fd5b5f80fd5b5080fd5b50503461025a578160031936011261025a57602090516127108152f35b50503461025a578160031936011261025a5760025490516001600160a01b039091168152602090f35b50503461025a57602036600319011261025a5760209181906001600160a01b036102cc610796565b1681526003845220549051908152f35b50503461025a578160031936011261025a57602090516103e88152f35b503461016d578160031936011261016d57610312610796565b916024359283156103e05781516323b872dd60e01b6020820152336024820152306044820152606480820186905281526001600160a01b0391909116929060a0810167ffffffffffffffff8111828210176103cd5783526103739084610955565b82855260036020528185208054918583018093116103ba575055519182527fbb64cfa7f75512208a9b73fb4034b028a5972cba07a53b641e16ba38571f133160203393a380f35b634e487b7160e01b875260119052602486fd5b604183634e487b7160e01b5f525260245ffd5b5051631f2a200560e01b8152fd5b50503461025a578160031936011261025a57905490516001600160a01b039091168152602090f35b833461043857602036600319011261043857610244610433610796565b6107cd565b80fd5b83346104385780600319360112610438576104546108c4565b5f80546001600160a01b0319811682556001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b50503461025a578160031936011261025a5760015490516001600160a01b039091168152602090f35b509034610256575f3660031901126102565760018060a01b0390817f000000000000000000000000000000000000000000000000000000000000000016805f526003602052815f2054938415610665575f828152600360205283812055611d4c850294611d4b198187040161065257612710809604956105dc808302908382040361063f579161055761055c9289969594049586926107ac565b6107ac565b948661062b575b8380610616575b5050846105ab575b867f8359cf820479caede6cb4bc7ac2d0373e2391b876d1f31ee42e67051d19a081c60608888888881519384526020840152820152a180f35b813b15610256575f80926024865180958193630852cd8d60e31b83528a878401525af1801561060c5715610572579091955067ffffffffffffffff82116105f9575081525f93816060610572565b604190634e487b7160e01b5f525260245ffd5b84513d5f823e3d90fd5b6106249160025416846108ef565b5f8361056a565b61063a878260015416856108ef565b610563565b601184634e487b7160e01b5f525260245ffd5b601182634e487b7160e01b5f525260245ffd5b8251631f2a200560e01b8152fd5b8234610256575f3660031901126102565760209051611d4c8152f35b8234610256576020366003190112610256576020906001600160a01b036106b4610796565b165f5260038252805f20549051908152f35b8234610256575f36600319011261025657517f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03168152602090f35b503461025657602036600319011261025657610723610796565b9061072c6108c4565b6001600160a01b039182169283156101e5575050600254826001600160601b0360a01b821617600255167f36da8748d344842083f47c18719136f60f0bcd2b5e969f56da5fca1b866720175f80a3005b34610256575f36600319011261025657806105dc60209252f35b600435906001600160a01b038216820361025657565b919082039182116107b957565b634e487b7160e01b5f52601160045260245ffd5b6001600160a01b03908116907f0000000000000000000000000000000000000000000000000000000000000000811682146108c057815f52600360205260405f205480156108ae575f8381526003602052604081205561208d81029061208c19818304016107b9577f85da6ab72d2b48932522aea80adb8ca4fab6cdeb87bc2e7f6c03fd78d3b2100e926108686127106040940480936107ac565b908261089a575b8180610885575b505082519182526020820152a2565b6108939160025416876108ef565b5f81610876565b6108a9838260015416886108ef565b61086f565b604051631f2a200560e01b8152600490fd5b5050565b5f546001600160a01b031633036108d757565b60405163118cdaa760e01b8152336004820152602490fd5b60405163a9059cbb60e01b60208201526001600160a01b039092166024830152604480830193909352918152608081019167ffffffffffffffff8311828410176109415761093f92604052610955565b565b634e487b7160e01b5f52604160045260245ffd5b81516001600160a01b03909116915f91829160200182855af13d15610a10573d67ffffffffffffffff9182821161094157601f199160405192603f81601f840116011683019383851090851117610941576109be936040528252815f60203d92013e5b83610a1c565b80519081151591826109ec575b50506109d45750565b60249060405190635274afe760e01b82526004820152fd5b81925090602091810103126102565760200151801590811503610256575f806109cb565b6109be906060906109b8565b90610a435750805115610a3157805190602001fd5b604051630a12f52160e11b8152600490fd5b81511580610a76575b610a54575090565b604051639996b31560e01b81526001600160a01b039091166004820152602490fd5b50803b15610a4c56fea2646970667358221220abfbeb246196c09dee995fa857cdf7b40c8c001c45b45d9aa4719070adf21d1f64736f6c63430008180033",
+    "sourceMap": "488:6435:45:-:0;;;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;-1:-1:-1;;;;;488:6435:45;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;:::i;:::-;;-1:-1:-1;;;;;488:6435:45;;;;;;;:::i;:::-;;1273:26:19;;;1269:95;;488:6435:45;-1:-1:-1;488:6435:45;;;;;;;;;;;;;;-1:-1:-1;488:6435:45;;;;;;3052:40:19;-1:-1:-1;3052:40:19;;488:6435:45;2686:23;;;2682:49;;488:6435;;;2745:23;;;2741:49;;488:6435;2804:28;;;2800:54;;488:6435;2865:30;488:6435;2905:20;488:6435;;;2905:20;488:6435;2935:30;488:6435;;;2935:30;488:6435;;;;;;;;;;;;;;;;;;;;;;;;;2800:54;488:6435;;-1:-1:-1;;;2841:13:45;;;;;2741:49;488:6435;;-1:-1:-1;;;2777:13:45;;;;;2682:49;-1:-1:-1;;;2718:13:45;;;;;1269:95:19;488:6435:45;;-1:-1:-1;;;1322:31:19;;-1:-1:-1;1322:31:19;;;488:6435:45;;;1322:31:19;488:6435:45;-1:-1:-1;488:6435:45;;;;;;-1:-1:-1;488:6435:45;;;;;-1:-1:-1;488:6435:45;;;;-1:-1:-1;;;;;488:6435:45;;;;;;:::o",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x60806040818152600480361015610014575f80fd5b5f925f3560e01c9081631a17db671461077c575080631d0adc071461070957806320ed8a1d146106c657806325d2a3f31461068f5780634c25d197146106735780634e59daca146104bd57806361d027b314610494578063715018a61461043b5780638a718d54146104165780638da5cb5b146103ee578063a033fcd4146102f9578063a37a9fc0146102dc578063a4bf34ba146102a4578063deab8aea1461027b578063e1a452181461025e578063e63ea408146101f2578063f0f44260146101715763f2fde38b146100e6575f80fd5b3461016d57602036600319011261016d576100ff610796565b906101086108c4565b6001600160a01b039182169283156101575750505f54826001600160601b0360a01b8216175f55167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a380f35b51631e4fbdf760e01b8152908101849052602490fd5b8280fd5b503461016d57602036600319011261016d5761018b610796565b906101946108c4565b6001600160a01b039182169283156101e5575050600154826001600160601b0360a01b821617600155167f4ab5be82436d353e61ca18726e984e561f5c1cc7c6d38b29d2553c790434705a8380a380f35b5163d92e233d60e01b8152fd5b5091903461025a57606036600319011261025a5761020e610796565b90602435906001600160a01b03908183168084036102565761022e6108c4565b15610247575061024493945060443592166108ef565b80f35b5163d92e233d60e01b81528590fd5b5f80fd5b5080fd5b50503461025a578160031936011261025a57602090516127108152f35b50503461025a578160031936011261025a5760025490516001600160a01b039091168152602090f35b50503461025a57602036600319011261025a5760209181906001600160a01b036102cc610796565b1681526003845220549051908152f35b50503461025a578160031936011261025a57602090516103e88152f35b503461016d578160031936011261016d57610312610796565b916024359283156103e05781516323b872dd60e01b6020820152336024820152306044820152606480820186905281526001600160a01b0391909116929060a0810167ffffffffffffffff8111828210176103cd5783526103739084610955565b82855260036020528185208054918583018093116103ba575055519182527fbb64cfa7f75512208a9b73fb4034b028a5972cba07a53b641e16ba38571f133160203393a380f35b634e487b7160e01b875260119052602486fd5b604183634e487b7160e01b5f525260245ffd5b5051631f2a200560e01b8152fd5b50503461025a578160031936011261025a57905490516001600160a01b039091168152602090f35b833461043857602036600319011261043857610244610433610796565b6107cd565b80fd5b83346104385780600319360112610438576104546108c4565b5f80546001600160a01b0319811682556001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b50503461025a578160031936011261025a5760015490516001600160a01b039091168152602090f35b509034610256575f3660031901126102565760018060a01b0390817f000000000000000000000000000000000000000000000000000000000000000016805f526003602052815f2054938415610665575f828152600360205283812055611d4c850294611d4b198187040161065257612710809604956105dc808302908382040361063f579161055761055c9289969594049586926107ac565b6107ac565b948661062b575b8380610616575b5050846105ab575b867f8359cf820479caede6cb4bc7ac2d0373e2391b876d1f31ee42e67051d19a081c60608888888881519384526020840152820152a180f35b813b15610256575f80926024865180958193630852cd8d60e31b83528a878401525af1801561060c5715610572579091955067ffffffffffffffff82116105f9575081525f93816060610572565b604190634e487b7160e01b5f525260245ffd5b84513d5f823e3d90fd5b6106249160025416846108ef565b5f8361056a565b61063a878260015416856108ef565b610563565b601184634e487b7160e01b5f525260245ffd5b601182634e487b7160e01b5f525260245ffd5b8251631f2a200560e01b8152fd5b8234610256575f3660031901126102565760209051611d4c8152f35b8234610256576020366003190112610256576020906001600160a01b036106b4610796565b165f5260038252805f20549051908152f35b8234610256575f36600319011261025657517f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03168152602090f35b503461025657602036600319011261025657610723610796565b9061072c6108c4565b6001600160a01b039182169283156101e5575050600254826001600160601b0360a01b821617600255167f36da8748d344842083f47c18719136f60f0bcd2b5e969f56da5fca1b866720175f80a3005b34610256575f36600319011261025657806105dc60209252f35b600435906001600160a01b038216820361025657565b919082039182116107b957565b634e487b7160e01b5f52601160045260245ffd5b6001600160a01b03908116907f0000000000000000000000000000000000000000000000000000000000000000811682146108c057815f52600360205260405f205480156108ae575f8381526003602052604081205561208d81029061208c19818304016107b9577f85da6ab72d2b48932522aea80adb8ca4fab6cdeb87bc2e7f6c03fd78d3b2100e926108686127106040940480936107ac565b908261089a575b8180610885575b505082519182526020820152a2565b6108939160025416876108ef565b5f81610876565b6108a9838260015416886108ef565b61086f565b604051631f2a200560e01b8152600490fd5b5050565b5f546001600160a01b031633036108d757565b60405163118cdaa760e01b8152336004820152602490fd5b60405163a9059cbb60e01b60208201526001600160a01b039092166024830152604480830193909352918152608081019167ffffffffffffffff8311828410176109415761093f92604052610955565b565b634e487b7160e01b5f52604160045260245ffd5b81516001600160a01b03909116915f91829160200182855af13d15610a10573d67ffffffffffffffff9182821161094157601f199160405192603f81601f840116011683019383851090851117610941576109be936040528252815f60203d92013e5b83610a1c565b80519081151591826109ec575b50506109d45750565b60249060405190635274afe760e01b82526004820152fd5b81925090602091810103126102565760200151801590811503610256575f806109cb565b6109be906060906109b8565b90610a435750805115610a3157805190602001fd5b604051630a12f52160e11b8152600490fd5b81511580610a76575b610a54575090565b604051639996b31560e01b81526001600160a01b039091166004820152602490fd5b50803b15610a4c56fea2646970667358221220abfbeb246196c09dee995fa857cdf7b40c8c001c45b45d9aa4719070adf21d1f64736f6c63430008180033",
+    "sourceMap": "488:6435:45:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;:::i;:::-;1500:62:19;;;:::i;:::-;-1:-1:-1;;;;;488:6435:45;;;;2627:22:19;;2623:91;;488:6435:45;;;;;-1:-1:-1;;;;;488:6435:45;;;;;;;;3052:40:19;488:6435:45;3052:40:19;;488:6435:45;;2623:91:19;488:6435:45;-1:-1:-1;;;2672:31:19;;;;;488:6435:45;;;;;2672:31:19;488:6435:45;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;:::i;:::-;1500:62:19;;;:::i;:::-;-1:-1:-1;;;;;488:6435:45;;;;5710:23;;5706:49;;488:6435;;5787:8;488:6435;;-1:-1:-1;;;;;488:6435:45;;;;;5787:8;488:6435;;5840:39;;;;488:6435;;5706:49;488:6435;-1:-1:-1;;;5742:13:45;;;488:6435;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;:::i;:::-;;;;;-1:-1:-1;;;;;488:6435:45;;;;;;;;;1500:62:19;;:::i;:::-;6545:16:45;6541:42;;488:6435;6624:6;488:6435;;;;;;;6624:6;:::i;:::-;488:6435;;6541:42;488:6435;-1:-1:-1;;;6570:13:45;;488:6435;;6570:13;488:6435;;;;;;;;;;;;;;;;;;;;;;;;;687:5;488:6435;;;;;;;;;;;;;;;;;1256:28;488:6435;;;-1:-1:-1;;;;;488:6435:45;;;;;;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;;;-1:-1:-1;;;;;488:6435:45;;:::i;:::-;;;;6896:11;488:6435;;;;;;;;;;;;;;;;;;;;;;;;;;;987:4;488:6435;;;;;;;;;;;;;;;;;;:::i;:::-;;;;3249:11;;;3245:36;;488:6435;;-1:-1:-1;;;488:6435:45;1829:53:28;;;3323:10:45;488:6435;1829:53:28;;488:6435:45;3343:4;488:6435;;;;;;;;;;;1829:53:28;;-1:-1:-1;;;;;488:6435:45;;;;;;;;;;;;;;;;;;;;1829:53:28;;;;:::i;:::-;488:6435:45;;;3367:11;488:6435;;;;;;;;;;;;;;;;;;;;;;3411:40;488:6435;3323:10;3411:40;;488:6435;;;-1:-1:-1;;;488:6435:45;;;;;;;;;;;;;;;;;;;;3245:36;-1:-1:-1;488:6435:45;-1:-1:-1;;;3269:12:45;;;488:6435;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;488:6435:45;;;;;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;;;;;;1500:62:19;;:::i;:::-;488:6435:45;;;-1:-1:-1;;;;;;488:6435:45;;;;-1:-1:-1;;;;;488:6435:45;3052:40:19;488:6435:45;;3052:40:19;488:6435:45;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;488:6435:45;;;;;;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;;;;3651:8;;;488:6435;;;;3631:11;488:6435;;;;;;3675:12;;;3671:37;;488:6435;;;;3631:11;488:6435;;;;;;791:4;488:6435;;;-1:-1:-1;;488:6435:45;;;;;;687:5;488:6435;;;892:4;;488:6435;;;;;;;;;;;3979:24;:40;488:6435;;;;;;3979:24;;;;:::i;:::-;:40;:::i;:::-;4106:18;;4102:113;;488:6435;4267:17;;4263:116;;488:6435;4418:14;;;4414:70;;488:6435;;4499:61;488:6435;;;;;;;;;;;;;;;;;4499:61;488:6435;;4414:70;4448:25;;;;;488:6435;;;;;;;;;;;;;4448:25;;;;;;488:6435;4448:25;;;;;;;4414:70;4448:25;488:6435;;;;;;;;;-1:-1:-1;488:6435:45;;;;;;4414:70;;488:6435;;;;;;;;;;;;4448:25;488:6435;;;;;;;;;4263:116;4354:13;488:6435;4339:13;488:6435;;4354:13;;:::i;:::-;4263:116;;;;4102:113;4189:14;488:6435;;4179:8;488:6435;;4189:14;;:::i;:::-;4102:113;;488:6435;;;;;;;;;;;;;;;;;;;;;;;;3671:37;488:6435;;-1:-1:-1;;;3696:12:45;;;488:6435;;;;;;;-1:-1:-1;;488:6435:45;;;;;;;791:4;488:6435;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;-1:-1:-1;;;;;488:6435:45;;:::i;:::-;;;;1357:46;488:6435;;;;;;;;;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;1083:34;-1:-1:-1;;;;;488:6435:45;;;;;;;;;;;;;-1:-1:-1;;488:6435:45;;;;;;:::i;:::-;1500:62:19;;;:::i;:::-;-1:-1:-1;;;;;488:6435:45;;;;6070:28;;6066:54;;488:6435;;6150:13;488:6435;;-1:-1:-1;;;;;488:6435:45;;;;;6150:13;488:6435;;6218:47;488:6435;6218:47;;488:6435;;;;;;;-1:-1:-1;;488:6435:45;;;;;892:4;488:6435;;;;;;;;-1:-1:-1;;;;;488:6435:45;;;;;;:::o;:::-;;;;;;;;;;:::o;:::-;;;;;;;;;;;;4693:802;-1:-1:-1;;;;;488:6435:45;;;;4777:8;488:6435;;4760:26;;4756:108;;488:6435;-1:-1:-1;488:6435:45;4892:11;488:6435;;;-1:-1:-1;488:6435:45;;4924:12;;4920:37;;-1:-1:-1;488:6435:45;;;4892:11;488:6435;;;;;;5123:4;488:6435;;;-1:-1:-1;;488:6435:45;;;;;;5435:53;488:6435;5170:24;5131:5;488:6435;;;5170:24;;;:::i;:::-;5209:18;;5205:101;;4693:802;5320:17;;5316:104;;4693:802;488:6435;;;;;;;;;;;5435:53;4693:802::o;5316:104::-;5395:13;488:6435;5380:13;488:6435;;5395:13;;:::i;:::-;5316:104;;;;5205:101;5280:14;488:6435;;5270:8;488:6435;;5280:14;;:::i;:::-;5205:101;;4920:37;488:6435;;-1:-1:-1;;;4945:12:45;;;;;4756:108;4847:7;;:::o;1796:162:19:-;1710:6;488:6435:45;-1:-1:-1;;;;;488:6435:45;735:10:35;1855:23:19;1851:101;;1796:162::o;1851:101::-;488:6435:45;;-1:-1:-1;;;1901:40:19;;735:10:35;1901:40:19;;;488:6435:45;;;1901:40:19;1303:160:28;488:6435:45;;-1:-1:-1;;;1412:43:28;;;;-1:-1:-1;;;;;488:6435:45;;;1412:43:28;;;488:6435:45;;;;;;;;;1412:43:28;;;488:6435:45;;;;;;;;;;;;;1412:43:28;488:6435:45;;;1412:43:28;:::i;:::-;1303:160::o;488:6435:45:-;;;;;;;;;1412:43:28;488:6435:45;;4059:629:28;3462:31:33;;-1:-1:-1;;;;;488:6435:45;;;;2847:1:33;;;;3462:31;;2847:1;488:6435:45;3462:31:33;;488:6435:45;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3510:55:33;488:6435:45;;;;;;2847:1:33;3462:31;488:6435:45;;;;;3510:55:33;;:::i;:::-;488:6435:45;;4551:22:28;;;;:57;;;;488:6435:45;4547:135:28;;;;4059:629;:::o;4547:135::-;488:6435:45;;;;4631:40:28;;;;;;;;;488:6435:45;4631:40:28;4551:57;4578:30;;;;3462:31:33;4578:30:28;;;488:6435:45;;;;3462:31:33;4578:30:28;488:6435:45;;;;;;;;;4551:57:28;;;;488:6435:45;3510:55:33;488:6435:45;;;;;4625:582:33;;4797:8;;-1:-1:-1;488:6435:45;;5874:21:33;:17;;6046:142;;;;;;5870:383;488:6435:45;;-1:-1:-1;;;6225:17:33;;;;;4793:408;488:6435:45;;5045:22:33;:49;;;4793:408;5041:119;;5173:17;;:::o;5041:119::-;488:6435:45;;-1:-1:-1;;;5121:24:33;;-1:-1:-1;;;;;488:6435:45;;;5121:24:33;;;488:6435:45;;;5121:24:33;5045:49;5071:18;;;:23;5045:49;",
+    "linkReferences": {},
+    "immutableReferences": {
+      "42043": [
+        {
+          "start": 1242,
+          "length": 32
+        },
+        {
+          "start": 1754,
+          "length": 32
+        },
+        {
+          "start": 2011,
+          "length": 32
+        }
+      ]
+    }
+  },
+  "methodIdentifiers": {
+    "BPS_DENOMINATOR()": "e1a45218",
+    "BURN_BPS()": "a37a9fc0",
+    "BUYBACK_BPS()": "1a17db67",
+    "TREASURY_BPS()": "4c25d197",
+    "buybackWallet()": "deab8aea",
+    "collectFees(address,uint256)": "a033fcd4",
+    "crtToken()": "20ed8a1d",
+    "distributeCRTFees()": "4e59daca",
+    "distributeTokenFees(address)": "8a718d54",
+    "emergencyWithdraw(address,address,uint256)": "e63ea408",
+    "getPendingFees(address)": "a4bf34ba",
+    "owner()": "8da5cb5b",
+    "pendingFees(address)": "25d2a3f3",
+    "renounceOwnership()": "715018a6",
+    "setBuybackWallet(address)": "1d0adc07",
+    "setTreasury(address)": "f0f44260",
+    "transferOwnership(address)": "f2fde38b",
+    "treasury()": "61d027b3"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.24+commit.e11b9ed9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_crtToken\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_treasury\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_buybackWallet\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"AddressEmptyCode\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"AddressInsufficientBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedInnerCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientBalance\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"SafeERC20FailedOperation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAmount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldWallet\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newWallet\",\"type\":\"address\"}],\"name\":\"BuybackWalletUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"treasuryAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"buybackAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"burnAmount\",\"type\":\"uint256\"}],\"name\":\"CRTFeesDistributed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"}],\"name\":\"FeesCollected\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"treasuryAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"buybackAmount\",\"type\":\"uint256\"}],\"name\":\"FeesDistributed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldTreasury\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newTreasury\",\"type\":\"address\"}],\"name\":\"TreasuryUpdated\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"BPS_DENOMINATOR\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"BURN_BPS\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"BUYBACK_BPS\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"TREASURY_BPS\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"buybackWallet\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"collectFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"crtToken\",\"outputs\":[{\"internalType\":\"contract CrtToken\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"distributeCRTFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"distributeTokenFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"emergencyWithdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"getPendingFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"pendingFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_buybackWallet\",\"type\":\"address\"}],\"name\":\"setBuybackWallet\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_treasury\",\"type\":\"address\"}],\"name\":\"setTreasury\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"treasury\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Revenue distribution: Treasury 75%, Buyback 15%, Burn 10%\",\"errors\":{\"AddressEmptyCode(address)\":[{\"details\":\"There's no code at `target` (it is not a contract).\"}],\"AddressInsufficientBalance(address)\":[{\"details\":\"The ETH balance of the account is not enough to perform the operation.\"}],\"FailedInnerCall()\":[{\"details\":\"A call to an address target failed. The target may have reverted.\"}],\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}],\"SafeERC20FailedOperation(address)\":[{\"details\":\"An operation with an ERC20 token failed.\"}]},\"kind\":\"dev\",\"methods\":{\"collectFees(address,uint256)\":{\"params\":{\"amount\":\"Amount of fees\",\"token\":\"Token address (CRT or other)\"}},\"constructor\":{\"params\":{\"_buybackWallet\":\"Buyback wallet address\",\"_crtToken\":\"CRT token address\",\"_owner\":\"Owner address\",\"_treasury\":\"Treasury address\"}},\"distributeCRTFees()\":{\"details\":\"Anyone can call to trigger distribution\"},\"distributeTokenFees(address)\":{\"params\":{\"token\":\"Token to distribute\"}},\"emergencyWithdraw(address,address,uint256)\":{\"params\":{\"amount\":\"Amount to withdraw\",\"to\":\"Recipient address\",\"token\":\"Token to withdraw\"}},\"getPendingFees(address)\":{\"params\":{\"token\":\"Token address\"},\"returns\":{\"_0\":\"Pending fee amount\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"setBuybackWallet(address)\":{\"params\":{\"_buybackWallet\":\"New buyback wallet address\"}},\"setTreasury(address)\":{\"params\":{\"_treasury\":\"New treasury address\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"FeeCollector\",\"version\":1},\"userdoc\":{\"events\":{\"BuybackWalletUpdated(address,address)\":{\"notice\":\"Emitted when buyback wallet is updated\"},\"CRTFeesDistributed(uint256,uint256,uint256)\":{\"notice\":\"Emitted when CRT fees are distributed\"},\"FeesCollected(address,uint256,address)\":{\"notice\":\"Emitted when fees are collected\"},\"FeesDistributed(address,uint256,uint256)\":{\"notice\":\"Emitted when non-CRT fees are distributed\"},\"TreasuryUpdated(address,address)\":{\"notice\":\"Emitted when treasury address is updated\"}},\"kind\":\"user\",\"methods\":{\"BPS_DENOMINATOR()\":{\"notice\":\"Basis points denominator\"},\"BURN_BPS()\":{\"notice\":\"Burn share in basis points (10%)\"},\"BUYBACK_BPS()\":{\"notice\":\"Buyback share in basis points (15%)\"},\"TREASURY_BPS()\":{\"notice\":\"Treasury share in basis points (75%)\"},\"buybackWallet()\":{\"notice\":\"Buyback wallet address (receives 15%)\"},\"collectFees(address,uint256)\":{\"notice\":\"Collect fees (called by vaults/factory)\"},\"constructor\":{\"notice\":\"Creates a new FeeCollector\"},\"crtToken()\":{\"notice\":\"CRT token contract\"},\"distributeCRTFees()\":{\"notice\":\"Distribute accumulated CRT fees\"},\"distributeTokenFees(address)\":{\"notice\":\"Distribute non-CRT token fees (no burn, only treasury/buyback)\"},\"emergencyWithdraw(address,address,uint256)\":{\"notice\":\"Emergency withdraw (owner only)\"},\"getPendingFees(address)\":{\"notice\":\"Get pending fees for a token\"},\"pendingFees(address)\":{\"notice\":\"Accumulated fees pending distribution (per token)\"},\"setBuybackWallet(address)\":{\"notice\":\"Update buyback wallet\"},\"setTreasury(address)\":{\"notice\":\"Update treasury address\"},\"treasury()\":{\"notice\":\"Treasury address (receives 75%)\"}},\"notice\":\"Collects and distributes protocol fees according to tokenomics\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/FeeCollector.sol\":\"FeeCollector\"},\"evmVersion\":\"shanghai\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/openzeppelin-contracts-upgradeable/lib/forge-std/src/\",\":halmos-cheatcodes/=lib/openzeppelin-contracts-upgradeable/lib/halmos-cheatcodes/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\"],\"viaIR\":true},\"sources\":{\"lib/openzeppelin-contracts/contracts/access/AccessControl.sol\":{\"keccak256\":\"0xa0e92d42942f4f57c5be50568dac11e9d00c93efcb458026e18d2d9b9b2e7308\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://46326c0bb1e296b67185e81c918e0b40501b8b6386165855df0a3f3c634b6a80\",\"dweb:/ipfs/QmTwyrDYtsxsk6pymJTK94PnEpzsmkpUxFuzEiakDopy4Z\"]},\"lib/openzeppelin-contracts/contracts/access/IAccessControl.sol\":{\"keccak256\":\"0xb6b36edd6a2999fd243ff226d6cbf84bd71af2432bbd0dfe19392996a1d9cb41\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1fd2f35495652e57e3f99bc6c510bc5f7dd398a176ea2e72d8ed730aebc6ca26\",\"dweb:/ipfs/QmTQV6X4gkikTib49cho5iDX3JvSQbdsoEChoDwrk3CbbH\"]},\"lib/openzeppelin-contracts/contracts/access/Ownable.sol\":{\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6\",\"dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a\"]},\"lib/openzeppelin-contracts/contracts/interfaces/draft-IERC6093.sol\":{\"keccak256\":\"0x60c65f701957fdd6faea1acb0bb45825791d473693ed9ecb34726fdfaa849dd7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ea290300e0efc4d901244949dc4d877fd46e6c5e43dc2b26620e8efab3ab803f\",\"dweb:/ipfs/QmcLLJppxKeJWqHxE2CUkcfhuRTgHSn8J4kijcLa5MYhSt\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol\":{\"keccak256\":\"0xc3e1fa9d1987f8d349dfb4d6fe93bf2ca014b52ba335cfac30bfe71e357e6f80\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c5703ccdeb7b1d685e375ed719117e9edf2ab4bc544f24f23b0d50ec82257229\",\"dweb:/ipfs/QmTdwkbQq7owpCiyuzE7eh5LrD2ddrBCZ5WHVsWPi1RrTS\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c\",\"dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.sol\":{\"keccak256\":\"0x2659248df25e34000ed214b3dc8da2160bc39874c992b477d9e2b1b3283dc073\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c345af1b0e7ea28d1216d6a04ab28f5534a5229b9edf9ca3cd0e84950ae58d26\",\"dweb:/ipfs/QmY63jtSrYpLRe8Gj1ep2vMDCKxGNNG3hnNVKBVnrs2nmA\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol\":{\"keccak256\":\"0xaa761817f6cd7892fcf158b3c776b34551cde36f48ff9703d53898bc45a94ea2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0ad7c8d4d08938c8dfc43d75a148863fb324b80cf53e0a36f7e5a4ac29008850\",\"dweb:/ipfs/QmcrhfPgVNf5mkdhQvy1pMv51TFokD3Y4Wa5WZhFqVh8UV\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol\":{\"keccak256\":\"0x6008dabfe393240d73d7dd7688033f72740d570aa422254d29a7dce8568f3aff\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f5196ec75139918c6c7bb4251b36395e668f1fa6d206beba7e7520e74913940d\",\"dweb:/ipfs/QmSyqjksXxmm2mCG6qRd1yuwLykypkSVBbnBnGqJRcuJMi\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol\":{\"keccak256\":\"0x37bb49513c49c87c4642a891b13b63571bc87013dde806617aa1efb54605f386\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b3036b3a83b7c48f96641f2a9002b9f2dcb6a5958dd670894ada21ae8229b3d0\",\"dweb:/ipfs/QmUNfSBdoVtjhETaUJCYcaC7pTMgbhht926tJ2uXJbiVd3\"]},\"lib/openzeppelin-contracts/contracts/utils/Address.sol\":{\"keccak256\":\"0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245\",\"dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y\"]},\"lib/openzeppelin-contracts/contracts/utils/Context.sol\":{\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12\",\"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF\"]},\"lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol\":{\"keccak256\":\"0x9e8778b14317ba9e256c30a76fd6c32b960af621987f56069e1e819c77c6a133\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1777404f1dcd0fac188e55a288724ec3c67b45288e49cc64723e95e702b49ab8\",\"dweb:/ipfs/QmZFdC626GButBApwDUvvTnUzdinevC3B24d7yyh57XkiA\"]},\"lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df\",\"dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL\"]},\"src/CrtToken.sol\":{\"keccak256\":\"0x9f528d3f21cf2717a3012fc3df3dbe11183286c65a03761d72b41f1c592f892d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2834023a1614b0c31c18494a540cbf350abd06a0a90f9b1d06ca7a12619e6aac\",\"dweb:/ipfs/QmfCjATU3u1faqHqJp7HDycSVzxezkRsyRxU6ommRdt6Y7\"]},\"src/FeeCollector.sol\":{\"keccak256\":\"0x071dc891d0bacf40f1d23241253cc7305179dfaaa7438dc458d4052a6a49ed6e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6823fa3191c5a94a4093e7fed5d6c909eeb96433e56f6ecac11705c35ca1f5be\",\"dweb:/ipfs/QmW8Nh9rchPVHGfHR4xtUrBpsxi4pM33hAX31S1pBUA18U\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.24+commit.e11b9ed9"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_crtToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_treasury",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_buybackWallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "AddressEmptyCode"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "AddressInsufficientBalance"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "FailedInnerCall"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "InsufficientBalance"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "OwnableInvalidOwner"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "OwnableUnauthorizedAccount"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "SafeERC20FailedOperation"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "ZeroAddress"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "ZeroAmount"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "oldWallet",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newWallet",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "BuybackWalletUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "treasuryAmount",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "buybackAmount",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "burnAmount",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "CRTFeesDistributed",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "FeesCollected",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "treasuryAmount",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "buybackAmount",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "FeesDistributed",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "OwnershipTransferred",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "oldTreasury",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newTreasury",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "TreasuryUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "BPS_DENOMINATOR",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "BURN_BPS",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "BUYBACK_BPS",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "TREASURY_BPS",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "buybackWallet",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "collectFees"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "crtToken",
+          "outputs": [
+            {
+              "internalType": "contract CrtToken",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "distributeCRTFees"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "distributeTokenFees"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "emergencyWithdraw"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getPendingFees",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "pendingFees",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "renounceOwnership"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_buybackWallet",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setBuybackWallet"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_treasury",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setTreasury"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferOwnership"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "treasury",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "collectFees(address,uint256)": {
+            "params": {
+              "amount": "Amount of fees",
+              "token": "Token address (CRT or other)"
+            }
+          },
+          "constructor": {
+            "params": {
+              "_buybackWallet": "Buyback wallet address",
+              "_crtToken": "CRT token address",
+              "_owner": "Owner address",
+              "_treasury": "Treasury address"
+            }
+          },
+          "distributeCRTFees()": {
+            "details": "Anyone can call to trigger distribution"
+          },
+          "distributeTokenFees(address)": {
+            "params": {
+              "token": "Token to distribute"
+            }
+          },
+          "emergencyWithdraw(address,address,uint256)": {
+            "params": {
+              "amount": "Amount to withdraw",
+              "to": "Recipient address",
+              "token": "Token to withdraw"
+            }
+          },
+          "getPendingFees(address)": {
+            "params": {
+              "token": "Token address"
+            },
+            "returns": {
+              "_0": "Pending fee amount"
+            }
+          },
+          "owner()": {
+            "details": "Returns the address of the current owner."
+          },
+          "renounceOwnership()": {
+            "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+          },
+          "setBuybackWallet(address)": {
+            "params": {
+              "_buybackWallet": "New buyback wallet address"
+            }
+          },
+          "setTreasury(address)": {
+            "params": {
+              "_treasury": "New treasury address"
+            }
+          },
+          "transferOwnership(address)": {
+            "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "BPS_DENOMINATOR()": {
+            "notice": "Basis points denominator"
+          },
+          "BURN_BPS()": {
+            "notice": "Burn share in basis points (10%)"
+          },
+          "BUYBACK_BPS()": {
+            "notice": "Buyback share in basis points (15%)"
+          },
+          "TREASURY_BPS()": {
+            "notice": "Treasury share in basis points (75%)"
+          },
+          "buybackWallet()": {
+            "notice": "Buyback wallet address (receives 15%)"
+          },
+          "collectFees(address,uint256)": {
+            "notice": "Collect fees (called by vaults/factory)"
+          },
+          "constructor": {
+            "notice": "Creates a new FeeCollector"
+          },
+          "crtToken()": {
+            "notice": "CRT token contract"
+          },
+          "distributeCRTFees()": {
+            "notice": "Distribute accumulated CRT fees"
+          },
+          "distributeTokenFees(address)": {
+            "notice": "Distribute non-CRT token fees (no burn, only treasury/buyback)"
+          },
+          "emergencyWithdraw(address,address,uint256)": {
+            "notice": "Emergency withdraw (owner only)"
+          },
+          "getPendingFees(address)": {
+            "notice": "Get pending fees for a token"
+          },
+          "pendingFees(address)": {
+            "notice": "Accumulated fees pending distribution (per token)"
+          },
+          "setBuybackWallet(address)": {
+            "notice": "Update buyback wallet"
+          },
+          "setTreasury(address)": {
+            "notice": "Update treasury address"
+          },
+          "treasury()": {
+            "notice": "Treasury address (receives 75%)"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        "forge-std/=lib/openzeppelin-contracts-upgradeable/lib/forge-std/src/",
+        "halmos-cheatcodes/=lib/openzeppelin-contracts-upgradeable/lib/halmos-cheatcodes/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/FeeCollector.sol": "FeeCollector"
+      },
+      "evmVersion": "shanghai",
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "lib/openzeppelin-contracts/contracts/access/AccessControl.sol": {
+        "keccak256": "0xa0e92d42942f4f57c5be50568dac11e9d00c93efcb458026e18d2d9b9b2e7308",
+        "urls": [
+          "bzz-raw://46326c0bb1e296b67185e81c918e0b40501b8b6386165855df0a3f3c634b6a80",
+          "dweb:/ipfs/QmTwyrDYtsxsk6pymJTK94PnEpzsmkpUxFuzEiakDopy4Z"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol": {
+        "keccak256": "0xb6b36edd6a2999fd243ff226d6cbf84bd71af2432bbd0dfe19392996a1d9cb41",
+        "urls": [
+          "bzz-raw://1fd2f35495652e57e3f99bc6c510bc5f7dd398a176ea2e72d8ed730aebc6ca26",
+          "dweb:/ipfs/QmTQV6X4gkikTib49cho5iDX3JvSQbdsoEChoDwrk3CbbH"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/access/Ownable.sol": {
+        "keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
+        "urls": [
+          "bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6",
+          "dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/interfaces/draft-IERC6093.sol": {
+        "keccak256": "0x60c65f701957fdd6faea1acb0bb45825791d473693ed9ecb34726fdfaa849dd7",
+        "urls": [
+          "bzz-raw://ea290300e0efc4d901244949dc4d877fd46e6c5e43dc2b26620e8efab3ab803f",
+          "dweb:/ipfs/QmcLLJppxKeJWqHxE2CUkcfhuRTgHSn8J4kijcLa5MYhSt"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol": {
+        "keccak256": "0xc3e1fa9d1987f8d349dfb4d6fe93bf2ca014b52ba335cfac30bfe71e357e6f80",
+        "urls": [
+          "bzz-raw://c5703ccdeb7b1d685e375ed719117e9edf2ab4bc544f24f23b0d50ec82257229",
+          "dweb:/ipfs/QmTdwkbQq7owpCiyuzE7eh5LrD2ddrBCZ5WHVsWPi1RrTS"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+        "keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
+        "urls": [
+          "bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c",
+          "dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.sol": {
+        "keccak256": "0x2659248df25e34000ed214b3dc8da2160bc39874c992b477d9e2b1b3283dc073",
+        "urls": [
+          "bzz-raw://c345af1b0e7ea28d1216d6a04ab28f5534a5229b9edf9ca3cd0e84950ae58d26",
+          "dweb:/ipfs/QmY63jtSrYpLRe8Gj1ep2vMDCKxGNNG3hnNVKBVnrs2nmA"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+        "keccak256": "0xaa761817f6cd7892fcf158b3c776b34551cde36f48ff9703d53898bc45a94ea2",
+        "urls": [
+          "bzz-raw://0ad7c8d4d08938c8dfc43d75a148863fb324b80cf53e0a36f7e5a4ac29008850",
+          "dweb:/ipfs/QmcrhfPgVNf5mkdhQvy1pMv51TFokD3Y4Wa5WZhFqVh8UV"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+        "keccak256": "0x6008dabfe393240d73d7dd7688033f72740d570aa422254d29a7dce8568f3aff",
+        "urls": [
+          "bzz-raw://f5196ec75139918c6c7bb4251b36395e668f1fa6d206beba7e7520e74913940d",
+          "dweb:/ipfs/QmSyqjksXxmm2mCG6qRd1yuwLykypkSVBbnBnGqJRcuJMi"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+        "keccak256": "0x37bb49513c49c87c4642a891b13b63571bc87013dde806617aa1efb54605f386",
+        "urls": [
+          "bzz-raw://b3036b3a83b7c48f96641f2a9002b9f2dcb6a5958dd670894ada21ae8229b3d0",
+          "dweb:/ipfs/QmUNfSBdoVtjhETaUJCYcaC7pTMgbhht926tJ2uXJbiVd3"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+        "keccak256": "0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721",
+        "urls": [
+          "bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245",
+          "dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/utils/Context.sol": {
+        "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+        "urls": [
+          "bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+          "dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol": {
+        "keccak256": "0x9e8778b14317ba9e256c30a76fd6c32b960af621987f56069e1e819c77c6a133",
+        "urls": [
+          "bzz-raw://1777404f1dcd0fac188e55a288724ec3c67b45288e49cc64723e95e702b49ab8",
+          "dweb:/ipfs/QmZFdC626GButBApwDUvvTnUzdinevC3B24d7yyh57XkiA"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol": {
+        "keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
+        "urls": [
+          "bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df",
+          "dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL"
+        ],
+        "license": "MIT"
+      },
+      "src/CrtToken.sol": {
+        "keccak256": "0x9f528d3f21cf2717a3012fc3df3dbe11183286c65a03761d72b41f1c592f892d",
+        "urls": [
+          "bzz-raw://2834023a1614b0c31c18494a540cbf350abd06a0a90f9b1d06ca7a12619e6aac",
+          "dweb:/ipfs/QmfCjATU3u1faqHqJp7HDycSVzxezkRsyRxU6ommRdt6Y7"
+        ],
+        "license": "MIT"
+      },
+      "src/FeeCollector.sol": {
+        "keccak256": "0x071dc891d0bacf40f1d23241253cc7305179dfaaa7438dc458d4052a6a49ed6e",
+        "urls": [
+          "bzz-raw://6823fa3191c5a94a4093e7fed5d6c909eeb96433e56f6ecac11705c35ca1f5be",
+          "dweb:/ipfs/QmW8Nh9rchPVHGfHR4xtUrBpsxi4pM33hAX31S1pBUA18U"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "id": 45
+}
