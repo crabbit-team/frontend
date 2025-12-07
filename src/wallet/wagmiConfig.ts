@@ -3,9 +3,8 @@ import { base, baseSepolia } from "wagmi/chains";
 import { defineChain } from "viem";
 
 // MemeCore Insectarium (custom chain)
-// NOTE: Replace rpcUrls and blockExplorer URLs with the actual MemeCore endpoints.
 export const memeCoreInsectarium = defineChain({
-  id: 43521,
+  id: 43522,
   name: "MemeCore Insectarium",
   nativeCurrency: {
     name: "CRT",
@@ -14,16 +13,16 @@ export const memeCoreInsectarium = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ["https://rpc.memecore-insectarium.example"], // TODO: real RPC URL
+      http: ["https://rpc.insectarium.memecore.net"],
     },
     public: {
-      http: ["https://rpc.memecore-insectarium.example"], // TODO: real RPC URL
+      http: ["https://rpc.insectarium.memecore.net"],
     },
   },
   blockExplorers: {
     default: {
       name: "MemeCoreScan",
-      url: "https://explorer.memecore-insectarium.example", // TODO: real explorer URL
+      url: "https://explorer.insectarium.memecore.net",
     },
   },
   testnet: true,

@@ -1,7 +1,7 @@
 import { ethers, type BigNumberish } from "ethers";
 import MemeVaultABI from "../abi/MemeVault.json";
 import MemeVaultFactoryABI from "../abi/MemeVaultFactory.json";
-import MemeTokenABI from "../abi/MemeToken.json";
+import CrtTokenABI from "../abi/CrtToken.json";
 import { CONTRACTS } from "./contracts";
 import { getSigner, getReadOnlyProvider } from "./ethersClient";
 
@@ -31,13 +31,13 @@ export async function createVault(params: CreateVaultParams) {
   const signer = await getSigner();
   const userAddress = await signer.getAddress();
 
-  const memeTokenAddr = assertAddress("MemeToken");
+  const crtTokenAddr = assertAddress("CrtToken");
   const factoryAddr = assertAddress("MemeVaultFactory");
   const usdcAddr = params.baseAsset ?? assertAddress("USDC");
   const oracleAddr = params.priceOracle ?? assertAddress("UniswapV3TWAPOracle");
 
   // 1) Approve CRT create fee
-  const crtToken = new ethers.Contract(memeTokenAddr, MemeTokenABI, signer);
+  const crtToken = new ethers.Contract(crtTokenAddr, CrtTokenABI, signer);
   const createFee = ethers.utils.parseEther("1000"); // 1,000 CRT
   const approveFeeTx = await crtToken.approve(factoryAddr, createFee);
   await approveFeeTx.wait();
