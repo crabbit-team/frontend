@@ -57,7 +57,7 @@ export interface VaultDetail {
   image_url: string;
   /** 생성자 정보 */
   creator: VaultCreator;
-  /** 총 예치 가치 (TVL, USD) */
+  /** 총 예치 가치 (TVL, USD) - "00000.00" 형식의 문자열 */
   tvl: string;
   /** 주식 가격 */
   share_price: string;
@@ -71,6 +71,8 @@ export interface VaultDetail {
   portfolio: VaultPortfolioItem[];
   /** 전략 상세 설명 */
   strategy_description: string;
+  /** 블록 익스플로러 URL */
+  explorer_url: string;
 }
 
 /**
@@ -88,8 +90,8 @@ export interface VaultSummary {
   image_url: string;
   /** 생성자 정보 */
   creator: VaultCreator;
-  /** 총 예치 가치 (TVL, USD) */
-  tvl: number;
+  /** 총 예치 가치 (TVL, USD) - "00000.00" 형식의 문자열 */
+  tvl: string;
   /** 주식 가격 */
   share_price: string;
   /** 주식 가격 소수점 자릿수 */
@@ -98,6 +100,8 @@ export interface VaultSummary {
   performance: VaultPerformance;
   /** 티어 */
   tier: string;
+  /** 블록 익스플로러 URL */
+  explorer_url: string;
 }
 
 /**
@@ -161,6 +165,7 @@ export async function getVaultByAddress(address: string): Promise<VaultDetail> {
       amount: string;
     }>;
     strategy_description: string;
+    explorer_url: string;
   };
 
   const data: VaultDetail = {
@@ -177,6 +182,7 @@ export async function getVaultByAddress(address: string): Promise<VaultDetail> {
     tier: raw.tier,
     portfolio: raw.portfolio,
     strategy_description: raw.strategy_description,
+    explorer_url: raw.explorer_url,
   };
 
   return data;
@@ -231,6 +237,7 @@ export async function getVaults(
       share_price_decimals: number;
       performance: VaultPerformance;
       tier: string;
+      explorer_url: string;
     }>;
     total: number;
   };
@@ -241,11 +248,12 @@ export async function getVaults(
     symbol: v.symbol,
     image_url: v.image_url,
     creator: v.creator,
-    tvl: parseFloat(v.tvl),
+    tvl: v.tvl, // TVL은 "00000.00" 형식의 문자열로 유지
     share_price: v.share_price,
     share_price_decimals: v.share_price_decimals,
     performance: v.performance,
     tier: v.tier,
+    explorer_url: v.explorer_url,
   }));
 
   return {

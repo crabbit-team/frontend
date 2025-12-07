@@ -14,6 +14,8 @@ export interface UserProfile {
   bio: string;
   /** Memex 링크 */
   memex_link: string;
+  /** 블록 익스플로러 URL */
+  explorer_url: string;
   /** 프로필 생성 시간 (ISO 문자열) */
   created_at: string;
   /** 프로필 수정 시간 (ISO 문자열) */
