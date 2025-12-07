@@ -19,6 +19,8 @@ export function useBattleGame() {
     const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
     const [isCountingDown, setIsCountingDown] = useState(false);
 
+    const [miniGameWon, setMiniGameWon] = useState<boolean>(false);
+
     // Countdown logic
     useEffect(() => {
         if (gameState === 'countdown' && isCountingDown && countdown > 0) {
@@ -49,17 +51,30 @@ export function useBattleGame() {
             ? Math.random() * 20 + 3   // 3% to 23% if AI won
             : Math.random() * -12 - 3; // -3% to -15% if AI lost
 
+        // Reward Policy:
+        // - Investment Win + Mini Game Win -> 20
+        // - Investment Win + Mini Game Lose -> 10
+        // - Investment Lose -> 0
+        let rewardAmount = 0;
+        if (playerWon) {
+            rewardAmount = miniGameWon ? 20 : 10;
+        }
+
         const result: BattleResult = {
             playerROI: Math.round(playerROI * 10) / 10,
             opponentROI: Math.round(opponentROI * 10) / 10,
             playerWon,
-            rewardAmount: playerWon ? 200 : 0
+            rewardAmount
         };
 
         setBattleResult(result);
         setGameState('result');
         setIsCountingDown(false);
-    }, [selectedOpponent]);
+    }, [selectedOpponent, miniGameWon]);
+
+    const setMiniGameResult = useCallback((won: boolean) => {
+        setMiniGameWon(won);
+    }, []);
 
     const startVaultSelection = useCallback(() => {
         setGameState('selectingVault');
@@ -111,6 +126,7 @@ export function useBattleGame() {
         startBattle,
         resetGame,
         goBackToVaultSelection,
-        goBackToOpponentSelection
+        goBackToOpponentSelection,
+        setMiniGameResult
     };
 }

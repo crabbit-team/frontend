@@ -301,6 +301,34 @@ export function BattleMiniGame({
 
     const remainingSeconds = Math.max(0, Math.ceil((durationMs - elapsed) / 1000));
 
+    // Retry Handler
+    const handleRetry = () => {
+        setObstacles([
+            {
+                id: 0,
+                x: 600,
+                type: "low_obstacle",
+                width: 50
+            }
+        ]);
+        setScore(0);
+        setElapsed(0);
+        setGameOver(false);
+        setGameWon(false);
+        setIsPlaying(false);
+        setStartCountdown(3);
+        setCurrentSpeed(INITIAL_SPEED);
+
+        // Reset refs
+        gameRunningRef.current = false;
+        lastSpawnRef.current = 0;
+        nextSpawnRef.current = SPAWN_INTERVAL_MIN;
+        elapsedRef.current = 0;
+        obstacleIdRef.current = 1;
+        isJumpingRef.current = false;
+        isSlidingRef.current = false;
+    };
+
     return (
         <div
             ref={containerRef}
@@ -502,7 +530,7 @@ export function BattleMiniGame({
                         <h2 className="text-5xl font-black text-red-500 mb-2 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">GAME OVER</h2>
                         <p className="text-2xl text-white mb-6">Score: {score}</p>
                         <button
-                            onClick={() => window.location.reload()}
+                            onClick={handleRetry}
                             className="px-6 py-2 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform"
                         >
                             Try Again

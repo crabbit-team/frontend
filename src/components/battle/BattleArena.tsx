@@ -91,7 +91,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                     >
                         <Trophy className="w-6 h-6 text-carrot-orange mx-auto mb-2" />
                         <div className="text-xs text-muted-foreground font-mono uppercase">Prize Pool</div>
-                        <div className="text-2xl font-bold font-pixel text-carrot-orange">200 CRT</div>
+                        <div className="text-2xl font-bold font-pixel text-carrot-orange">10,000,000 CRT</div>
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
