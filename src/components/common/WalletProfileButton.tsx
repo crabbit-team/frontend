@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Copy } from "lucide-react";
 import { initProfile } from "../../api/profile";
@@ -8,6 +8,7 @@ import { useProfileContext } from "../../context/ProfileContext";
 
 export function WalletProfileButton() {
   const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
   const { openConnectModal } = useConnectModal();
   const navigate = useNavigate();
   const { profile, setProfile } = useProfileContext();
@@ -82,15 +83,12 @@ export function WalletProfileButton() {
     }
   };
 
-  const handleViewProfile = () => {
-    if (!profile) return;
-    // Use nickname as the profile route param if available,
-    // otherwise use a short, non-sensitive slug based on the address
-    const slug =
-      profile.nickname?.trim() ||
-      `user-${profile.wallet_address.slice(2, 8).toLowerCase()}`;
-    navigate(`/profile/${encodeURIComponent(slug)}`);
+  const handleLogout = () => {
+    // Disconnect wallet session and clear profile state
+    disconnect();
+    setProfile(null);
     setIsDropdownOpen(false);
+    navigate("/", { replace: true });
   };
 
   let label: string;
@@ -136,10 +134,10 @@ export function WalletProfileButton() {
           <div className="h-px bg-white/10 mx-2" />
           <button
             type="button"
-            onClick={handleViewProfile}
-            className="w-full text-left px-3 py-2 text-[11px] font-mono text-carrot-orange hover:bg-carrot-orange/10"
+            onClick={handleLogout}
+            className="w-full text-left px-3 py-2 text-[11px] font-mono text-error hover:bg-error/10"
           >
-            View profile page
+            Log out
           </button>
         </div>
       )}
