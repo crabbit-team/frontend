@@ -35,31 +35,14 @@ export function Rank() {
                 setIsLoading(true);
                 const response = await getVaults();
                 
-                // willDelete: 테스트용 mock data
-                // TVL: 1000000 = 1.000000 (뒤 6자리가 decimals)
-                const mockVault: VaultSummary = {
-                    address: "0x1234567890123456789012345678901234567890",
-                    name: "Test Vault",
-                    symbol: "TEST",
-                    image_url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
-                    creator: {
-                        address: "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
-                        nickname: "Test Creator",
-                        image_url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
-                        memex_link: "https://example.com",
-                    },
-                    tvl: "1.00", // TVL은 "00000.00" 형식
-                    share_price: "1.0",
-                    share_price_decimals: 18,
-                    performance: {
-                        apy: 15.5,
-                        change_24h: 2.3,
-                    },
-                    tier: "gold",
-                    explorer_url: "https://etherscan.io/address/0x1234567890123456789012345678901234567890",
-                };
+                // APY 기준으로 정렬 (내림차순)
+                const sortedVaults = [...response.vaults].sort((a, b) => {
+                    const apyA = a.performance?.apy ?? 0;
+                    const apyB = b.performance?.apy ?? 0;
+                    return apyB - apyA;
+                });
                 
-                setVaults([mockVault, ...response.vaults]);
+                setVaults(sortedVaults);
             } catch (error) {
                 console.error("Failed to fetch vaults:", error);
             } finally {
@@ -112,40 +95,38 @@ export function Rank() {
                 </div>
 
                 {/* 2. 상위 3개 전략 쇼케이스 (중앙 하이라이트) */}
-                <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[200px]">
-                    {/* 목 데이터 하드코딩 - 테스트용 */}
-                    <CardWithFrame
-                        frameImage="/card/frame/cardFrameGold.png"
-                        backgroundImage="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800"
-                        size="large"
-                        onClick={() => navigate("/vaults/0x123")}
-                        animationDelay={0.2}
-                        isCenter={true}
-                        backgroundSize="cover"
-                    >
-                        {/* 텍스트 레이어: 하단에 정보 표시 */}
-                        <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
-                            <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
-                                    <span className="text-sm font-bold font-pixel text-white">CRT</span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs text-muted-foreground font-mono uppercase">Rank</span>
-                                    <span className="text-sm font-bold font-pixel text-white">#1</span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
-                                    <span className="text-sm font-bold font-pixel text-success">+25.50%</span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
-                                    <span className="text-sm font-bold font-pixel text-white">$2.5M USDC</span>
-                                </div>
-                            </div>
-                        </div>
-                    </CardWithFrame>
-                </div>
+                {!isLoading && vaults.length > 0 && (
+                    <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[200px]">
+                        {/* 2위 (left), 1위 (center), 3위 (right) 순서로 배치 */}
+                        {vaults.length >= 2 && (
+                            <RankingCard
+                                key={vaults[1].address}
+                                vault={vaults[1]}
+                                rank={2}
+                                position="left"
+                                delay={0}
+                            />
+                        )}
+                        {vaults.length >= 1 && (
+                            <RankingCard
+                                key={vaults[0].address}
+                                vault={vaults[0]}
+                                rank={1}
+                                position="center"
+                                delay={0.1}
+                            />
+                        )}
+                        {vaults.length >= 3 && (
+                            <RankingCard
+                                key={vaults[2].address}
+                                vault={vaults[2]}
+                                rank={3}
+                                position="right"
+                                delay={0.2}
+                            />
+                        )}
+                    </div>
+                )}
 
                 {/* 3. 전체 랭킹 테이블 */}
                 <div className="bg-card border border-border rounded-2xl overflow-hidden backdrop-blur-sm shadow-2xl">
@@ -315,95 +296,95 @@ export function Rank() {
     );
 }
 
-// /**
-//  * TVL 값을 축약된 형식으로 포맷팅
-//  */
-// function formatTVL(tvl: number): string {
-//     if (tvl >= 1_000_000_000) {
-//         return `$${(tvl / 1_000_000_000).toFixed(1)}B`;
-//     }
-//     if (tvl >= 1_000_000) {
-//         return `$${(tvl / 1_000_000).toFixed(1)}M`;
-//     }
-//     if (tvl >= 1_000) {
-//         return `$${(tvl / 1_000).toFixed(1)}K`;
-//     }
-//     return `$${tvl.toLocaleString()}`;
-// }
+/**
+ * TVL 값을 축약된 형식으로 포맷팅
+ */
+function formatTVL(tvl: string): string {
+    const tvlValue = parseFloat(tvl);
+    if (tvlValue >= 1_000_000_000) {
+        return `$${(tvlValue / 1_000_000_000).toFixed(1)}B`;
+    }
+    if (tvlValue >= 1_000_000) {
+        return `$${(tvlValue / 1_000_000).toFixed(1)}M`;
+    }
+    if (tvlValue >= 1_000) {
+        return `$${(tvlValue / 1_000).toFixed(1)}K`;
+    }
+    return `$${tvlValue.toLocaleString()}`;
+}
 
-// /**
-//  * RankingCard 컴포넌트
-//  * 
-//  * 상위 3개 전략을 카드 형태로 표시하는 컴포넌트입니다.
-//  * 
-//  * @param vault - 전략 정보 객체 (VaultSummary)
-//  * @param rank - 순위 (1, 2, 3)
-//  * @param position - 카드 위치 ('left' | 'center' | 'right')
-//  * @param delay - 애니메이션 시작 지연 시간 (초)
-//  */
-// function RankingCard({ 
-//     vault, 
-//     rank,
-//     position, 
-//     delay 
-// }: { 
-//     vault: VaultSummary; 
-//     rank: number; 
-//     position: 'left' | 'center' | 'right'; 
-//     delay: number;
-// }) {
-//     const isCenter = position === 'center';
-//     const navigate = useNavigate();
+/**
+ * RankingCard 컴포넌트
+ * 
+ * 상위 3개 전략을 카드 형태로 표시하는 컴포넌트입니다.
+ * 
+ * @param vault - 전략 정보 객체 (VaultSummary)
+ * @param rank - 순위 (1, 2, 3)
+ * @param position - 카드 위치 ('left' | 'center' | 'right')
+ * @param delay - 애니메이션 시작 지연 시간 (초)
+ */
+function RankingCard({ 
+    vault, 
+    rank,
+    position, 
+    delay 
+}: { 
+    vault: VaultSummary; 
+    rank: number; 
+    position: 'left' | 'center' | 'right'; 
+    delay: number;
+}) {
+    const isCenter = position === 'center';
+    const navigate = useNavigate();
     
-//     // Rank에 따른 프레임 이미지 선택
-//     const frameImage = 
-//         rank === 1 ? "/card/frame/cardFrameGold.png"
-//         : rank === 2 ? "/card/frame/cardFrameSilver.png"
-//         : "/card/frame/cardFrameBronze.png";
+    // Rank에 따른 프레임 이미지 선택
+    const frameImage = 
+        rank === 1 ? "/card/frame/cardFrameGold.png"
+        : rank === 2 ? "/card/frame/cardFrameSilver.png"
+        : "/card/frame/cardFrameBronze.png";
     
-//     // 배경 이미지: vault.image_url 사용
-//     const backgroundImage = vault.image_url || "/card/background/cardBgWhale.png";
+    // 배경 이미지: vault.image_url 사용
+    const backgroundImage = vault.image_url || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800";
     
-//     // ROI (APY)
-//     const roi = vault.performance?.apy ?? 0;
+    // ROI (APY)
+    const roi = vault.performance?.apy ?? 0;
     
-//     // TVL
-//     const tvl = vault.tvl;
-//     const tvlFormatted = formatTVL(tvl);
+    // TVL
+    const tvlFormatted = formatTVL(vault.tvl);
 
-//     return (
-//         <CardWithFrame
-//             frameImage={frameImage}
-//             backgroundImage={backgroundImage}
-//             size={isCenter ? "large" : "small"}
-//             onClick={() => navigate(`/vaults/${vault.address}`)}
-//             animationDelay={delay}
-//             isCenter={isCenter}
-//             backgroundSize="cover"
-//         >
-//             {/* 텍스트 레이어: 하단에 정보 표시 */}
-//             <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
-//                 <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
-//                     <div className="flex items-center justify-between">
-//                         <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
-//                         <span className="text-sm font-bold font-pixel text-white">{vault.symbol}</span>
-//                     </div>
-//                     <div className="flex items-center justify-between">
-//                         <span className="text-xs text-muted-foreground font-mono uppercase">Rank</span>
-//                         <span className="text-sm font-bold font-pixel text-white">#{rank}</span>
-//                     </div>
-//                     <div className="flex items-center justify-between">
-//                         <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
-//                         <span className="text-sm font-bold font-pixel text-success">
-//                             {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
-//                         </span>
-//                     </div>
-//                     <div className="flex items-center justify-between">
-//                         <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
-//                         <span className="text-sm font-bold font-pixel text-white">{tvlFormatted} USDC</span>
-//                     </div>
-//                 </div>
-//             </div>
-//         </CardWithFrame>
-//     );
-// }
+    return (
+        <CardWithFrame
+            frameImage={frameImage}
+            backgroundImage={backgroundImage}
+            size={isCenter ? "large" : "small"}
+            onClick={() => navigate(`/vaults/${vault.address}`)}
+            animationDelay={delay}
+            isCenter={isCenter}
+            backgroundSize="cover"
+        >
+            {/* 텍스트 레이어: 하단에 정보 표시 */}
+            <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+                <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
+                        <span className="text-sm font-bold font-pixel text-white">{vault.symbol}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground font-mono uppercase">Rank</span>
+                        <span className="text-sm font-bold font-pixel text-white">#{rank}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
+                        <span className="text-sm font-bold font-pixel text-success">
+                            {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
+                        </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
+                        <span className="text-sm font-bold font-pixel text-white">{tvlFormatted} USDC</span>
+                    </div>
+                </div>
+            </div>
+        </CardWithFrame>
+    );
+}
