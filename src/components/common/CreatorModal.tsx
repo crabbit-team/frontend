@@ -1,14 +1,16 @@
 import { X, ExternalLink } from "lucide-react";
 import type { VaultCreator } from "../../api/vault";
+import { TierBadge } from "./TierBadge";
 
 interface CreatorModalProps {
     isOpen: boolean;
     onClose: () => void;
     creator: VaultCreator;
     vaultName?: string;
+    tier?: string;
 }
 
-export function CreatorModal({ isOpen, onClose, creator, vaultName: _vaultName }: CreatorModalProps) {
+export function CreatorModal({ isOpen, onClose, creator, vaultName: _vaultName, tier }: CreatorModalProps) {
     if (!isOpen) return null;
 
     const handleMemexLink = () => {
@@ -35,7 +37,7 @@ export function CreatorModal({ isOpen, onClose, creator, vaultName: _vaultName }
 
                 <div className="space-y-6">
                     {/* Creator Image */}
-                    <div className="flex justify-center">
+                    <div className="flex flex-col items-center gap-4">
                         {creator.image_url && creator.image_url.trim() ? (
                             <div className="w-24 h-24 rounded-full overflow-hidden bg-carrot-orange/10 flex items-center justify-center ring-4 ring-carrot-orange/20">
                                 <img
@@ -49,6 +51,17 @@ export function CreatorModal({ isOpen, onClose, creator, vaultName: _vaultName }
                                 ?
                             </div>
                         )}
+                        {/* Creator Nickname */}
+                        <div className="text-center">
+                            <h4 className="text-lg font-bold font-pixel text-foreground">
+                                {creator.nickname || "Unknown"}
+                            </h4>
+                            {tier && (
+                                <div className="mt-2 flex justify-center">
+                                    <TierBadge tier={tier} />
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Memex Link Button */}
