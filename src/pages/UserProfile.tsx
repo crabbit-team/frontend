@@ -372,7 +372,7 @@ export function UserProfile() {
                 </div>
             </div>
 
-                <UserVaultList addresses={[]} />
+                <UserVaultList addresses={profile.wallet_address ? [profile.wallet_address] : []} />
             </div>
         </div>
     );
