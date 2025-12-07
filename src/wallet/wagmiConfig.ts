@@ -7,8 +7,8 @@ export const memeCoreInsectarium = defineChain({
   id: 43522,
   name: "MemeCore Insectarium",
   nativeCurrency: {
-    name: "CRT",
-    symbol: "CRT",
+    name: "MemeCore",
+    symbol: "M",
     decimals: 18,
   },
   rpcUrls: {
