@@ -19,12 +19,18 @@ import {
   Legend,
 } from "recharts";
 import { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
+import { formatUnits } from "viem";
 import { getVaultByAddress, type VaultDetail } from "../api/vault";
 import { CHART_COLOR_PALETTE } from "../lib/utils";
 import { issueWithBase } from "../contracts/vault/issueWithBase";
+import { useTokenBalance } from "../hooks/useTokenBalance";
+import { CONTRACT_ADDRESSES } from "../contracts/config";
 
 export function VaultDetail() {
   const { id } = useParams();
+  const { address, isConnected } = useAccount();
+
   const [vault, setVault] = useState<VaultDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +41,13 @@ export function VaultDetail() {
   const [isDepositing, setIsDepositing] = useState(false);
   const [depositError, setDepositError] = useState<string | null>(null);
   const [depositSuccess, setDepositSuccess] = useState<string | null>(null);
+
+  // USDC 잔액 조회
+  const { balance: usdcBalance, isLoading: isLoadingBalance } = useTokenBalance({
+    tokenAddress: CONTRACT_ADDRESSES.USDC,
+    userAddress: address,
+    enabled: isConnected && !!address,
+  });
 
   const handleDeposit = async () => {
     if (!id) {
@@ -472,7 +485,18 @@ export function VaultDetail() {
                     </div>
                   </div>
                   <div className="flex justify-between text-xs font-mono text-muted-foreground px-1">
-                    <span>Balance: 0.00 USDC</span>
+                    <span>
+                      Balance:{" "}
+                      {isLoadingBalance
+                        ? "Loading..."
+                        : usdcBalance
+                          ? parseFloat(formatUnits(usdcBalance as bigint, 6)).toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : "0.00"}{" "}
+                      USDC
+                    </span>
                     <span>≈ ${amount || "0.00"}</span>
                   </div>
                 </div>
