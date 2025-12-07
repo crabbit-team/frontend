@@ -12,7 +12,6 @@ export interface BattleMiniGameResult {
 
 interface BattleMiniGameProps {
     durationMs?: number;
-    userLaneLabel?: string;
     onComplete?: (result: BattleMiniGameResult) => void;
 }
 
@@ -43,7 +42,6 @@ const JUMP_HEIGHT = 150;
 
 export function BattleMiniGame({
     durationMs = SURVIVAL_TIME,
-    userLaneLabel: _userLaneLabel = "You",
     onComplete,
 }: BattleMiniGameProps) {
     const [obstacles, setObstacles] = useState<Obstacle[]>([
