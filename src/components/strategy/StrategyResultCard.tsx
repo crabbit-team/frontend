@@ -5,6 +5,8 @@ import type { StrategyToken } from "../../api/Strategy";
 
 interface StrategyResultCardProps {
   variant: "real" | "sample";
+  name?: string;
+  symbol?: string;
   description: string;
   reasoning: string;
   tokens: StrategyToken[];
@@ -12,6 +14,8 @@ interface StrategyResultCardProps {
 
 export function StrategyResultCard({
   variant,
+  name,
+  symbol,
   description,
   reasoning,
   tokens,
@@ -30,9 +34,6 @@ export function StrategyResultCard({
         </div>
         <div>
           <div className="text-sm font-bold text-white">AI Strategy Architect</div>
-          <div className="text-xs text-white font-mono">
-            {variant === "real" ? "Generated from your prompt" : "Sample output format"}
-          </div>
         </div>
       </div>
 
@@ -41,14 +42,23 @@ export function StrategyResultCard({
         <div className="bg-gradient-to-br from-carrot-orange/10 to-carrot-orange/10 border border-carrot-orange/20 rounded-xl p-5">
           <div className="space-y-4">
             <div className="flex items-start justify-between mb-3">
-              <h3 className="text-xl font-bold text-white font-pixel">
-                {variant === "real" ? "AI Meme Strategy" : "Sample Meme Strategy"}
-              </h3>
+              <div>
+                <h3 className="text-xl font-bold text-white font-pixel">
+                  {variant === "real" 
+                    ? (name ? name : "AI Meme Strategy")
+                    : "Sample Meme Strategy"}
+                </h3>
+                {variant === "real" && symbol && (
+                  <p className="text-sm text-muted-foreground font-mono mt-1">
+                    {symbol}
+                  </p>
+                )}
+              </div>
             </div>
-            <p className="text-white font-mono text-sm leading-relaxed mb-4">
+            <p className="text-muted-foreground font-mono text-sm leading-relaxed mb-4">
               {description}
             </p>
-            <p className="text-sm text-white font-mono leading-relaxed mb-4">
+            <p className="text-muted-foreground text-white font-mono leading-relaxed mb-4">
               {reasoning}
             </p>
 

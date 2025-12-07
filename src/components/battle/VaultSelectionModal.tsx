@@ -62,7 +62,7 @@ export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectio
                                         <h2 className="text-3xl font-bold font-pixel text-transparent bg-clip-text bg-gradient-to-r from-carrot-orange to-pink">
                                             SELECT YOUR STRATEGY
                                         </h2>
-                                        <p className="text-sm text-gray font-mono mt-2">
+                                        <p className="text-sm text-muted-foreground font-mono mt-2">
                                             Choose a trading strategy to battle with
                                         </p>
                                     </div>
@@ -70,7 +70,7 @@ export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectio
                                         onClick={onClose}
                                         className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-colors"
                                     >
-                                        <X className="w-5 h-5 text-gray" />
+                                        <X className="w-5 h-5 text-muted-foreground" />
                                     </button>
                                 </div>
                             </div>

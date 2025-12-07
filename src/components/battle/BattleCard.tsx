@@ -42,10 +42,11 @@ export function BattleCard({
       ? `${strategy.creator.address.slice(0, 6)}...${strategy.creator.address.slice(-4)}`
       : strategy.creator?.address ?? "Unknown";
 
-  const tvlLabel =
-    typeof strategy.tvl === "number"
-      ? `$${strategy.tvl.toLocaleString()} TVL`
-      : "TVL –";
+  // TVL: "00000.00" 형식의 문자열로 오므로 파싱해서 표시
+  const tvlValue = parseFloat(strategy.tvl);
+  const tvlLabel = Number.isFinite(tvlValue)
+    ? `$${tvlValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} TVL`
+    : "TVL –";
 
   const timeLabel = timeLeftLabel || durationLabel || "-";
 
@@ -65,7 +66,7 @@ export function BattleCard({
                   ? "border-warning/50 text-warning bg-warning/10"
                   : isActive
                     ? "border-success/50 text-success bg-success/10 animate-pulse"
-                    : "border-gray/50 text-gray bg-gray/10",
+                    : "border-gray/50 text-muted-foreground bg-gray/10",
               )}
             >
               {statusLabel}

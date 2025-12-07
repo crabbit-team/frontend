@@ -7,18 +7,20 @@ interface UserVaultListProps {
   addresses: string[];
 }
 
-function formatTvl(value: number): string {
-  if (!Number.isFinite(value)) return "-";
-  if (value >= 1_000_000_000) {
-    return `$${(value / 1_000_000_000).toFixed(1)}B`;
+function formatTvl(value: string): string {
+  // TVL: "00000.00" 형식의 문자열로 오므로 파싱해서 표시
+  const tvlValue = parseFloat(value);
+  if (!Number.isFinite(tvlValue)) return "-";
+  if (tvlValue >= 1_000_000_000) {
+    return `$${(tvlValue / 1_000_000_000).toFixed(2)}B`;
   }
-  if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (tvlValue >= 1_000_000) {
+    return `$${(tvlValue / 1_000_000).toFixed(2)}M`;
   }
-  if (value >= 1_000) {
-    return `$${(value / 1_000).toFixed(1)}K`;
+  if (tvlValue >= 1_000) {
+    return `$${(tvlValue / 1_000).toFixed(2)}K`;
   }
-  return `$${value.toLocaleString()}`;
+  return `$${tvlValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
@@ -59,7 +61,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
             Total Value Locked
           </span>
           <span className="font-mono text-sm text-white">
-            {formatTvl(typeof vault.tvl === 'string' ? parseFloat(vault.tvl) || 0 : vault.tvl)}
+            {formatTvl(vault.tvl)}
           </span>
         </div>
 

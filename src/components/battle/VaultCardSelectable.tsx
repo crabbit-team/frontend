@@ -25,7 +25,7 @@ export function VaultCardSelectable({ vault, onSelect }: VaultCardSelectableProp
                         <h3 className="text-xl font-bold font-pixel text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-carrot-orange group-hover:to-pink transition-all">
                             {vault.name}
                         </h3>
-                        <p className="text-sm text-gray font-mono mt-1">
+                        <p className="text-sm text-muted-foreground font-mono mt-1">
                             {vault.creator?.address ? `${vault.creator.address.slice(0, 6)}...${vault.creator.address.slice(-4)}` : "Unknown"}
                         </p>
                     </div>
@@ -37,7 +37,7 @@ export function VaultCardSelectable({ vault, onSelect }: VaultCardSelectableProp
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                     <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-xs text-gray uppercase tracking-wider font-mono">
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wider font-mono">
                             <TrendingUp className="w-3 h-3" />
                             <span>APY</span>
                         </div>
@@ -46,7 +46,7 @@ export function VaultCardSelectable({ vault, onSelect }: VaultCardSelectableProp
                         </div>
                     </div>
                     <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-xs text-gray uppercase tracking-wider font-mono">
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wider font-mono">
                             <DollarSign className="w-3 h-3" />
                             <span>TVL</span>
                         </div>
@@ -58,7 +58,7 @@ export function VaultCardSelectable({ vault, onSelect }: VaultCardSelectableProp
 
                 {/* Tier */}
                 <div className="space-y-2 pt-2">
-                    <div className="text-xs text-gray uppercase tracking-wider font-mono">Tier</div>
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider font-mono">Tier</div>
                     <div className="inline-flex items-center justify-center px-3 py-1 bg-carrot-orange/10 border border-carrot-orange/20 rounded text-sm font-mono text-carrot-orange font-bold">
                         {vault.tier}
                     </div>

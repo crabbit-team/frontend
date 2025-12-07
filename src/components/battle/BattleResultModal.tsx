@@ -92,7 +92,7 @@ export function BattleResultModal({
                                     <h2 className="text-5xl font-bold font-pixel text-transparent bg-clip-text bg-gradient-to-r from-carrot-orange to-pink mb-2">
                                         {result.playerWon ? 'VICTORY!' : 'DEFEAT'}
                                     </h2>
-                                    <p className="text-gray font-mono">
+                                    <p className="text-muted-foreground font-mono">
                                         {result.playerWon
                                             ? 'You outperformed the AI opponent!'
                                             : 'The AI was stronger this time'}
@@ -117,7 +117,7 @@ export function BattleResultModal({
                                     >
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-mono text-gray">Your Strategy</span>
+                                                <span className="text-sm font-mono text-muted-foreground">Your Strategy</span>
                                                 <span className="text-sm font-bold text-white">{vault.name}</span>
                                             </div>
                                             <div className={`flex items-center gap-2 font-pixel text-2xl ${result.playerROI >= 0 ? 'text-success' : 'text-error'}`}>
@@ -149,7 +149,7 @@ export function BattleResultModal({
                                     >
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-mono text-gray">AI Opponent</span>
+                                                <span className="text-sm font-mono text-muted-foreground">AI Opponent</span>
                                                 <span className="text-sm font-bold text-white">{opponent.name}</span>
                                             </div>
                                             <div className={`flex items-center gap-2 font-pixel text-2xl ${result.opponentROI >= 0 ? 'text-success' : 'text-error'}`}>

@@ -125,7 +125,7 @@ export function BattleCountdown({ countdown }: BattleCountdownProps) {
                             duration: 2,
                             repeat: Infinity
                         }}
-                        className="text-gray font-mono text-sm"
+                        className="text-muted-foreground font-mono text-sm"
                     >
                         BATTLE IN PROGRESS
                     </motion.p>
@@ -170,8 +170,8 @@ export function BattleCountdown({ countdown }: BattleCountdownProps) {
                             animate={{ opacity: 1, x: 0 }}
                             className="flex items-center gap-2"
                         >
-                            <span className="text-gray font-mono text-xs">{String(60 - countdown).padStart(2, '0')}s</span>
-                            <span className="text-gray-foreground font-mono text-sm">{currentMessage}</span>
+                            <span className="text-muted-foreground font-mono text-xs">{String(60 - countdown).padStart(2, '0')}s</span>
+                            <span className="text-muted-foreground-foreground font-mono text-sm">{currentMessage}</span>
                         </motion.div>
                     </div>
                 </motion.div>
@@ -183,7 +183,7 @@ export function BattleCountdown({ countdown }: BattleCountdownProps) {
                     className="mt-8 grid grid-cols-2 gap-4 max-w-2xl mx-auto"
                 >
                     <div className="bg-carrot-orange/20 border border-carrot-orange/30 rounded-lg p-4 text-center">
-                        <div className="text-xs text-gray font-mono mb-1">YOUR ROI</div>
+                        <div className="text-xs text-muted-foreground font-mono mb-1">YOUR ROI</div>
                         <motion.div
                             animate={{
                                 opacity: [0.5, 1, 0.5],
@@ -198,7 +198,7 @@ export function BattleCountdown({ countdown }: BattleCountdownProps) {
                         </motion.div>
                     </div>
                     <div className="bg-error/20 border border-error/30 rounded-lg p-4 text-center">
-                        <div className="text-xs text-gray font-mono mb-1">AI ROI</div>
+                        <div className="text-xs text-muted-foreground font-mono mb-1">AI ROI</div>
                         <motion.div
                             animate={{
                                 opacity: [0.5, 1, 0.5],

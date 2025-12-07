@@ -7,7 +7,7 @@ export interface CardWithFrameProps {
     /** 배경 이미지 경로 (public/card/background/) */
     backgroundImage: string;
     /** 카드에 표시할 텍스트 */
-    text: string;
+    text?: string;
     /** 카드 크기: 'large' (중앙, w-72 h-[410px]) 또는 'small' (좌우, w-64 h-[365px]) */
     size?: "large" | "small";
     /** 카드 클릭 핸들러 */
@@ -20,6 +20,10 @@ export interface CardWithFrameProps {
     textClassName?: string;
     /** 컨테이너 스타일 클래스 */
     containerClassName?: string;
+    /** 커스텀 콘텐츠 (텍스트 대신 사용) */
+    children?: React.ReactNode;
+    /** 배경 이미지 스타일 (cover 또는 contain) */
+    backgroundSize?: "cover" | "contain";
 }
 
 /**
@@ -52,6 +56,8 @@ export function CardWithFrame({
     isCenter = false,
     textClassName,
     containerClassName,
+    children,
+    backgroundSize = "contain",
 }: CardWithFrameProps) {
     const isLarge = size === "large";
 
@@ -84,27 +90,33 @@ export function CardWithFrame({
 
                 {/* 2. 배경 이미지: 중간 레이어 (z-10), 프레임 중앙 영역에 맞춰 배치 (양쪽 패딩 적용, 위로 조정) */}
                 <div
-                    className="absolute inset-y-5 inset-x-7 z-10"
+                    className="absolute inset-y-5 inset-x-7 z-10 rounded-lg overflow-hidden"
                     style={{
                         backgroundImage: `url('${backgroundImage}')`,
-                        backgroundSize: "contain",
-                        backgroundPosition: "center 30%",
+                        backgroundSize: backgroundSize,
+                        backgroundPosition: "50% 50%",
                         backgroundRepeat: "no-repeat",
                     }}
                 />
 
-                {/* 3. 텍스트: 맨 위 레이어 (z-20) */}
-                <div className="absolute inset-0 z-20 flex items-center justify-center">
-                    <h3
-                        className={cn(
-                            "font-pixel font-bold text-center px-4",
-                            isLarge ? "text-2xl text-foreground" : "text-xl text-foreground",
-                            textClassName
-                        )}
-                    >
-                        {text}
-                    </h3>
-                </div>
+                {/* 3. 텍스트 또는 커스텀 콘텐츠: 맨 위 레이어 (z-20) */}
+                {children ? (
+                    <div className="absolute inset-0 z-20">
+                        {children}
+                    </div>
+                ) : text ? (
+                    <div className="absolute inset-0 z-20 flex items-center justify-center">
+                        <h3
+                            className={cn(
+                                "font-pixel font-bold text-center px-4",
+                                isLarge ? "text-2xl text-foreground" : "text-xl text-foreground",
+                                textClassName
+                            )}
+                        >
+                            {text}
+                        </h3>
+                    </div>
+                ) : null}
             </motion.div>
         </motion.div>
     );

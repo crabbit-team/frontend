@@ -29,14 +29,14 @@ export function AIOpponentCard({ opponent, onSelect }: AIOpponentCardProps) {
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-gray font-mono leading-relaxed">
+                <p className="text-sm text-muted-foreground font-mono leading-relaxed">
                     {opponent.description}
                 </p>
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                     <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-xs text-gray uppercase tracking-wider font-mono">
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wider font-mono">
                             <Zap className="w-3 h-3" />
                             <span>Tokens</span>
                         </div>
@@ -45,7 +45,7 @@ export function AIOpponentCard({ opponent, onSelect }: AIOpponentCardProps) {
                         </div>
                     </div>
                     <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-xs text-gray uppercase tracking-wider font-mono">
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wider font-mono">
                             <TrendingUp className="w-3 h-3" />
                             <span>Strategy ID</span>
                         </div>
@@ -58,7 +58,7 @@ export function AIOpponentCard({ opponent, onSelect }: AIOpponentCardProps) {
                 {/* Tokens */}
                 {opponent.tokens && opponent.tokens.length > 0 && (
                     <div className="space-y-2 pt-2">
-                        <div className="text-xs text-gray uppercase tracking-wider font-mono">
+                        <div className="text-xs text-muted-foreground uppercase tracking-wider font-mono">
                             Tokens
                         </div>
                         <div className="flex flex-wrap gap-2">

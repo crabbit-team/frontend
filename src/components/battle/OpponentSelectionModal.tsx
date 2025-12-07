@@ -64,13 +64,13 @@ export function OpponentSelectionModal({ isOpen, onSelect, onBack, onClose }: Op
                                             onClick={onBack}
                                             className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-colors"
                                         >
-                                            <ArrowLeft className="w-5 h-5 text-gray" />
+                                            <ArrowLeft className="w-5 h-5 text-muted-foreground" />
                                         </button>
                                         <div>
                                             <h2 className="text-3xl font-bold font-pixel text-transparent bg-clip-text bg-gradient-to-r from-carrot-orange to-pink">
                                                 CHOOSE YOUR OPPONENT
                                             </h2>
-                                            <p className="text-sm text-gray font-mono mt-2">
+                                            <p className="text-sm text-muted-foreground font-mono mt-2">
                                                 Select an AI fund manager to battle against
                                             </p>
                                         </div>
@@ -79,7 +79,7 @@ export function OpponentSelectionModal({ isOpen, onSelect, onBack, onClose }: Op
                                         onClick={onClose}
                                         className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-colors"
                                     >
-                                        <X className="w-5 h-5 text-gray" />
+                                        <X className="w-5 h-5 text-muted-foreground" />
                                     </button>
                                 </div>
                             </div>

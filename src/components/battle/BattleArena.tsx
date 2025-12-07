@@ -29,7 +29,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                 >
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-gray hover:text-white transition-colors"
+                        className="flex items-center gap-2 text-muted-foreground hover:text-white transition-colors"
                     >
                         <ArrowLeft className="w-5 h-5" />
                         <span className="font-mono">Change Selection</span>
@@ -38,7 +38,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                         <h1 className="text-4xl font-bold font-pixel text-transparent bg-clip-text bg-gradient-to-r from-carrot-orange to-pink">
                             BATTLE ARENA
                         </h1>
-                        <p className="text-gray font-mono text-sm mt-2">Prepare for combat</p>
+                        <p className="text-muted-foreground font-mono text-sm mt-2">Prepare for combat</p>
                     </div>
                     <div className="w-32" /> {/* Spacer for centering */}
                 </motion.div>
@@ -52,7 +52,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                         className="bg-card border border-carrot-orange/20 rounded-xl p-4 text-center"
                     >
                         <Coins className="w-6 h-6 text-warning mx-auto mb-2" />
-                        <div className="text-xs text-gray font-mono uppercase">Entry Fee</div>
+                        <div className="text-xs text-muted-foreground font-mono uppercase">Entry Fee</div>
                         <div className="text-2xl font-bold font-pixel text-warning">FREE</div>
                     </motion.div>
                     <motion.div
@@ -62,7 +62,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                         className="bg-card border border-carrot-orange/20 rounded-xl p-4 text-center"
                     >
                         <Trophy className="w-6 h-6 text-carrot-orange mx-auto mb-2" />
-                        <div className="text-xs text-gray font-mono uppercase">Prize Pool</div>
+                        <div className="text-xs text-muted-foreground font-mono uppercase">Prize Pool</div>
                         <div className="text-2xl font-bold font-pixel text-carrot-orange">200 CRT</div>
                     </motion.div>
                     <motion.div
@@ -72,7 +72,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                         className="bg-card border border-carrot-orange/20 rounded-xl p-4 text-center"
                     >
                         <Swords className="w-6 h-6 text-info mx-auto mb-2" />
-                        <div className="text-xs text-gray font-mono uppercase">Duration</div>
+                        <div className="text-xs text-muted-foreground font-mono uppercase">Duration</div>
                         <div className="text-2xl font-bold font-pixel text-info">1 MIN</div>
                     </motion.div>
                 </div>
@@ -99,18 +99,18 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                                     <Shield className="w-10 h-10 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold font-pixel text-white mb-2">{vault.name}</h3>
-                                <p className="text-sm text-gray font-mono mb-4">
+                                <p className="text-sm text-muted-foreground font-mono mb-4">
                                     {vault.creator?.address ? `${vault.creator.address.slice(0, 6)}...${vault.creator.address.slice(-4)}` : "Unknown"}
                                 </p>
                                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray font-mono uppercase">APY</div>
+                                        <div className="text-xs text-muted-foreground font-mono uppercase">APY</div>
                                         <div className="text-xl font-bold font-pixel text-success">
                                             {vault.performance?.apy?.toFixed(2) ?? 0}%
                                         </div>
                                     </div>
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray font-mono uppercase">TVL</div>
+                                        <div className="text-xs text-muted-foreground font-mono uppercase">TVL</div>
                                         <div className="text-xl font-bold font-pixel text-info">
                                             ${((typeof vault.tvl === "number" ? vault.tvl : parseFloat(vault.tvl)) / 1000).toFixed(0)}K
                                         </div>
@@ -136,16 +136,16 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                                     <Bot className="w-10 h-10 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold font-pixel text-white mb-2">{opponent.name}</h3>
-                                <p className="text-sm text-gray font-mono mb-2">{opponent.description}</p>
+                                <p className="text-sm text-muted-foreground font-mono mb-2">{opponent.description}</p>
                                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray font-mono uppercase">Tokens</div>
+                                        <div className="text-xs text-muted-foreground font-mono uppercase">Tokens</div>
                                         <div className="text-xl font-bold font-pixel text-success">
                                             {opponent.tokens?.length ?? 0}
                                         </div>
                                     </div>
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray font-mono uppercase">Strategy</div>
+                                        <div className="text-xs text-muted-foreground font-mono uppercase">Strategy</div>
                                         <div className="text-sm font-bold font-pixel text-info">
                                             #{opponent.id}
                                         </div>
@@ -169,7 +169,7 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                     >
                         START BATTLE
                     </button>
-                    <p className="text-sm text-gray font-mono mt-4">The battle will last 60 seconds</p>
+                    <p className="text-sm text-muted-foreground font-mono mt-4">The battle will last 60 seconds</p>
                 </motion.div>
             </div>
         </div>
