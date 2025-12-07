@@ -372,8 +372,27 @@ export function UserProfile() {
                             <span className="flex items-center gap-1">
                                 <Users className="w-4 h-4" />
                                 Profile created at{" "}
-                                {new Date(profile.created_at).toLocaleString()}
+                                {new Date(profile.created_at).toLocaleDateString('en-US', {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: 'numeric'
+                                })}
                             </span>
+                            {profile.memex_link && profile.memex_link.trim() ? (
+                                <a
+                                    href={profile.memex_link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-carrot-orange text-carrot-orange-foreground hover:bg-carrot-orange/90 rounded-md text-xs font-mono font-medium transition-colors"
+                                >
+                                    <span>View on Memex</span>
+                                    <ExternalLink className="w-3 h-3" />
+                                </a>
+                            ) : (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary/50 text-muted-foreground rounded-md text-xs font-mono font-medium">
+                                    memex: Not yet
+                                </span>
+                            )}
                             {profile.explorer_url && profile.explorer_url.trim() && (
                                 <a
                                     href={profile.explorer_url}
