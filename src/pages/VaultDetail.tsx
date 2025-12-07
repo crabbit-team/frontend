@@ -55,10 +55,29 @@ export function VaultDetail() {
       return;
     }
 
+    if (!isConnected || !address) {
+      setDepositError("Please connect your wallet first");
+      return;
+    }
+
     const amountNum = Number(amount);
     if (!Number.isFinite(amountNum) || amountNum <= 0) {
       setDepositError("Enter a valid deposit amount");
       return;
+    }
+
+    // USDC 잔액 확인
+    if (usdcBalance) {
+      const balanceFormatted = parseFloat(formatUnits(usdcBalance as bigint, 6));
+      if (balanceFormatted < amountNum) {
+        setDepositError(
+          `Insufficient USDC balance. You have ${balanceFormatted.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })} USDC but tried to deposit ${amountNum} USDC`
+        );
+        return;
+      }
     }
 
     try {
