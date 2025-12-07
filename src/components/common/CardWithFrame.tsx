@@ -33,8 +33,8 @@ export interface CardWithFrameProps {
  * 
  * 레이어 구조 (하단 → 상단):
  * 1. 프레임 이미지 (z-0)
- * 2. 배경 이미지 (z-10)
- * 3. 텍스트 (z-20)
+ * 2. 배경 이미지 (z-10) - 정사각형, 카드 상단에 배치
+ * 3. 텍스트 (z-20) - 하단 텍스트 정보보다 위에 배치
  * 
  * @param frameImage - 프레임 이미지 경로
  * @param backgroundImage - 배경 이미지 경로
@@ -60,6 +60,20 @@ export function CardWithFrame({
     backgroundSize = "contain",
 }: CardWithFrameProps) {
     const isLarge = size === "large";
+    
+    // 정사각형 배경 크기 계산 (카드 상단에 배치, 하단 텍스트 공간 확보)
+    // large: w-72 (288px), small: w-64 (256px)
+    // 하단 텍스트 영역을 위해 약 140px 정도 확보
+    const cardWidth = isLarge ? 288 : 256;
+    const bottomTextHeight = 140; // 하단 텍스트 영역 높이
+    const cardHeight = isLarge ? 410 : 365;
+    const backgroundTop = 20; // 상단 여백
+    const backgroundBottomLimit = cardHeight - bottomTextHeight; // 배경 이미지 최대 하단 위치
+    const maxBackgroundHeight = backgroundBottomLimit - backgroundTop; // 배경 이미지 최대 높이
+    const squareSize = Math.min(cardWidth - 56, maxBackgroundHeight); // 좌우 패딩 28px씩 (총 56px) 고려, 하단 텍스트와 겹치지 않도록
+    
+    // 배경 이미지 위치 (상단 중앙, 정사각형)
+    const backgroundLeft = (cardWidth - squareSize) / 2; // 중앙 정렬
 
     return (
         <motion.div
@@ -88,10 +102,15 @@ export function CardWithFrame({
                     className="absolute inset-0 w-full h-full object-contain z-0 pointer-events-none"
                 />
 
-                {/* 2. 배경 이미지: 중간 레이어 (z-10), 프레임 중앙 영역에 맞춰 배치 (양쪽 패딩 적용, 위로 조정) */}
+                {/* 2. 배경 이미지: 정사각형, 텍스트 뒤에 배치 (z-10) - 하단 텍스트와 겹치지 않음 */}
                 <div
-                    className="absolute inset-y-5 inset-x-7 z-10 rounded-lg overflow-hidden"
+                    className="absolute z-10 rounded-lg overflow-hidden"
                     style={{
+                        top: `${backgroundTop}px`,
+                        left: `${backgroundLeft}px`,
+                        width: `${squareSize}px`,
+                        height: `${squareSize}px`,
+                        maxHeight: `${backgroundBottomLimit - backgroundTop}px`, // 하단 텍스트 영역 침범 방지
                         backgroundImage: `url('${backgroundImage}')`,
                         backgroundSize: backgroundSize,
                         backgroundPosition: "50% 50%",
@@ -99,7 +118,7 @@ export function CardWithFrame({
                     }}
                 />
 
-                {/* 3. 텍스트 또는 커스텀 콘텐츠: 맨 위 레이어 (z-20) */}
+                {/* 3. 텍스트 또는 커스텀 콘텐츠: 맨 위 레이어 (z-20) - 하단 텍스트 정보보다 위에 배치 */}
                 {children ? (
                     <div className="absolute inset-0 z-20">
                         {children}
@@ -121,4 +140,3 @@ export function CardWithFrame({
         </motion.div>
     );
 }
-

@@ -358,22 +358,22 @@ function RankingCard({
             <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
                 <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
-                        <span className="text-sm font-bold font-pixel text-white">{vault.symbol}</span>
+                        <span className="text-[10px] text-muted-foreground font-mono uppercase">Ticker</span>
+                        <span className="text-xs font-bold font-pixel text-white">{vault.symbol}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground font-mono uppercase">Rank</span>
-                        <span className="text-sm font-bold font-pixel text-white">#{rank}</span>
+                        <span className="text-[10px] text-muted-foreground font-mono uppercase">Rank</span>
+                        <span className="text-xs font-bold font-pixel text-white">#{rank}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
-                        <span className="text-sm font-bold font-pixel text-success">
+                        <span className="text-[10px] text-muted-foreground font-mono uppercase">ROI</span>
+                        <span className="text-xs font-bold font-pixel text-success">
                             {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
                         </span>
                     </div>
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
-                        <span className="text-sm font-bold font-pixel text-white">{tvlFormatted} USDC</span>
+                        <span className="text-[10px] text-muted-foreground font-mono uppercase">TVL</span>
+                        <span className="text-xs font-bold font-pixel text-white">{tvlFormatted} USDC</span>
                     </div>
                 </div>
             </div>

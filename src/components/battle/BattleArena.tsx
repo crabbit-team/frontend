@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { Swords, Trophy, Coins, ArrowLeft } from "lucide-react";
+import { useAccount } from "wagmi";
 import type { VaultSummary } from "../../api/vault";
 import type { AIBattleStrategy } from "../../api/battle";
-import { Bot, Shield } from "lucide-react";
+import { CardWithFrame } from "../common/CardWithFrame";
+import { TierBadge } from "../common/TierBadge";
 
 interface BattleArenaProps {
     vault: VaultSummary;
@@ -11,7 +13,33 @@ interface BattleArenaProps {
     onBack: () => void;
 }
 
+function formatTVL(tvlString: string): string {
+    const tvl = parseFloat(tvlString);
+    if (tvl >= 1_000_000_000) {
+        return `$${(tvl / 1_000_000_000).toFixed(1)}B`;
+    }
+    if (tvl >= 1_000_000) {
+        return `$${(tvl / 1_000_000).toFixed(1)}M`;
+    }
+    if (tvl >= 1_000) {
+        return `$${(tvl / 1_000).toFixed(1)}K`;
+    }
+    return `$${tvl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
 export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleArenaProps) {
+    const { address: connectedAddress } = useAccount();
+
+    // 내 전략 카드: creator/deposit 구분 없이 표시 (기본적으로 orange 프레임 사용)
+    const myStrategyFrameImage = "/card/frame/cardFrameOrange.png";
+    const myStrategyBackgroundImage = vault.image_url || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800";
+    const roi = vault.performance?.apy ?? 0;
+    const tvlFormatted = formatTVL(vault.tvl);
+
+    // AI 전략 카드: bronze 프레임 사용
+    const aiStrategyFrameImage = "/card/frame/cardFrameBronze.png";
+    const aiStrategyBackgroundImage = "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800";
+
     return (
         <div className="min-h-screen bg-background text-foreground p-6">
             {/* Background Effects */}
@@ -79,44 +107,54 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
 
                 {/* VS Section */}
                 <div className="relative mb-12">
-                    {/* option: Center VS Badge */}
-
                     <div className="grid grid-cols-2 gap-8">
                         {/* Player Strategy Card */}
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="bg-gradient-to-br from-carrot-orange/30 to-carrot-orange/30 border-2 border-carrot-orange/50 rounded-2xl p-8 shadow-[0_0_40px_rgba(208,129,65,0.3)]"
+                            className="flex justify-center"
                         >
-                            <div className="text-center mb-4">
-                                <div className="inline-block px-4 py-1 bg-carrot-orange/20 border border-carrot-orange/30 rounded-full text-xs font-bold font-pixel text-carrot-orange uppercase mb-4">
-                                    Your Strategy
+                            <CardWithFrame
+                                frameImage={myStrategyFrameImage}
+                                backgroundImage={myStrategyBackgroundImage}
+                                size="small"
+                                backgroundSize="cover"
+                                animationDelay={0.4}
+                            >
+                                {/* Tier Badge - 왼쪽 위 */}
+                                <div className="absolute top-4 left-4 z-30">
+                                    <TierBadge tier={vault.tier || "iron"} />
                                 </div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-carrot-orange to-carrot-orange flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(208,129,65,0.5)]">
-                                    <Shield className="w-10 h-10 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold font-pixel text-white mb-2">{vault.name}</h3>
-                                <p className="text-sm text-muted-foreground font-mono mb-4">
-                                    {vault.creator?.address ? `${vault.creator.address.slice(0, 6)}...${vault.creator.address.slice(-4)}` : "Unknown"}
-                                </p>
-                                <div className="grid grid-cols-2 gap-4 w-full mt-4">
-                                    <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-muted-foreground font-mono uppercase">APY</div>
-                                        <div className="text-xl font-bold font-pixel text-success">
-                                            {vault.performance?.apy?.toFixed(2) ?? 0}%
+                                
+                                {/* 카드 정보 - 하단 */}
+                                <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+                                    <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+                                        <div className="text-center mb-2">
+                                            <div className="text-[10px] text-muted-foreground font-mono uppercase mb-1">
+                                                Your Strategy
+                                            </div>
+                                            <h3 className="text-xs font-bold font-pixel text-white truncate">
+                                                {vault.name}
+                                            </h3>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] text-muted-foreground font-mono uppercase">Ticker</span>
+                                            <span className="text-xs font-bold font-pixel text-white">{vault.symbol}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] text-muted-foreground font-mono uppercase">ROI</span>
+                                            <span className="text-xs font-bold font-pixel text-success">
+                                                {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] text-muted-foreground font-mono uppercase">TVL</span>
+                                            <span className="text-xs font-bold font-pixel text-white">{tvlFormatted} USDC</span>
                                         </div>
                                     </div>
-                                    <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-muted-foreground font-mono uppercase">TVL</div>
-                                        <div className="text-xl font-bold font-pixel text-info">
-                                            ${((typeof vault.tvl === "number" ? vault.tvl : parseFloat(vault.tvl)) / 1000).toFixed(0)}K
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
+                            </CardWithFrame>
                         </motion.div>
 
                         {/* AI Strategy Card */}
@@ -124,34 +162,47 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="bg-gradient-to-br from-error/30 to-warning/30 border-2 border-error/50 rounded-2xl p-8 shadow-[0_0_40px_rgba(239,68,68,0.3)]"
+                            className="flex justify-center"
                         >
-                            <div className="text-center mb-4">
-                                <div className="inline-block px-4 py-1 bg-error/20 border border-error/30 rounded-full text-xs font-bold font-pixel text-error uppercase mb-4">
-                                    AI Strategy
+                            <CardWithFrame
+                                frameImage={aiStrategyFrameImage}
+                                backgroundImage={aiStrategyBackgroundImage}
+                                size="small"
+                                backgroundSize="cover"
+                                animationDelay={0.4}
+                            >
+                                {/* Tier Badge - 왼쪽 위 (AI는 기본적으로 bronze tier) */}
+                                <div className="absolute top-4 left-4 z-30">
+                                    <TierBadge tier="bronze" />
                                 </div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-error to-warning flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)]">
-                                    <Bot className="w-10 h-10 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold font-pixel text-white mb-2">{opponent.name}</h3>
-                                <p className="text-sm text-muted-foreground font-mono mb-2">{opponent.description}</p>
-                                <div className="grid grid-cols-2 gap-4 w-full mt-4">
-                                    <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-muted-foreground font-mono uppercase">Tokens</div>
-                                        <div className="text-xl font-bold font-pixel text-success">
-                                            {opponent.tokens?.length ?? 0}
+                                
+                                {/* 카드 정보 - 하단 */}
+                                <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+                                    <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+                                        <div className="text-center mb-2">
+                                            <div className="text-[10px] text-muted-foreground font-mono uppercase mb-1">
+                                                AI Strategy
+                                            </div>
+                                            <h3 className="text-xs font-bold font-pixel text-white truncate">
+                                                {opponent.name}
+                                            </h3>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] text-muted-foreground font-mono uppercase">Tokens</span>
+                                            <span className="text-xs font-bold font-pixel text-white">
+                                                {opponent.tokens?.length ?? 0}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] text-muted-foreground font-mono uppercase">Strategy ID</span>
+                                            <span className="text-xs font-bold font-pixel text-white">#{opponent.id}</span>
+                                        </div>
+                                        <div className="text-[10px] text-muted-foreground font-mono text-center mt-2 line-clamp-2">
+                                            {opponent.description}
                                         </div>
                                     </div>
-                                    <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-muted-foreground font-mono uppercase">Strategy</div>
-                                        <div className="text-sm font-bold font-pixel text-info">
-                                            #{opponent.id}
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
+                            </CardWithFrame>
                         </motion.div>
                     </div>
                 </div>

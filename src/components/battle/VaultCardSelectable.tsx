@@ -1,74 +1,77 @@
 import { motion } from "framer-motion";
 import type { VaultSummary } from "../../api/vault";
-import { TrendingUp, Shield, DollarSign } from "lucide-react";
+import { CardWithFrame } from "../common/CardWithFrame";
+import { TierBadge } from "../common/TierBadge";
 
 interface VaultCardSelectableProps {
     vault: VaultSummary;
     onSelect: (vault: VaultSummary) => void;
 }
 
+function formatTVL(tvlString: string): string {
+    const tvl = parseFloat(tvlString);
+    if (tvl >= 1_000_000_000) {
+        return `$${(tvl / 1_000_000_000).toFixed(1)}B`;
+    }
+    if (tvl >= 1_000_000) {
+        return `$${(tvl / 1_000_000).toFixed(1)}M`;
+    }
+    if (tvl >= 1_000) {
+        return `$${(tvl / 1_000).toFixed(1)}K`;
+    }
+    return `$${tvl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
 export function VaultCardSelectable({ vault, onSelect }: VaultCardSelectableProps) {
-    const apy = vault.performance?.apy ?? 0;
-    const tvl = typeof vault.tvl === "number" ? vault.tvl : parseFloat(vault.tvl);
+    // 내 전략 카드: creator/deposit 구분 없이 표시 (기본적으로 orange 프레임 사용)
+    const frameImage = "/card/frame/cardFrameOrange.png";
+    const backgroundImage = vault.image_url || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800";
+    const roi = vault.performance?.apy ?? 0;
+    const tvlFormatted = formatTVL(vault.tvl);
 
     return (
         <motion.div
             whileHover={{ scale: 1.03, y: -5 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => onSelect(vault)}
-            className="group cursor-pointer bg-card border border-border rounded-xl overflow-hidden hover:border-carrot-orange/50 hover:shadow-[0_0_30px_rgba(208,129,65,0.3)] transition-all duration-300"
+            className="cursor-pointer"
         >
-            <div className="p-6 space-y-4">
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h3 className="text-xl font-bold font-pixel text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-carrot-orange group-hover:to-pink transition-all">
-                            {vault.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground font-mono mt-1">
-                            {vault.creator?.address ? `${vault.creator.address.slice(0, 6)}...${vault.creator.address.slice(-4)}` : "Unknown"}
-                        </p>
-                    </div>
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-carrot-orange to-carrot-orange flex items-center justify-center shadow-[0_0_15px_rgba(208,129,65,0.4)]">
-                        <Shield className="w-5 h-5 text-white" />
-                    </div>
+            <CardWithFrame
+                frameImage={frameImage}
+                backgroundImage={backgroundImage}
+                size="small"
+                backgroundSize="cover"
+            >
+                {/* Tier Badge - 왼쪽 위 */}
+                <div className="absolute top-4 left-4 z-30">
+                    <TierBadge tier={vault.tier || "iron"} />
                 </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wider font-mono">
-                            <TrendingUp className="w-3 h-3" />
-                            <span>APY</span>
+                
+                {/* 카드 정보 - 하단 */}
+                <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+                    <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+                        <div className="text-center mb-2">
+                            <h3 className="text-xs font-bold font-pixel text-white truncate">
+                                {vault.name}
+                            </h3>
                         </div>
-                        <div className="text-2xl font-bold text-success font-pixel">
-                            {apy.toFixed(2)}%
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-muted-foreground font-mono uppercase">Ticker</span>
+                            <span className="text-xs font-bold font-pixel text-white">{vault.symbol}</span>
                         </div>
-                    </div>
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wider font-mono">
-                            <DollarSign className="w-3 h-3" />
-                            <span>TVL</span>
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-muted-foreground font-mono uppercase">ROI</span>
+                            <span className="text-xs font-bold font-pixel text-success">
+                                {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
+                            </span>
                         </div>
-                        <div className="text-2xl font-bold text-info font-pixel">
-                            ${(tvl / 1000).toFixed(0)}K
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-muted-foreground font-mono uppercase">TVL</span>
+                            <span className="text-xs font-bold font-pixel text-white">{tvlFormatted} USDC</span>
                         </div>
                     </div>
                 </div>
-
-                {/* Tier */}
-                <div className="space-y-2 pt-2">
-                    <div className="text-xs text-muted-foreground uppercase tracking-wider font-mono">Tier</div>
-                    <div className="inline-flex items-center justify-center px-3 py-1 bg-carrot-orange/10 border border-carrot-orange/20 rounded text-sm font-mono text-carrot-orange font-bold">
-                        {vault.tier}
-                    </div>
-                </div>
-
-                {/* Select Button */}
-                <button className="w-full mt-4 py-3 bg-gradient-to-r from-carrot-orange to-carrot-orange text-carrot-orange-foreground font-bold font-pixel text-sm rounded-lg hover:shadow-[0_0_25px_rgba(208,129,65,0.6)] transition-all">
-                    SELECT
-                </button>
-            </div>
+            </CardWithFrame>
         </motion.div>
     );
 }
