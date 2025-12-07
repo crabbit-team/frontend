@@ -1,13 +1,13 @@
 import { Bot } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { CHART_COLOR_PALETTE } from "../../lib/utils";
+import type { StrategyToken } from "../../api/Strategy";
 
 interface StrategyResultCardProps {
   variant: "real" | "sample";
   description: string;
   reasoning: string;
-  tokens: string[];
-  weights: number[];
+  tokens: StrategyToken[];
 }
 
 export function StrategyResultCard({
@@ -15,11 +15,10 @@ export function StrategyResultCard({
   description,
   reasoning,
   tokens,
-  weights,
 }: StrategyResultCardProps) {
-  const pieData = tokens.map((name, idx) => ({
-    name,
-    value: weights[idx] ?? 0,
+  const pieData = tokens.map((token) => ({
+    name: token.symbol,
+    value: token.weight,
   }));
 
   return (
@@ -31,7 +30,7 @@ export function StrategyResultCard({
         </div>
         <div>
           <div className="text-sm font-bold text-white">AI Strategy Architect</div>
-          <div className="text-xs text-gray font-mono">
+          <div className="text-xs text-white font-mono">
             {variant === "real" ? "Generated from your prompt" : "Sample output format"}
           </div>
         </div>
@@ -46,16 +45,16 @@ export function StrategyResultCard({
                 {variant === "real" ? "AI Meme Strategy" : "Sample Meme Strategy"}
               </h3>
             </div>
-            <p className="text-gray-foreground font-mono text-sm leading-relaxed mb-4">
+            <p className="text-white font-mono text-sm leading-relaxed mb-4">
               {description}
             </p>
-            <p className="text-sm text-gray font-mono leading-relaxed mb-4">
+            <p className="text-sm text-white font-mono leading-relaxed mb-4">
               {reasoning}
             </p>
 
             {/* Allocation – title + left: pie chart, right: detailed token list */}
             <div className="pt-4 border-t border-white/5 space-y-3">
-              <div className="text-xs text-gray uppercase tracking-wider font-mono">
+              <div className="text-xs text-white uppercase tracking-wider font-mono">
                 Allocation
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -90,9 +89,9 @@ export function StrategyResultCard({
 
                 {/* Right: detailed token list */}
                 <div className="space-y-2">
-                  {weights.map((w, idx) => (
+                  {tokens.map((token, idx) => (
                     <div
-                      key={idx}
+                      key={token.address}
                       className="flex items-center gap-2 text-[11px] font-mono text-white/80"
                     >
                       <span
@@ -105,7 +104,7 @@ export function StrategyResultCard({
                         }}
                       />
                       <span className="truncate">
-                        {tokens[idx] ?? "-"}: {w}%
+                        {token.symbol}: {token.weight}%
                       </span>
                     </div>
                   ))}

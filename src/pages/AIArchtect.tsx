@@ -6,7 +6,6 @@
  * 
  * 색상 시스템:
  * - 메인 브랜드 색상: carrot-orange (HSL: 26 65% 54%, RGB: rgb(208, 129, 65))
- * - 보조 색상: pink (강조 색상), info (정보 색상)
  * - 배경: background (다크 테마)
  * - 텍스트: foreground (밝은 텍스트)
  * - 카드: card (반투명 다크 배경)
@@ -14,9 +13,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Send, Zap } from "lucide-react";
+import { Send, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { generateStrategy } from "../api/Strategy";
+import { generateStrategy, type StrategyToken } from "../api/Strategy";
 import { StrategyResultCard } from "../components/strategy/StrategyResultCard";
 
 /**
@@ -34,8 +33,56 @@ const SAMPLE_PROMPTS = [
  * 실제 API 호출 전 미리 보여주는 예시 전략 정보
  * 이 페이지 안에서만 하드코딩으로 사용됩니다.
  */
-const SAMPLE_TOKENS = ["PEPE", "WIF", "POPCAT", "MOG", "BOME", "BRETT"];
-const SAMPLE_WEIGHTS = [30, 20, 15, 15, 10, 10]; // 총 100%
+const SAMPLE_TOKENS: StrategyToken[] = [
+    {
+        address: "0x6982508145454Ce325dDbE47a25d4ec3d2311933",
+        decimals: 18,
+        name: "Pepe",
+        price_usd: 0.00001234,
+        symbol: "PEPE",
+        weight: 30,
+    },
+    {
+        address: "0xba2ae424d960c26247dd6c32edc70b295c744c43",
+        decimals: 18,
+        name: "Dogwifhat",
+        price_usd: 0.08,
+        symbol: "WIF",
+        weight: 20,
+    },
+    {
+        address: "0x0000000000000000000000000000000000000001",
+        decimals: 18,
+        name: "Popcat",
+        price_usd: 0.05,
+        symbol: "POPCAT",
+        weight: 15,
+    },
+    {
+        address: "0x0000000000000000000000000000000000000002",
+        decimals: 18,
+        name: "Mog Coin",
+        price_usd: 0.0001,
+        symbol: "MOG",
+        weight: 15,
+    },
+    {
+        address: "0x0000000000000000000000000000000000000003",
+        decimals: 18,
+        name: "Book of Meme",
+        price_usd: 0.00005,
+        symbol: "BOME",
+        weight: 10,
+    },
+    {
+        address: "0x0000000000000000000000000000000000000004",
+        decimals: 18,
+        name: "Brett",
+        price_usd: 0.00008,
+        symbol: "BRETT",
+        weight: 10,
+    },
+];
 const SAMPLE_DESCRIPTION =
     "Heavier allocation to PEPE and WIF, with diversified exposure to POPCAT, MOG, BOME, and BRETT.";
 const SAMPLE_REASONING =
@@ -103,17 +150,6 @@ export function AIArchitect () {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12 space-y-4"
                 >
-                    {/* 아이콘 컨테이너: 중앙에 배치된 Sparkles 아이콘 */}
-                    <div className="flex items-center justify-center gap-3 mb-6">
-                        {/* 아이콘 원형 배경: 당근 오렌지 */}
-                        {/* bg-carrot-orange: 시작 색상 (HSL: 26 65% 54%, RGB: rgb(208, 129, 65)) */}
-            
-                        {/* shadow-[0_0_30px_rgba(208,129,65,0.4)]: 당근 오렌지 색상의 글로우 효과 (40% 투명도) */}
-                        <div className="w-16 h-16 rounded-full bg-carrot-orange flex items-center justify-center shadow-[0_0_30px_rgba(208,129,65,0.4)]">
-                            {/* text-carrot-orange-foreground: carrot-orange의 foreground 색상 (HSL: 0 0% 10%, 어두운 텍스트) */}
-                            <Sparkles className="w-8 h-8 text-carrot-orange-foreground" />
-                        </div>
-                    </div>
                     {/* 메인 제목: 그라디언트 텍스트 효과 */}
                     {/* text-transparent bg-clip-text: 텍스트를 투명하게 하고 배경을 클리핑하여 그라디언트 적용 */}
                     {/* bg-carrot-orange/80: 중간 색상 (당근 오렌지 80% 투명도) */}
@@ -262,7 +298,6 @@ export function AIArchitect () {
                         description={SAMPLE_DESCRIPTION}
                         reasoning={SAMPLE_REASONING}
                         tokens={SAMPLE_TOKENS}
-                        weights={SAMPLE_WEIGHTS}
                     />
                 </motion.div>
 
@@ -274,7 +309,7 @@ export function AIArchitect () {
                     className="text-center"
                 >
                     {/* text-gray: index.css의 --gray 변수 사용 (HSL: 240 3.7% 15.9%, 어두운 회색) */}
-                    <p className="text-xs text-gray font-mono">
+                    <p className="text-xs text-white font-mono">
                         AI strategies are generated for educational use only. Past performance does not guarantee future results.
                     </p>
                 </motion.div>

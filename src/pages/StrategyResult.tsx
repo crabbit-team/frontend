@@ -84,9 +84,16 @@ export function StrategyResult() {
 
       <div className="container mx-auto px-4 py-16 relative z-10 max-w-4xl space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl md:text-4xl font-bold font-pixel tracking-tight">
-            AI-Generated Strategy
-          </h1>
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold font-pixel tracking-tight">
+              {strategy.name || "AI-Generated Strategy"}
+            </h1>
+            {strategy.symbol && (
+              <p className="text-sm text-muted-foreground font-mono mt-1">
+                {strategy.symbol}
+              </p>
+            )}
+          </div>
           <p className="text-sm text-gray font-mono">
             This is the strategy generated from your last prompt. You can save it, share it, or
             use it as a template for a vault.
@@ -98,7 +105,6 @@ export function StrategyResult() {
           description={strategy.description}
           reasoning={strategy.reasoning}
           tokens={strategy.tokens}
-          weights={strategy.weights}
         />
 
         {/* Initial deposit + contract interaction */}
