@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { Shield, Bot } from "lucide-react";
-import type { Vault, AIOpponent } from "../../lib/mockData";
+import type { VaultSummary } from "../../api/vault";
+import type { AIBattleStrategy } from "../../api/battle";
 
 interface CardBattleAnimationProps {
-    vault: Vault;
-    opponent: AIOpponent;
+    vault: VaultSummary;
+    opponent: AIBattleStrategy;
 }
 
 export function CardBattleAnimation({ vault, opponent }: CardBattleAnimationProps) {
@@ -87,7 +88,7 @@ export function CardBattleAnimation({ vault, opponent }: CardBattleAnimationProp
                                 ]
                             }}
                             transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
-                            className={`w-16 h-16 rounded-full bg-gradient-to-br ${opponent.avatar} flex items-center justify-center mb-4`}
+                            className="w-16 h-16 rounded-full bg-gradient-to-br from-error to-warning flex items-center justify-center mb-4"
                         >
                             <Bot className="w-8 h-8 text-white" />
                         </motion.div>

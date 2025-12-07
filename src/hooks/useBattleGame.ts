@@ -1,10 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Vault, AIOpponent, BattleGameState, BattleResult } from '../lib/mockData';
+import type { VaultSummary } from '../api/vault';
+import type { AIBattleStrategy } from '../api/battle';
+
+export type BattleGameState = 'idle' | 'selectingVault' | 'selectingOpponent' | 'readyToStart' | 'countdown' | 'result';
+
+export interface BattleResult {
+    playerWon: boolean;
+    playerReturn: number;
+    opponentReturn: number;
+    reward: number;
+    playerROI: number;
+    opponentROI: number;
+    rewardAmount: number;
+}
 
 export function useBattleGame() {
     const [gameState, setGameState] = useState<BattleGameState>('idle');
-    const [selectedVault, setSelectedVault] = useState<Vault | null>(null);
-    const [selectedOpponent, setSelectedOpponent] = useState<AIOpponent | null>(null);
+    const [selectedVault, setSelectedVault] = useState<VaultSummary | null>(null);
+    const [selectedOpponent, setSelectedOpponent] = useState<AIBattleStrategy | null>(null);
     const [countdown, setCountdown] = useState(60);
     const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
     const [isCountingDown, setIsCountingDown] = useState(false);
@@ -55,12 +68,12 @@ export function useBattleGame() {
         setGameState('selectingVault');
     }, []);
 
-    const selectVault = useCallback((vault: Vault) => {
+    const selectVault = useCallback((vault: VaultSummary) => {
         setSelectedVault(vault);
         setGameState('selectingOpponent');
     }, []);
 
-    const selectOpponent = useCallback((opponent: AIOpponent) => {
+    const selectOpponent = useCallback((opponent: AIBattleStrategy) => {
         setSelectedOpponent(opponent);
         setGameState('readyToStart');
     }, []);

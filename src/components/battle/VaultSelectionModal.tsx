@@ -1,15 +1,38 @@
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { MOCK_VAULTS, type Vault } from "../../lib/mockData";
+import { getVaults, type VaultSummary } from "../../api/vault";
 import { VaultCardSelectable } from "./VaultCardSelectable";
 
 interface VaultSelectionModalProps {
     isOpen: boolean;
-    onSelect: (vault: Vault) => void;
+    onSelect: (vault: VaultSummary) => void;
     onClose: () => void;
 }
 
 export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectionModalProps) {
+    const [vaults, setVaults] = useState<VaultSummary[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            async function fetchVaults() {
+                try {
+                    setIsLoading(true);
+                    setError(null);
+                    const response = await getVaults();
+                    setVaults(response.vaults);
+                } catch (err) {
+                    setError(err instanceof Error ? err.message : "Failed to fetch vaults");
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+            void fetchVaults();
+        }
+    }, [isOpen]);
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -54,21 +77,35 @@ export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectio
 
                             {/* Content */}
                             <div className="p-6 max-h-[70vh] overflow-y-auto">
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {MOCK_VAULTS.map((vault, index) => (
-                                        <motion.div
-                                            key={vault.id}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: index * 0.1 }}
-                                        >
-                                            <VaultCardSelectable
-                                                vault={vault}
-                                                onSelect={onSelect}
-                                            />
-                                        </motion.div>
-                                    ))}
-                                </div>
+                                {isLoading ? (
+                                    <div className="flex items-center justify-center py-12">
+                                        <div className="text-muted-foreground font-mono">Loading vaults...</div>
+                                    </div>
+                                ) : error ? (
+                                    <div className="flex items-center justify-center py-12">
+                                        <div className="text-error font-mono">{error}</div>
+                                    </div>
+                                ) : vaults.length === 0 ? (
+                                    <div className="flex items-center justify-center py-12">
+                                        <div className="text-muted-foreground font-mono">No vaults available</div>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {vaults.map((vault, index) => (
+                                            <motion.div
+                                                key={vault.address}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                            >
+                                                <VaultCardSelectable
+                                                    vault={vault}
+                                                    onSelect={onSelect}
+                                                />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </motion.div>

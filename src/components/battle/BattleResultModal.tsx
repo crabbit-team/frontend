@@ -1,14 +1,25 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, TrendingUp, TrendingDown, RotateCcw, Home } from "lucide-react";
-import type { BattleResult, Vault, AIOpponent } from "../../lib/mockData";
+import type { VaultSummary } from "../../api/vault";
+import type { AIBattleStrategy } from "../../api/battle";
 import Confetti from "react-confetti";
 import { useEffect, useState } from "react";
+
+export interface BattleResult {
+    playerWon: boolean;
+    playerReturn: number;
+    opponentReturn: number;
+    reward: number;
+    playerROI: number;
+    opponentROI: number;
+    rewardAmount: number;
+}
 
 interface BattleResultModalProps {
     isOpen: boolean;
     result: BattleResult;
-    vault: Vault;
-    opponent: AIOpponent;
+    vault: VaultSummary;
+    opponent: AIBattleStrategy;
     onClaimReward: () => void;
     onTryAgain: () => void;
     onReturnHome: () => void;

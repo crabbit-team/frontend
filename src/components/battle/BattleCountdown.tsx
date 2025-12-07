@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { Clock, Zap } from "lucide-react";
-import type { Vault, AIOpponent } from "../../lib/mockData";
+import type { VaultSummary } from "../../api/vault";
+import type { AIBattleStrategy } from "../../api/battle";
 import { BattleMiniGame, type BattleMiniGameResult } from "./BattleMiniGame";
 
 interface BattleCountdownProps {
     countdown: number;
-    vault: Vault;
-    opponent: AIOpponent;
+    vault: VaultSummary;
+    opponent: AIBattleStrategy;
 }
 
 // Mock battle log messages

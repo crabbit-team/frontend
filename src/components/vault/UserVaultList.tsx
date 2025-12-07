@@ -31,7 +31,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
   const changePositive = typeof change === "number" && change >= 0;
 
   const creatorAddress = vault.creator?.address ?? "";
-  const creatorImage = vault.creator?.image_url ?? null;
+  const creatorImage = vault.creator?.image_url;
   const truncatedCreator =
     creatorAddress && creatorAddress.length > 12
       ? `${creatorAddress.slice(0, 6)}...${creatorAddress.slice(-4)}`
@@ -92,7 +92,7 @@ function ProfileVaultCard({ vault }: { vault: VaultDetail }) {
       <div className="flex items-center justify-between gap-3 pt-3 border-t border-border/60">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full overflow-hidden bg-carrot-orange/10 flex items-center justify-center">
-            {creatorImage ? (
+            {creatorImage && creatorImage.trim() ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={creatorImage}

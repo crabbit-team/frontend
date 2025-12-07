@@ -1,16 +1,39 @@
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowLeft } from "lucide-react";
-import { MOCK_AI_OPPONENTS, type AIOpponent } from "../../lib/mockData";
+import { getAIBattleStrategies, type AIBattleStrategy } from "../../api/battle";
 import { AIOpponentCard } from "./AIOpponentCard";
 
 interface OpponentSelectionModalProps {
     isOpen: boolean;
-    onSelect: (opponent: AIOpponent) => void;
+    onSelect: (opponent: AIBattleStrategy) => void;
     onBack: () => void;
     onClose: () => void;
 }
 
 export function OpponentSelectionModal({ isOpen, onSelect, onBack, onClose }: OpponentSelectionModalProps) {
+    const [strategies, setStrategies] = useState<AIBattleStrategy[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            async function fetchStrategies() {
+                try {
+                    setIsLoading(true);
+                    setError(null);
+                    const response = await getAIBattleStrategies();
+                    setStrategies(response.strategies);
+                } catch (err) {
+                    setError(err instanceof Error ? err.message : "Failed to fetch AI strategies");
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+            void fetchStrategies();
+        }
+    }, [isOpen]);
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -63,21 +86,31 @@ export function OpponentSelectionModal({ isOpen, onSelect, onBack, onClose }: Op
 
                             {/* Content */}
                             <div className="p-6 max-h-[70vh] overflow-y-auto">
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {MOCK_AI_OPPONENTS.map((opponent, index) => (
-                                        <motion.div
-                                            key={opponent.id}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: index * 0.1 }}
-                                        >
-                                            <AIOpponentCard
-                                                opponent={opponent}
-                                                onSelect={onSelect}
-                                            />
-                                        </motion.div>
-                                    ))}
-                                </div>
+                                {isLoading ? (
+                                    <div className="flex items-center justify-center py-12">
+                                        <div className="text-muted-foreground font-mono">Loading AI strategies...</div>
+                                    </div>
+                                ) : error ? (
+                                    <div className="flex items-center justify-center py-12">
+                                        <div className="text-error font-mono">{error}</div>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {strategies.map((strategy, index) => (
+                                            <motion.div
+                                                key={strategy.id}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                            >
+                                                <AIOpponentCard
+                                                    opponent={strategy}
+                                                    onSelect={onSelect}
+                                                />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </motion.div>

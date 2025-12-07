@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { Swords, Trophy, Coins, ArrowLeft } from "lucide-react";
-import type { Vault, AIOpponent } from "../../lib/mockData";
+import type { VaultSummary } from "../../api/vault";
+import type { AIBattleStrategy } from "../../api/battle";
 import { Bot, Shield } from "lucide-react";
 
 interface BattleArenaProps {
-    vault: Vault;
-    opponent: AIOpponent;
+    vault: VaultSummary;
+    opponent: AIBattleStrategy;
     onStartBattle: () => void;
     onBack: () => void;
 }
@@ -98,15 +99,21 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                                     <Shield className="w-10 h-10 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold font-pixel text-white mb-2">{vault.name}</h3>
-                                <p className="text-sm text-gray font-mono mb-4">by {vault.manager}</p>
+                                <p className="text-sm text-gray font-mono mb-4">
+                                    {vault.creator?.address ? `${vault.creator.address.slice(0, 6)}...${vault.creator.address.slice(-4)}` : "Unknown"}
+                                </p>
                                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
                                         <div className="text-xs text-gray font-mono uppercase">APY</div>
-                                        <div className="text-xl font-bold font-pixel text-success">{vault.apy}%</div>
+                                        <div className="text-xl font-bold font-pixel text-success">
+                                            {vault.performance?.apy?.toFixed(2) ?? 0}%
+                                        </div>
                                     </div>
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
                                         <div className="text-xs text-gray font-mono uppercase">TVL</div>
-                                        <div className="text-xl font-bold font-pixel text-info">${(vault.tvl / 1000).toFixed(0)}K</div>
+                                        <div className="text-xl font-bold font-pixel text-info">
+                                            ${((typeof vault.tvl === "number" ? vault.tvl : parseFloat(vault.tvl)) / 1000).toFixed(0)}K
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -125,22 +132,22 @@ export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleAr
                                 </div>
                             </div>
                             <div className="flex flex-col items-center">
-                                <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${opponent.avatar} flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)]`}>
+                                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-error to-warning flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)]">
                                     <Bot className="w-10 h-10 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold font-pixel text-white mb-2">{opponent.name}</h3>
-                                <p className="text-sm text-gray font-mono mb-2">{opponent.specialty}</p>
+                                <p className="text-sm text-gray font-mono mb-2">{opponent.description}</p>
                                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray font-mono uppercase">APY</div>
+                                        <div className="text-xs text-gray font-mono uppercase">Tokens</div>
                                         <div className="text-xl font-bold font-pixel text-success">
-                                            {opponent.apy}%
+                                            {opponent.tokens?.length ?? 0}
                                         </div>
                                     </div>
                                     <div className="bg-black/30 rounded-lg p-3 text-center">
-                                        <div className="text-xs text-gray font-mono uppercase">TVL</div>
-                                        <div className="text-xl font-bold font-pixel text-info">
-                                            ${Math.round(opponent.tvl / 1000).toLocaleString()}K
+                                        <div className="text-xs text-gray font-mono uppercase">Strategy</div>
+                                        <div className="text-sm font-bold font-pixel text-info">
+                                            #{opponent.id}
                                         </div>
                                     </div>
                                 </div>
