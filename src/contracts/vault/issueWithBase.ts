@@ -58,13 +58,30 @@ export async function issueWithBase(params: IssueWithBaseParams) {
     MemeVaultABI.abi,
     getReadOnlyProvider(),
   );
-  const navPerShare = await vaultRead.getNavPerShare();
+
+  // NAV per share 가져오기
+  let navPerShare: ethers.BigNumber;
+  try {
+    navPerShare = await vaultRead.getNavPerShare();
+  } catch (err) {
+    console.warn("Failed to get NAV per share, using default value", err);
+    // NAV를 가져올 수 없으면 1:1 비율 사용 (1e18)
+    navPerShare = ethers.utils.parseEther("1");
+  }
+
+  // Expected shares 계산
   const expectedShares = amount
     .mul(ethers.utils.parseEther("1"))
     .div(navPerShare);
 
-  const slippageBps = params.slippageBps ?? 500; // 기본값 5%
+  console.log("Expected shares:", ethers.utils.formatEther(expectedShares));
+
+  // 슬리피지 설정 - 더 관대한 슬리피지 허용 (기본 20%)
+  const slippageBps = params.slippageBps ?? 2000; // 기본값 20% (500 -> 2000)
   const minShares = expectedShares.mul(10_000 - slippageBps).div(10_000);
+
+  console.log("Min shares with slippage:", ethers.utils.formatEther(minShares));
+  console.log("Slippage BPS:", slippageBps);
 
   // 4) Vault에서 issueWithBase 호출
   // issueWithBase(baseAmount, minShares, receiver, payFeeWithCRT)

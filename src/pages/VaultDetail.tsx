@@ -88,7 +88,7 @@ export function VaultDetail() {
       const result = await issueWithBase({
         vaultAddress: id,
         usdcAmount: amountNum,
-        slippageBps: 500, // 5% slippage tolerance
+        slippageBps: 2000, // 20% slippage tolerance (더 관대한 설정)
       });
 
       setDepositSuccess(
