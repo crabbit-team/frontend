@@ -33,16 +33,8 @@ export function Rank() {
         async function fetchVaults() {
             try {
                 setIsLoading(true);
-                const response = await getVaults();
-                
-                // APY 기준으로 정렬 (내림차순)
-                const sortedVaults = [...response.vaults].sort((a, b) => {
-                    const apyA = a.performance?.apy ?? 0;
-                    const apyB = b.performance?.apy ?? 0;
-                    return apyB - apyA;
-                });
-                
-                setVaults(sortedVaults);
+                const response = await getVaults({ sort_by: 'apy', order: 'desc' });
+                setVaults(response.vaults);
             } catch (error) {
                 console.error("Failed to fetch vaults:", error);
             } finally {

@@ -32,7 +32,7 @@ export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectio
                     setError(null);
 
                     // 현재 연결된 지갑 주소로 필터링하여 내 vault만 가져오기
-                    const response = await getVaults(address);
+                    const response = await getVaults({ creator: address });
 
                     if (response.vaults.length === 0) {
                         setError("You don't have any vaults yet. Create a vault first!");

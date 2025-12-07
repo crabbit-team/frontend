@@ -34,6 +34,10 @@ export interface VaultPerformance {
 export interface VaultPortfolioItem {
   /** 토큰 주소 */
   address: string;
+  /** 토큰 이름 */
+  name: string;
+  /** 토큰 심볼 */
+  symbol: string;
   /** 가중치 (%) */
   weight: number;
   /** 수량 */
@@ -61,13 +65,11 @@ export interface VaultDetail {
   tvl: string;
   /** 주식 가격 */
   share_price: string;
-  /** 주식 가격 소수점 자릿수 */
-  share_price_decimals: number;
   /** 성과 정보 */
   performance: VaultPerformance;
   /** 티어 */
   tier: string;
-  /** 포트폴리오 구성 (토큰 주소, 가중치, 수량) */
+  /** 포트폴리오 구성 (토큰 주소, 이름, 심볼, 가중치, 수량) */
   portfolio: VaultPortfolioItem[];
   /** 전략 상세 설명 */
   strategy_description: string;
@@ -94,8 +96,6 @@ export interface VaultSummary {
   tvl: string;
   /** 주식 가격 */
   share_price: string;
-  /** 주식 가격 소수점 자릿수 */
-  share_price_decimals: number;
   /** 성과 정보 */
   performance: VaultPerformance;
   /** 티어 */
@@ -156,11 +156,12 @@ export async function getVaultByAddress(address: string): Promise<VaultDetail> {
     creator: VaultCreator;
     tvl: string;
     share_price: string;
-    share_price_decimals: number;
     performance: VaultPerformance;
     tier: string;
     portfolio: Array<{
       address: string;
+      name: string;
+      symbol: string;
       weight: number;
       amount: string;
     }>;
@@ -177,10 +178,15 @@ export async function getVaultByAddress(address: string): Promise<VaultDetail> {
     creator: raw.creator,
     tvl: raw.tvl,
     share_price: raw.share_price,
-    share_price_decimals: raw.share_price_decimals,
     performance: raw.performance,
     tier: raw.tier,
-    portfolio: raw.portfolio,
+    portfolio: raw.portfolio.map((item) => ({
+      address: item.address,
+      name: item.name,
+      symbol: item.symbol,
+      weight: item.weight,
+      amount: item.amount,
+    })),
     strategy_description: raw.strategy_description,
     explorer_url: raw.explorer_url,
   };
@@ -191,18 +197,49 @@ export async function getVaultByAddress(address: string): Promise<VaultDetail> {
 /**
  * GET /api/vaults
  *
- * 모든 볼트(전략) 목록을 조회하거나, 선택적으로 생성자로 필터링합니다.
+ * 볼트(전략) 목록을 조회합니다. 페이지네이션, 필터링, 정렬을 지원합니다.
  * 
- * @param creator - 필터링할 생성자 지갑 주소 (선택적, 없으면 전체 조회)
+ * @param params - 조회 파라미터
+ * @param params.creator - 생성자 지갑 주소로 필터링 (선택적)
+ * @param params.depositor - 예치자 지갑 주소로 필터링 (선택적)
+ * @param params.page - 페이지 번호 (1부터 시작, 기본값: 1)
+ * @param params.limit - 페이지당 볼트 개수 (기본값: 20)
+ * @param params.sort_by - 정렬 필드: 'tvl', 'name', 'apy' (기본값: 'tvl')
+ * @param params.order - 정렬 순서: 'asc' 또는 'desc' (기본값: 'desc')
  * @returns 볼트 목록과 전체 개수
  * @throws {Error} API 요청 실패 시 에러 발생
  */
+export interface GetVaultsParams {
+  creator?: string | null;
+  depositor?: string | null;
+  page?: number;
+  limit?: number;
+  sort_by?: 'tvl' | 'name' | 'apy';
+  order?: 'asc' | 'desc';
+}
+
 export async function getVaults(
-  creator?: string | null,
+  params?: GetVaultsParams,
 ): Promise<VaultListResponse> {
   const url = new URL(`${BASE_URL}/api/vaults`);
-  if (creator) {
-    url.searchParams.set("creator", creator);
+  
+  if (params?.creator) {
+    url.searchParams.set("creator", params.creator);
+  }
+  if (params?.depositor) {
+    url.searchParams.set("depositor", params.depositor);
+  }
+  if (params?.page !== undefined) {
+    url.searchParams.set("page", params.page.toString());
+  }
+  if (params?.limit !== undefined) {
+    url.searchParams.set("limit", params.limit.toString());
+  }
+  if (params?.sort_by) {
+    url.searchParams.set("sort_by", params.sort_by);
+  }
+  if (params?.order) {
+    url.searchParams.set("order", params.order);
   }
 
   const res = await fetch(url.toString(), {
@@ -234,7 +271,6 @@ export async function getVaults(
       creator: VaultCreator;
       tvl: string;
       share_price: string;
-      share_price_decimals: number;
       performance: VaultPerformance;
       tier: string;
       explorer_url: string;
@@ -250,7 +286,6 @@ export async function getVaults(
     creator: v.creator,
     tvl: v.tvl, // TVL은 "00000.00" 형식의 문자열로 유지
     share_price: v.share_price,
-    share_price_decimals: v.share_price_decimals,
     performance: v.performance,
     tier: v.tier,
     explorer_url: v.explorer_url,

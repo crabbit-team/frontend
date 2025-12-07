@@ -38,6 +38,7 @@ export function VaultDetail() {
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [imageLinkCopyFeedback, setImageLinkCopyFeedback] = useState<string | null>(null);
+  const [copiedTokenIndex, setCopiedTokenIndex] = useState<number | null>(null);
   const [isDepositing, setIsDepositing] = useState(false);
   const [depositError, setDepositError] = useState<string | null>(null);
   const [depositSuccess, setDepositSuccess] = useState<string | null>(null);
@@ -48,6 +49,67 @@ export function VaultDetail() {
     userAddress: address,
     enabled: isConnected && !!address,
   });
+
+  useEffect(() => {
+    async function fetchVault() {
+      if (!id) {
+        setError("Vault address is required");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        const vaultData = await getVaultByAddress(id);
+        setVault(vaultData);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch vault"
+        );
+        setVault(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    void fetchVault();
+  }, [id]);
+
+  // Address 복사 핸들러
+  const handleCopyAddress = async () => {
+    if (!vault?.address) return;
+    try {
+      await navigator.clipboard.writeText(vault.address);
+      setCopyFeedback("Copied!");
+      setTimeout(() => setCopyFeedback(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy address", err);
+    }
+  };
+
+  // Image URL 복사 핸들러
+  const handleCopyImageUrl = async () => {
+    if (!vault?.image_url) return;
+    try {
+      await navigator.clipboard.writeText(vault.image_url);
+      setImageLinkCopyFeedback("Copied!");
+      setTimeout(() => setImageLinkCopyFeedback(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy image URL", err);
+    }
+  };
+
+  // 토큰 주소 복사 핸들러
+  const handleCopyTokenAddress = async (address: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopiedTokenIndex(index);
+      setTimeout(() => setCopiedTokenIndex(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy token address", err);
+    }
+  };
 
   const handleDeposit = async () => {
     if (!id) {
@@ -115,56 +177,6 @@ export function VaultDetail() {
     }
   };
 
-  useEffect(() => {
-    async function fetchVault() {
-      if (!id) {
-        setError("Vault address is required");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setError(null);
-        const vaultData = await getVaultByAddress(id);
-        setVault(vaultData);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch vault"
-        );
-        setVault(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    void fetchVault();
-  }, [id]);
-
-  // Address 복사 핸들러
-  const handleCopyAddress = async () => {
-    if (!vault?.address) return;
-    try {
-      await navigator.clipboard.writeText(vault.address);
-      setCopyFeedback("Copied!");
-      setTimeout(() => setCopyFeedback(null), 2000);
-    } catch (err) {
-      console.error("Failed to copy address", err);
-    }
-  };
-
-  // Image URL 복사 핸들러
-  const handleCopyImageUrl = async () => {
-    if (!vault?.image_url) return;
-    try {
-      await navigator.clipboard.writeText(vault.image_url);
-      setImageLinkCopyFeedback("Copied!");
-      setTimeout(() => setImageLinkCopyFeedback(null), 2000);
-    } catch (err) {
-      console.error("Failed to copy image URL", err);
-    }
-  };
-
   // Strategy description 파싱 함수
   const parseStrategyDescription = (description: string) => {
     if (!description) return [{ label: "Description", value: "No description" }];
@@ -202,7 +214,7 @@ export function VaultDetail() {
   // 차트에 사용할 포트폴리오 데이터
   const assets =
     vault?.portfolio?.map((item, index) => ({
-      name: item.address.slice(0, 6) + "..." + item.address.slice(-4), // 주소를 짧게 표시
+      name: item.name || item.symbol || item.address.slice(0, 6) + "..." + item.address.slice(-4), // 토큰 이름 또는 심볼, 없으면 주소
       value: item.weight,
       color: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
     })) ?? [];
@@ -440,9 +452,34 @@ export function VaultDetail() {
                         className="flex items-center justify-between p-3 bg-secondary/30 rounded-lg border border-border/50"
                       >
                         <div className="flex flex-col">
-                          <span className="font-mono text-sm text-foreground">
-                            {item.address.slice(0, 8)}...{item.address.slice(-6)}
+                          <span className="font-mono text-sm text-foreground font-bold">
+                            {item.name || item.symbol || item.address.slice(0, 8) + "..." + item.address.slice(-6)}
                           </span>
+                          {item.symbol && item.name && item.symbol !== item.name && (
+                            <span className="font-mono text-xs text-muted-foreground">
+                              {item.symbol}
+                            </span>
+                          )}
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs text-muted-foreground">
+                              {item.address.slice(0, 8)}...{item.address.slice(-6)}
+                            </span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopyTokenAddress(item.address, index);
+                              }}
+                              className="p-1 rounded hover:bg-secondary/50 transition-colors flex items-center gap-1 group"
+                              aria-label="Copy token address"
+                            >
+                              <Copy className="w-3 h-3 text-muted-foreground group-hover:text-carrot-orange transition-colors" />
+                            </button>
+                            {copiedTokenIndex === index && (
+                              <span className="text-xs text-carrot-orange font-mono">
+                                Copied!
+                              </span>
+                            )}
+                          </div>
                           <span className="font-mono text-xs text-muted-foreground">
                             Amount: {item.amount}
                           </span>

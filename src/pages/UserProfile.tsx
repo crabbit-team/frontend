@@ -9,7 +9,8 @@ import {
     updateProfileImage,
     type UserProfile,
 } from "../api/profile";
-import { UserVaultList } from "../components/vault/UserVaultList";
+import { getVaults, type VaultSummary } from "../api/vault";
+import { CardWithFrame } from "../components/common/CardWithFrame";
 import { useProfileContext } from "../context/ProfileContext";
 
 export function UserProfile() {
@@ -24,6 +25,12 @@ export function UserProfile() {
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
     const [addressCopyFeedback, setAddressCopyFeedback] = useState<string | null>(null);
+
+    // Vault lists
+    const [createdVaults, setCreatedVaults] = useState<VaultSummary[]>([]);
+    const [depositedVaults, setDepositedVaults] = useState<VaultSummary[]>([]);
+    const [isLoadingCreated, setIsLoadingCreated] = useState(false);
+    const [isLoadingDeposited, setIsLoadingDeposited] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -87,6 +94,70 @@ export function UserProfile() {
             cancelled = true;
         };
     }, [connectedAddress, id, navigate, setSharedProfile]);
+
+    // Fetch created vaults
+    useEffect(() => {
+        if (!connectedAddress) {
+            setCreatedVaults([]);
+            return;
+        }
+
+        let cancelled = false;
+        const run = async () => {
+            setIsLoadingCreated(true);
+            try {
+                const response = await getVaults({
+                    creator: connectedAddress,
+                });
+                if (!cancelled) {
+                    setCreatedVaults(response.vaults);
+                }
+            } catch (err) {
+                console.error("Failed to fetch created vaults", err);
+                if (!cancelled) {
+                    setCreatedVaults([]);
+                }
+            } finally {
+                if (!cancelled) setIsLoadingCreated(false);
+            }
+        };
+        void run();
+        return () => {
+            cancelled = true;
+        };
+    }, [connectedAddress]);
+
+    // Fetch deposited vaults
+    useEffect(() => {
+        if (!connectedAddress) {
+            setDepositedVaults([]);
+            return;
+        }
+
+        let cancelled = false;
+        const run = async () => {
+            setIsLoadingDeposited(true);
+            try {
+                const response = await getVaults({
+                    depositor: connectedAddress,
+                });
+                if (!cancelled) {
+                    setDepositedVaults(response.vaults);
+                }
+            } catch (err) {
+                console.error("Failed to fetch deposited vaults", err);
+                if (!cancelled) {
+                    setDepositedVaults([]);
+                }
+            } finally {
+                if (!cancelled) setIsLoadingDeposited(false);
+            }
+        };
+        void run();
+        return () => {
+            cancelled = true;
+        };
+    }, [connectedAddress]);
 
     if (isLoading && !profile) {
         return (
@@ -214,6 +285,19 @@ export function UserProfile() {
         }
     };
 
+    const formatTVL = (tvlString: string): string => {
+        const tvl = parseFloat(tvlString);
+        if (tvl >= 1_000_000_000) {
+            return `$${(tvl / 1_000_000_000).toFixed(1)}B`;
+        }
+        if (tvl >= 1_000_000) {
+            return `$${(tvl / 1_000_000).toFixed(1)}M`;
+        }
+        if (tvl >= 1_000) {
+            return `$${(tvl / 1_000).toFixed(1)}K`;
+        }
+        return `$${tvl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
 
     return (
         <div className="space-y-8">
@@ -330,7 +414,7 @@ export function UserProfile() {
                                     {updateError}
                                 </p>
                             )}
-                    </div>
+                        </div>
                         <div className="mt-3 flex gap-2">
                             <button
                                 type="button"
@@ -351,16 +435,15 @@ export function UserProfile() {
                         </div>
                     </div>
                 )}
-                        </div>
+            </div>
 
             {/* Strategy Deck */}
-            <div className="space-y-4">
+            <div className="space-y-8">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
                     <div>
                         <h2 className="text-2xl font-bold font-pixel">
                             My Strategy Deck
                         </h2>
-                        
                     </div>
                     <div className="flex gap-2">
                         <Link
@@ -369,12 +452,121 @@ export function UserProfile() {
                         >
                             Create with AI
                         </Link>
+                    </div>
                 </div>
-            </div>
 
-                <UserVaultList addresses={[]} />
+                {/* Created by me */}
+                <div className="space-y-4">
+                    <h3 className="text-xl font-bold font-pixel">Created by me</h3>
+                    {isLoadingCreated ? (
+                        <div className="border border-border rounded-lg p-6 text-sm text-muted-foreground font-mono bg-card/40">
+                            Loading strategies...
+                        </div>
+                    ) : createdVaults.length === 0 ? (
+                        <div className="border border-dashed border-border rounded-lg p-6 text-sm text-muted-foreground font-tech bg-card/40">
+                            <p>No strategies created yet.</p>
+                        </div>
+                    ) : (
+                        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
+                            {createdVaults.map((vault, index) => {
+                                // "Created by me" 섹션의 모든 vault는 creator이므로 항상 orange 사용
+                                const frameImage = "/card/frame/cardFrameOrange.png";
+                                const backgroundImage = vault.image_url || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800";
+                                const roi = vault.performance?.apy ?? 0;
+                                const tvlFormatted = formatTVL(vault.tvl);
+
+                                return (
+                                    <CardWithFrame
+                                        key={vault.address}
+                                        frameImage={frameImage}
+                                        backgroundImage={backgroundImage}
+                                        size="small"
+                                        onClick={() => navigate(`/vaults/${vault.address}`)}
+                                        animationDelay={index * 0.1}
+                                        backgroundSize="cover"
+                                    >
+                                        <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+                                            <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
+                                                    <span className="text-sm font-bold font-pixel text-white">{vault.symbol}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
+                                                    <span className="text-sm font-bold font-pixel text-success">
+                                                        {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
+                                                    <span className="text-sm font-bold font-pixel text-white">{tvlFormatted} USDC</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CardWithFrame>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+
+                {/* Deposited by me */}
+                <div className="space-y-4">
+                    <h3 className="text-xl font-bold font-pixel">Deposited by me</h3>
+                    {isLoadingDeposited ? (
+                        <div className="border border-border rounded-lg p-6 text-sm text-muted-foreground font-mono bg-card/40">
+                            Loading strategies...
+                        </div>
+                    ) : depositedVaults.length === 0 ? (
+                        <div className="border border-dashed border-border rounded-lg p-6 text-sm text-muted-foreground font-tech bg-card/40">
+                            <p>No strategies deposited yet.</p>
+                        </div>
+                    ) : (
+                        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
+                            {depositedVaults.map((vault, index) => {
+                                const isCreator = vault.creator.address.toLowerCase() === connectedAddress?.toLowerCase();
+                                const frameImage = isCreator 
+                                    ? "/card/frame/cardFrameOrange.png"
+                                    : "/card/frame/cardFrameGreen.png";
+                                const backgroundImage = vault.image_url || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800";
+                                const roi = vault.performance?.apy ?? 0;
+                                const tvlFormatted = formatTVL(vault.tvl);
+
+                                return (
+                                    <CardWithFrame
+                                        key={vault.address}
+                                        frameImage={frameImage}
+                                        backgroundImage={backgroundImage}
+                                        size="small"
+                                        onClick={() => navigate(`/vaults/${vault.address}`)}
+                                        animationDelay={index * 0.1}
+                                        backgroundSize="cover"
+                                    >
+                                        <div className="absolute bottom-8 left-0 right-0 z-20 px-6">
+                                            <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 space-y-2 border border-white/10">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-muted-foreground font-mono uppercase">Ticker</span>
+                                                    <span className="text-sm font-bold font-pixel text-white">{vault.symbol}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-muted-foreground font-mono uppercase">ROI</span>
+                                                    <span className="text-sm font-bold font-pixel text-success">
+                                                        {roi >= 0 ? "+" : ""}{roi.toFixed(2)}%
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-muted-foreground font-mono uppercase">TVL</span>
+                                                    <span className="text-sm font-bold font-pixel text-white">{tvlFormatted} USDC</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CardWithFrame>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
 }
-
