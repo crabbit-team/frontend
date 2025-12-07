@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { getVaults, type VaultSummary, type VaultCreator } from "../api/vault";
 import { CardWithFrame } from "../components/common/CardWithFrame";
 import { CreatorModal } from "../components/common/CreatorModal";
-import { TierBadge } from "../components/common/TierBadge";
+import { getTierColor } from "../components/common/TierBadge";
 
 
 /**
@@ -27,6 +27,7 @@ export function Rank() {
     const [creatorModalOpen, setCreatorModalOpen] = useState(false);
     const [selectedCreator, setSelectedCreator] = useState<VaultCreator | null>(null);
     const [selectedVaultName, setSelectedVaultName] = useState<string | null>(null);
+    const [selectedTier, setSelectedTier] = useState<string | null>(null);
 
     // API에서 볼트 목록 가져오기
     useEffect(() => {
@@ -51,10 +52,11 @@ export function Rank() {
     };
 
     // Creator 클릭 핸들러
-    const handleCreatorClick = (e: React.MouseEvent, creator: VaultCreator, vaultName: string) => {
+    const handleCreatorClick = (e: React.MouseEvent, creator: VaultCreator, vaultName: string, tier: string) => {
         e.stopPropagation(); // 행 클릭 이벤트 방지
         setSelectedCreator(creator);
         setSelectedVaultName(vaultName);
+        setSelectedTier(tier);
         setCreatorModalOpen(true);
     };
 
@@ -123,25 +125,25 @@ export function Rank() {
                 {/* 3. 전체 랭킹 테이블 */}
                 <div className="bg-card border border-border rounded-2xl overflow-hidden backdrop-blur-sm shadow-2xl">
                     {/* 테이블 헤더 */}
-                    <div className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px_100px] gap-4 p-6 text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border">
-                        <div>Rank</div>
-                        <div>Strategy</div>
-                        <div className="text-center">Creator</div>
+                    <div className="grid grid-cols-[60px_1fr_100px_100px_100px_140px_120px_100px] gap-4 p-6 text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border" style={{ columnGap: '1.5rem' }}>
+                        <div className="text-left">Rank</div>
+                        <div className="text-left">Strategy</div>
+                        <div className="text-right">TVL</div>
                         <div className="text-right">APY</div>
                         <div className="text-right">24h</div>
-                        <div className="text-right">TVL</div>
-                        <div className="text-center">Tier</div>
+                        <div className="text-center">Creator</div>
                         <div className="text-center">Deposit</div>
                         <div className="text-center">History</div>
                     </div>
 
                     {/* 테이블 바디 */}
-                    {isLoading ? (
-                        <div className="p-6 text-center text-muted-foreground">Loading...</div>
-                    ) : vaults.length === 0 ? (
-                        <div className="p-6 text-center text-muted-foreground font-mono">No strategy available</div>
-                    ) : (
-                        <div className="divide-y divide-border">
+                    <div className="max-h-[600px] overflow-y-auto">
+                        {isLoading ? (
+                            <div className="p-6 text-center text-muted-foreground">Loading...</div>
+                        ) : vaults.length === 0 ? (
+                            <div className="p-6 text-center text-muted-foreground font-mono">No strategy available</div>
+                        ) : (
+                            <div className="divide-y divide-border">
                             {vaults.map((vault, index) => {
                                 const rank = index + 1;
                                 const apy = vault.performance?.apy ?? 0;
@@ -156,7 +158,8 @@ export function Rank() {
                                 return (
                                     <div
                                         key={vault.address}
-                                        className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px_100px] gap-4 px-6 py-4 text-sm items-center hover:bg-secondary/50 transition-colors"
+                                        className="grid grid-cols-[60px_1fr_100px_100px_100px_140px_120px_100px] gap-4 px-6 py-4 text-sm items-center hover:bg-secondary/50 transition-colors"
+                                        style={{ columnGap: '1.5rem' }}
                                         onClick={() => navigate(`/vaults/${vault.address}`)}
                                     >
                                         {/* Rank */}
@@ -187,12 +190,27 @@ export function Rank() {
                                             </div>
                                         </div>
 
-                                        {/* Creator image & nickname (클릭하면 모달 열기) */}
-                                        <div className="flex items-center justify-center gap-2">
+                                        {/* TVL */}
+                                        <div className="text-right font-mono text-foreground/80">
+                                            {tvlLabel}
+                                        </div>
+
+                                        {/* APY */}
+                                        <div className="text-right font-mono text-success">
+                                            {apy.toFixed(2)}%
+                                        </div>
+
+                                        {/* 24h Change */}
+                                        <div className={`text-right font-mono ${change24h >= 0 ? "text-success" : "text-error"}`}>
+                                            {change24h >= 0 ? "+" : ""}{change24h.toFixed(2)}%
+                                        </div>
+
+                                        {/* Creator image & nickname & tier badge (클릭하면 모달 열기) */}
+                                        <div className="flex items-center justify-start gap-1.5">
                                             {creator && (
                                                 <button
-                                                    onClick={(e) => handleCreatorClick(e, creator, vault.name)}
-                                                    className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+                                                    onClick={(e) => handleCreatorClick(e, creator, vault.name, tier)}
+                                                    className="flex items-center gap-1.5 hover:opacity-80 transition-opacity cursor-pointer pl-6 pr-3 py-1"
                                                 >
                                                     <div className="w-8 h-8 rounded-full overflow-hidden bg-carrot-orange/10 flex items-center justify-center hover:ring-2 hover:ring-carrot-orange/50 transition-all flex-shrink-0">
                                                         {creatorImage && creatorImage.trim() ? (
@@ -207,31 +225,23 @@ export function Rank() {
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <span className="text-xs font-mono text-foreground truncate max-w-[60px]">
-                                                        {creator.nickname?.trim() || vault.name.slice(0, 3)}
-                                                    </span>
+                                                    <div className="flex flex-col items-start">
+                                                        <span className="text-xs font-mono text-foreground truncate max-w-[50px]">
+                                                            {creator.nickname?.trim() || vault.name.slice(0, 3)}
+                                                        </span>
+                                                        {/* Tier 텍스트 - 색상만 적용, 작게 표시 */}
+                                                        <span 
+                                                            className="text-[10px] font-mono uppercase"
+                                                            style={{ color: getTierColor(tier) }}
+                                                        >
+                                                            {tier}
+                                                        </span>
+                                                    </div>
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                    </svg>
                                                 </button>
                                             )}
-                                        </div>
-
-                                        {/* APY */}
-                                        <div className="text-right font-mono text-success">
-                                            {apy.toFixed(2)}%
-                                        </div>
-
-                                        {/* 24h Change */}
-                                        <div className={`text-right font-mono ${change24h >= 0 ? "text-success" : "text-error"}`}>
-                                            {change24h >= 0 ? "+" : ""}{change24h.toFixed(2)}%
-                                        </div>
-
-                                        {/* TVL */}
-                                        <div className="text-right font-mono text-foreground/80">
-                                            {tvlLabel}
-                                        </div>
-
-                                        {/* Tier */}
-                                        <div className="text-center">
-                                            <TierBadge tier={tier} />
                                         </div>
 
                                         {/* Deposit Button */}
@@ -267,7 +277,8 @@ export function Rank() {
                                 );
                             })}
                         </div>
-                    )}
+                        )}
+                    </div>
                 </div>
 
                 {/* Creator Modal */}
@@ -278,9 +289,11 @@ export function Rank() {
                             setCreatorModalOpen(false);
                             setSelectedCreator(null);
                             setSelectedVaultName(null);
+                            setSelectedTier(null);
                         }}
                         creator={selectedCreator}
                         vaultName={selectedVaultName || undefined}
+                        tier={selectedTier || undefined}
                     />
                 )}
             </div>
