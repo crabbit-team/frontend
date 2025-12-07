@@ -25,17 +25,19 @@ interface Obstacle {
     width: number;
 }
 
-const GAME_SPEED = 6; // Horizontal scroll speed
-const JUMP_DURATION = 600; // ms
-const SLIDE_DURATION = 500; // ms
-const SPAWN_INTERVAL_MIN = 1200;
-const SPAWN_INTERVAL_MAX = 2500;
+const GAME_SPEED = 5; // Horizontal scroll speed
+const JUMP_DURATION = 500; // ms
+const SLIDE_DURATION = 400; // ms
+const SPAWN_INTERVAL_MIN = 1500;
+const SPAWN_INTERVAL_MAX = 3000;
 const SURVIVAL_TIME = 60_000; // 60 seconds
 
 // Character position (fixed on screen, world scrolls)
-const CHARACTER_X = 120; // Fixed horizontal position
-const GROUND_Y = 280; // Ground level
-const JUMP_HEIGHT = 100; // Jump height in pixels
+const CHARACTER_X = 100; // Fixed horizontal position
+const CHARACTER_WIDTH = 44; // Character width
+const CHARACTER_HEIGHT = 44; // Character height
+const GROUND_Y = 240; // Ground level
+const JUMP_HEIGHT = 120; // Jump height in pixels
 
 export function BattleMiniGame({
     durationMs = SURVIVAL_TIME,
@@ -113,14 +115,16 @@ export function BattleMiniGame({
                         continue;
                     }
 
-                    // Collision detection
-                    const obStart = newX;
-                    const obEnd = newX + ob.width;
-                    const charStart = CHARACTER_X;
-                    const charEnd = CHARACTER_X + 50; // Character width
+                    // Collision detection - simple box collision
+                    const obLeft = newX;
+                    const obRight = newX + ob.width;
+                    const charLeft = CHARACTER_X + 5; // Small margin
+                    const charRight = CHARACTER_X + CHARACTER_WIDTH - 5;
 
-                    // Check if obstacle overlaps with character
-                    if (obEnd > charStart && obStart < charEnd) {
+                    // Check horizontal overlap
+                    const horizontalOverlap = obRight > charLeft && obLeft < charRight;
+
+                    if (horizontalOverlap) {
                         let collided = false;
 
                         if (ob.type === "hole") {
@@ -134,19 +138,19 @@ export function BattleMiniGame({
                                 collided = true;
                             }
                         } else if (ob.type === "cactus") {
-                            // For cactus: must be jumping to avoid
+                            // For cactus: must be jumping to avoid (tall obstacle)
                             if (!isJumpingRef.current) {
                                 collided = true;
                             }
                         } else if (ob.type === "rock") {
-                            // For rocks: must be sliding to avoid
+                            // For rocks: can jump over or slide under
                             if (!isSlidingRef.current) {
                                 collided = true;
                             }
                         }
 
                         if (collided) {
-                            // Game over!
+                            console.log("COLLISION!", ob.type, "isJumping:", isJumpingRef.current, "isSliding:", isSlidingRef.current);
                             gameRunningRef.current = false;
                             setGameOver(true);
                             return prev; // Stop updating
@@ -391,14 +395,15 @@ export function BattleMiniGame({
                 style={{
                     left: `${CHARACTER_X}px`,
                     bottom: `${GROUND_Y}px`,
-                    width: "50px",
-                    height: "60px",
+                    width: `${CHARACTER_WIDTH}px`,
+                    height: `${CHARACTER_HEIGHT}px`,
                 }}
             >
                 <motion.div
                     animate={{
-                        y: isJumping ? -JUMP_HEIGHT : isSliding ? 20 : 0,
-                        scaleY: isSliding ? 0.5 : 1,
+                        y: isJumping ? -JUMP_HEIGHT : isSliding ? 15 : 0,
+                        scaleY: isSliding ? 0.6 : 1,
+                        rotate: isJumping ? [0, -5, 0] : 0,
                     }}
                     transition={{
                         duration: isJumping
@@ -410,115 +415,16 @@ export function BattleMiniGame({
                     }}
                     className="relative w-full h-full"
                 >
-                    {/* Tokki Sprite - Cute Rabbit */}
-                    <div className="relative w-full h-full">
-                        {/* Body */}
-                        <div className="absolute top-8 left-1 w-8 h-10 bg-white rounded-full shadow-lg" />
-
-                        {/* Head */}
-                        <div className="absolute top-0 left-2 w-10 h-10 bg-white rounded-full shadow-lg" />
-
-                        {/* Ears - with bounce animation */}
-                        <motion.div
-                            className="absolute -top-3 left-1 w-3 h-8 bg-white rounded-t-full border-2 border-pink-300"
-                            animate={{ rotate: isJumping ? [-5, 5] : [0, -2, 0] }}
-                            transition={{
-                                duration: 0.2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        >
-                            <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-5 bg-pink-200 rounded-t-full" />
-                        </motion.div>
-                        <motion.div
-                            className="absolute -top-3 right-0 w-3 h-8 bg-white rounded-t-full border-2 border-pink-300"
-                            animate={{ rotate: isJumping ? [5, -5] : [0, 2, 0] }}
-                            transition={{
-                                duration: 0.2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                                delay: 0.1,
-                            }}
-                        >
-                            <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-5 bg-pink-200 rounded-t-full" />
-                        </motion.div>
-
-                        {/* Eyes */}
-                        <div className="absolute top-3 left-3 w-2 h-2 bg-black rounded-full" />
-                        <div className="absolute top-3 right-4 w-2 h-2 bg-black rounded-full" />
-
-                        {/* Eye shine */}
-                        <div className="absolute top-3 left-3.5 w-1 h-1 bg-white rounded-full" />
-                        <div className="absolute top-3 right-4.5 w-1 h-1 bg-white rounded-full" />
-
-                        {/* Nose */}
-                        <div className="absolute top-5 left-1/2 -translate-x-1/2 w-2 h-1.5 bg-pink-400 rounded-full" />
-
-                        {/* Cheeks - cute blush */}
-                        <div className="absolute top-5 left-1 w-2 h-1 bg-pink-200 rounded-full opacity-60" />
-                        <div className="absolute top-5 right-2 w-2 h-1 bg-pink-200 rounded-full opacity-60" />
-
-                        {/* Tail - fluffy */}
-                        <motion.div
-                            className="absolute top-10 -right-2 w-4 h-4 bg-white rounded-full"
-                            animate={{ scale: [1, 1.1, 1] }}
-                            transition={{
-                                duration: 0.4,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        />
-
-                        {/* Legs - Running animation */}
-                        {!isJumping && !isSliding && (
-                            <>
-                                <motion.div
-                                    className="absolute bottom-0 left-2 w-2.5 h-5 bg-white rounded-full shadow-sm"
-                                    animate={{ y: [0, -5, 0] }}
-                                    transition={{
-                                        duration: 0.25,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                />
-                                <motion.div
-                                    className="absolute bottom-0 right-2 w-2.5 h-5 bg-white rounded-full shadow-sm"
-                                    animate={{ y: [0, -5, 0] }}
-                                    transition={{
-                                        duration: 0.25,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                        delay: 0.125,
-                                    }}
-                                />
-                                {/* Paws */}
-                                <motion.div
-                                    className="absolute bottom-0 left-2 w-3 h-2 bg-pink-200 rounded-full"
-                                    animate={{ y: [0, -5, 0] }}
-                                    transition={{
-                                        duration: 0.25,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                />
-                                <motion.div
-                                    className="absolute bottom-0 right-2 w-3 h-2 bg-pink-200 rounded-full"
-                                    animate={{ y: [0, -5, 0] }}
-                                    transition={{
-                                        duration: 0.25,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                        delay: 0.125,
-                                    }}
-                                />
-                            </>
-                        )}
-
-                        {/* Sliding pose */}
-                        {isSliding && (
-                            <div className="absolute bottom-0 left-1 w-10 h-4 bg-white rounded-full shadow-lg" />
-                        )}
-                    </div>
+                    {/* Tokki Image */}
+                    <img
+                        src="/logos/Tokki.png"
+                        alt="Tokki"
+                        className="w-full h-full object-contain"
+                        style={{
+                            filter: isSliding ? "brightness(0.8)" : "brightness(1)",
+                            imageRendering: "crisp-edges",
+                        }}
+                    />
                 </motion.div>
             </div>
 
