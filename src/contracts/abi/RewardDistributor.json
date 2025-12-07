@@ -1,0 +1,1192 @@
+{
+    "abi": [
+      {
+        "type": "constructor",
+        "inputs": [
+          {
+            "name": "_crtToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "_signer",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "type": "function",
+        "name": "CLAIM_TYPEHASH",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "DOMAIN_SEPARATOR",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "DOMAIN_TYPEHASH",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "VERSION",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "string",
+            "internalType": "string"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "claim",
+        "inputs": [
+          {
+            "name": "totalEarned",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "signature",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "type": "function",
+        "name": "claimed",
+        "inputs": [
+          {
+            "name": "",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "crtToken",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "address",
+            "internalType": "contract IERC20"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "emergencyWithdraw",
+        "inputs": [
+          {
+            "name": "token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "type": "function",
+        "name": "getCRTBalance",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "getClaimableAmount",
+        "inputs": [
+          {
+            "name": "user",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "totalEarned",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "nonces",
+        "inputs": [
+          {
+            "name": "",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "owner",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "renounceOwnership",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "type": "function",
+        "name": "signer",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "transferOwnership",
+        "inputs": [
+          {
+            "name": "newOwner",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "type": "function",
+        "name": "updateSigner",
+        "inputs": [
+          {
+            "name": "newSigner",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "type": "event",
+        "name": "Claimed",
+        "inputs": [
+          {
+            "name": "user",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "indexed": false,
+            "internalType": "uint256"
+          },
+          {
+            "name": "totalEarned",
+            "type": "uint256",
+            "indexed": false,
+            "internalType": "uint256"
+          }
+        ],
+        "anonymous": false
+      },
+      {
+        "type": "event",
+        "name": "EmergencyWithdraw",
+        "inputs": [
+          {
+            "name": "token",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "indexed": false,
+            "internalType": "uint256"
+          }
+        ],
+        "anonymous": false
+      },
+      {
+        "type": "event",
+        "name": "OwnershipTransferred",
+        "inputs": [
+          {
+            "name": "previousOwner",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          },
+          {
+            "name": "newOwner",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          }
+        ],
+        "anonymous": false
+      },
+      {
+        "type": "event",
+        "name": "SignerUpdated",
+        "inputs": [
+          {
+            "name": "oldSigner",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          },
+          {
+            "name": "newSigner",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          }
+        ],
+        "anonymous": false
+      },
+      {
+        "type": "error",
+        "name": "AddressEmptyCode",
+        "inputs": [
+          {
+            "name": "target",
+            "type": "address",
+            "internalType": "address"
+          }
+        ]
+      },
+      {
+        "type": "error",
+        "name": "AddressInsufficientBalance",
+        "inputs": [
+          {
+            "name": "account",
+            "type": "address",
+            "internalType": "address"
+          }
+        ]
+      },
+      {
+        "type": "error",
+        "name": "ECDSAInvalidSignature",
+        "inputs": []
+      },
+      {
+        "type": "error",
+        "name": "ECDSAInvalidSignatureLength",
+        "inputs": [
+          {
+            "name": "length",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      },
+      {
+        "type": "error",
+        "name": "ECDSAInvalidSignatureS",
+        "inputs": [
+          {
+            "name": "s",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ]
+      },
+      {
+        "type": "error",
+        "name": "FailedInnerCall",
+        "inputs": []
+      },
+      {
+        "type": "error",
+        "name": "InvalidAmount",
+        "inputs": []
+      },
+      {
+        "type": "error",
+        "name": "InvalidSignature",
+        "inputs": []
+      },
+      {
+        "type": "error",
+        "name": "InvalidSigner",
+        "inputs": []
+      },
+      {
+        "type": "error",
+        "name": "InvalidToken",
+        "inputs": []
+      },
+      {
+        "type": "error",
+        "name": "NothingToClaim",
+        "inputs": []
+      },
+      {
+        "type": "error",
+        "name": "OwnableInvalidOwner",
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "address",
+            "internalType": "address"
+          }
+        ]
+      },
+      {
+        "type": "error",
+        "name": "OwnableUnauthorizedAccount",
+        "inputs": [
+          {
+            "name": "account",
+            "type": "address",
+            "internalType": "address"
+          }
+        ]
+      },
+      {
+        "type": "error",
+        "name": "SafeERC20FailedOperation",
+        "inputs": [
+          {
+            "name": "token",
+            "type": "address",
+            "internalType": "address"
+          }
+        ]
+      }
+    ],
+    "bytecode": {
+      "object": "0x60c0346101e4576001600160401b0390610dd990601f38839003908101601f19168201908482118383101761019957808391604095869485528339810103126101e457610057602061005083610203565b9201610203565b9033156101cd575f549160018060a01b03908160018060a01b03199333858716175f55865195823391167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a3169384156101be5750169182156101ad5760805260015416176001556011602082516100d0816101e8565b82815201702932bbb0b9322234b9ba3934b13aba37b960791b815220906001602082516100fc816101e8565b82815201603160f81b8152209080519160208301937f8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f85528284015260608301524660808301523060a083015260a0825260c0820193828510908511176101995783905251902060a052610bc19081610218823960805181818161025d015281816106ac01526107a9015260a0518181816105c1015261074a0152f35b634e487b7160e01b5f52604160045260245ffd5b8351632057875960e21b8152600490fd5b63c1ab6dc160e01b8152600490fd5b8251631e4fbdf760e01b81525f6004820152602490fd5b5f80fd5b604081019081106001600160401b0382111761019957604052565b51906001600160a01b03821682036101e45756fe6080604081815260049182361015610015575f80fd5b5f3560e01c90816320606b70146107d85750806320ed8a1d14610795578063238ac9331461076d5780633644e515146107335780635eddd157146104ec5780636b0509b1146104b2578063715018a61461045b5780637ecebe00146104245780638da5cb5b146103fd57806395ccea6714610392578063a7ecd37e1461030c578063b3743f60146102dd578063b82c224614610230578063c884ef83146101f9578063f2fde38b1461016c5763ffa1ad74146100cf575f80fd5b34610168575f366003190112610168578051918183019083821067ffffffffffffffff83111761015557508152600182526020603160f81b60208401528151928391602083528151918260208501525f5b83811061013f5750505f83830185015250601f01601f19168101030190f35b8181018301518782018701528694508201610120565b604190634e487b7160e01b5f525260245ffd5b5f80fd5b50903461016857602036600319011261016857610187610810565b906101906109b3565b6001600160a01b039182169283156101e35750505f54826bffffffffffffffffffffffff60a01b8216175f55167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a3005b905f6024925191631e4fbdf760e01b8352820152fd5b5034610168576020366003190112610168576020906001600160a01b0361021e610810565b165f5260028252805f20549051908152f35b5034610168575f3660031901126101685780516370a0823160e01b815230928101929092526020826024817f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03165afa9081156102d4575f9161029f575b6020925051908152f35b90506020823d6020116102cc575b816102ba60209383610856565b81010312610168576020915190610295565b3d91506102ad565b513d5f823e3d90fd5b50346101685780600319360112610168576020906103056102fc610810565b602435906108b5565b9051908152f35b50903461016857602036600319011261016857610327610810565b906103306109b3565b6001600160a01b03918216928315610385575050600154826bffffffffffffffffffffffff60a01b821617600155167f2d025324f0a785e8c12d0a0d91a9caa49df4ef20ff87e0df7213a1d4f3157beb5f80a3005b51632057875960e21b8152fd5b50346101685780600319360112610168577f5fafa99d0643513820be26656b45130b01e1c03062e1266bf36f88cbd3bd969560206103ce610810565b92602435906103db6109b3565b5f546001600160a01b03958616956103f691849116876108e6565b51908152a2005b5034610168575f366003190112610168575f5490516001600160a01b039091168152602090f35b5034610168576020366003190112610168576020906001600160a01b03610449610810565b165f5260038252805f20549051908152f35b34610168575f366003190112610168576104736109b3565b5f80546001600160a01b0319811682556001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a3005b5034610168575f36600319011261016857602090517f6571d72c80cc61ba45456c143dcef572ac34e9662b32a3dee8aee553b950a91d8152f35b50346101685760603660031901126101685767ffffffffffffffff908235604435602435848211610168573660238301121561016857818601359085821161016857366024838501011161016857335f5260209560038752855f2054820361072357855191878301907f6571d72c80cc61ba45456c143dcef572ac34e9662b32a3dee8aee553b950a91d8252338885015286606085015260808401526080835260a083019183831090831117610710578761062b9593835f9361062297958b528251902060e260c084019361190160f01b85527f000000000000000000000000000000000000000000000000000000000000000060c28201520152604281526105f481610826565b5190209280602461060482610878565b966106118c519889610856565b8288520183870137840101526109de565b90929192610a18565b6001546001600160a01b0390811691160361070057335f5260028352815f2054808211156106f05761065d9082610894565b92335f526002815281835f205560038152825f208054955f1987146106dd575060017f987d620f307ff6b94d58743cb7a7509f24071586a77759b77c2d4e29f75a2f9a95960190556106d085337f00000000000000000000000000000000000000000000000000000000000000006108e6565b82519485528401523392a2005b601190634e487b7160e01b5f525260245ffd5b82516312d37ee560e31b81528590fd5b8151638baa579f60e01b81528490fd5b604189634e487b7160e01b5f525260245ffd5b8551638baa579f60e01b81528890fd5b5034610168575f36600319011261016857602090517f00000000000000000000000000000000000000000000000000000000000000008152f35b5034610168575f3660031901126101685760015490516001600160a01b039091168152602090f35b5034610168575f36600319011261016857517f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03168152602090f35b34610168575f36600319011261016857807f8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f60209252f35b600435906001600160a01b038216820361016857565b6080810190811067ffffffffffffffff82111761084257604052565b634e487b7160e01b5f52604160045260245ffd5b90601f8019910116810190811067ffffffffffffffff82111761084257604052565b67ffffffffffffffff811161084257601f01601f191660200190565b919082039182116108a157565b634e487b7160e01b5f52601160045260245ffd5b6001600160a01b03165f90815260026020526040902054808211156108e0576108dd91610894565b90565b50505f90565b915f80916109599360405195602087019263a9059cbb60e01b845260018060a01b03809316602489015260448801526044875261092287610826565b1694519082865af13d156109ab573d9061093b82610878565b916109496040519384610856565b82523d5f602084013e5b83610b28565b8051908115159182610987575b505061096f5750565b60249060405190635274afe760e01b82526004820152fd5b81925090602091810103126101685760200151801590811503610168575f80610966565b606090610953565b5f546001600160a01b031633036109c657565b60405163118cdaa760e01b8152336004820152602490fd5b8151919060418303610a0e57610a079250602082015190606060408401519301515f1a90610a9b565b9192909190565b50505f9160029190565b6004811015610a875780610a2a575050565b60018103610a445760405163f645eedf60e01b8152600490fd5b60028103610a655760405163fce698f760e01b815260048101839052602490fd5b600314610a6f5750565b602490604051906335e2f38360e21b82526004820152fd5b634e487b7160e01b5f52602160045260245ffd5b91907f7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a08411610b1d579160209360809260ff5f9560405194855216868401526040830152606082015282805260015afa15610b12575f516001600160a01b03811615610b0857905f905f90565b505f906001905f90565b6040513d5f823e3d90fd5b5050505f9160039190565b90610b4f5750805115610b3d57805190602001fd5b604051630a12f52160e11b8152600490fd5b81511580610b82575b610b60575090565b604051639996b31560e01b81526001600160a01b039091166004820152602490fd5b50803b15610b5856fea264697066735822122017c9ae68eb14d55164a9ff0ab99e0654eeba7a3193fe7bf1d523bf7f55fab6ce64736f6c63430008180033",
+      "sourceMap": "1144:6240:48:-:0;;;;-1:-1:-1;;;;;1144:6240:48;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;:::i;:::-;3716:10;;1273:26:19;1269:95;;-1:-1:-1;1144:6240:48;;;;;;;;;;;;;;;3716:10;;1144:6240;;;;-1:-1:-1;1144:6240:48;;;3716:10;;;1144:6240;;3052:40:19;-1:-1:-1;3052:40:19;;1144:6240:48;3742:23;;;3738:50;;1144:6240;;3802:21;;;3798:49;;3858:28;;3896:16;1144:6240;;;3896:16;1144:6240;1655:95;1144:6240;;;;;;:::i;:::-;1655:95;;;;-1:-1:-1;;;1655:95:48;;4068:37;1144:6240;3896:16;1144:6240;;;;;;:::i;:::-;1655:95;;;;-1:-1:-1;;;1655:95:48;;4123:25;1144:6240;;;4007:217;1144:6240;4007:217;;2003:3;1655:95;2003:3;;;;;;;;;;4166:13;3858:28;2003:3;;;4205:4;2003:3;;;;;4007:217;;2003:3;1144:6240;;;;;;;;;;;;;;;1655:95;3984:250;;2003:3;3965:269;1144:6240;;;;;;3858:28;1144:6240;;;;;;;;;;;;;;;2003:3;1144:6240;;;;;;;;;;;;;;;-1:-1:-1;1144:6240:48;;;;;-1:-1:-1;1144:6240:48;3798:49;1144:6240;;-1:-1:-1;;;3832:15:48;;;;;3738:50;-1:-1:-1;;;3774:14:48;;;;;1269:95:19;1144:6240:48;;-1:-1:-1;;;1322:31:19;;-1:-1:-1;1322:31:19;;;2003:3:48;1144:6240;;1322:31:19;1144:6240:48;-1:-1:-1;1144:6240:48;;;;;;;;;-1:-1:-1;;;;;1144:6240:48;;;;;;;:::o;:::-;;;-1:-1:-1;;;;;1144:6240:48;;;;;;:::o",
+      "linkReferences": {}
+    },
+    "deployedBytecode": {
+      "object": "0x6080604081815260049182361015610015575f80fd5b5f3560e01c90816320606b70146107d85750806320ed8a1d14610795578063238ac9331461076d5780633644e515146107335780635eddd157146104ec5780636b0509b1146104b2578063715018a61461045b5780637ecebe00146104245780638da5cb5b146103fd57806395ccea6714610392578063a7ecd37e1461030c578063b3743f60146102dd578063b82c224614610230578063c884ef83146101f9578063f2fde38b1461016c5763ffa1ad74146100cf575f80fd5b34610168575f366003190112610168578051918183019083821067ffffffffffffffff83111761015557508152600182526020603160f81b60208401528151928391602083528151918260208501525f5b83811061013f5750505f83830185015250601f01601f19168101030190f35b8181018301518782018701528694508201610120565b604190634e487b7160e01b5f525260245ffd5b5f80fd5b50903461016857602036600319011261016857610187610810565b906101906109b3565b6001600160a01b039182169283156101e35750505f54826bffffffffffffffffffffffff60a01b8216175f55167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a3005b905f6024925191631e4fbdf760e01b8352820152fd5b5034610168576020366003190112610168576020906001600160a01b0361021e610810565b165f5260028252805f20549051908152f35b5034610168575f3660031901126101685780516370a0823160e01b815230928101929092526020826024817f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03165afa9081156102d4575f9161029f575b6020925051908152f35b90506020823d6020116102cc575b816102ba60209383610856565b81010312610168576020915190610295565b3d91506102ad565b513d5f823e3d90fd5b50346101685780600319360112610168576020906103056102fc610810565b602435906108b5565b9051908152f35b50903461016857602036600319011261016857610327610810565b906103306109b3565b6001600160a01b03918216928315610385575050600154826bffffffffffffffffffffffff60a01b821617600155167f2d025324f0a785e8c12d0a0d91a9caa49df4ef20ff87e0df7213a1d4f3157beb5f80a3005b51632057875960e21b8152fd5b50346101685780600319360112610168577f5fafa99d0643513820be26656b45130b01e1c03062e1266bf36f88cbd3bd969560206103ce610810565b92602435906103db6109b3565b5f546001600160a01b03958616956103f691849116876108e6565b51908152a2005b5034610168575f366003190112610168575f5490516001600160a01b039091168152602090f35b5034610168576020366003190112610168576020906001600160a01b03610449610810565b165f5260038252805f20549051908152f35b34610168575f366003190112610168576104736109b3565b5f80546001600160a01b0319811682556001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a3005b5034610168575f36600319011261016857602090517f6571d72c80cc61ba45456c143dcef572ac34e9662b32a3dee8aee553b950a91d8152f35b50346101685760603660031901126101685767ffffffffffffffff908235604435602435848211610168573660238301121561016857818601359085821161016857366024838501011161016857335f5260209560038752855f2054820361072357855191878301907f6571d72c80cc61ba45456c143dcef572ac34e9662b32a3dee8aee553b950a91d8252338885015286606085015260808401526080835260a083019183831090831117610710578761062b9593835f9361062297958b528251902060e260c084019361190160f01b85527f000000000000000000000000000000000000000000000000000000000000000060c28201520152604281526105f481610826565b5190209280602461060482610878565b966106118c519889610856565b8288520183870137840101526109de565b90929192610a18565b6001546001600160a01b0390811691160361070057335f5260028352815f2054808211156106f05761065d9082610894565b92335f526002815281835f205560038152825f208054955f1987146106dd575060017f987d620f307ff6b94d58743cb7a7509f24071586a77759b77c2d4e29f75a2f9a95960190556106d085337f00000000000000000000000000000000000000000000000000000000000000006108e6565b82519485528401523392a2005b601190634e487b7160e01b5f525260245ffd5b82516312d37ee560e31b81528590fd5b8151638baa579f60e01b81528490fd5b604189634e487b7160e01b5f525260245ffd5b8551638baa579f60e01b81528890fd5b5034610168575f36600319011261016857602090517f00000000000000000000000000000000000000000000000000000000000000008152f35b5034610168575f3660031901126101685760015490516001600160a01b039091168152602090f35b5034610168575f36600319011261016857517f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03168152602090f35b34610168575f36600319011261016857807f8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f60209252f35b600435906001600160a01b038216820361016857565b6080810190811067ffffffffffffffff82111761084257604052565b634e487b7160e01b5f52604160045260245ffd5b90601f8019910116810190811067ffffffffffffffff82111761084257604052565b67ffffffffffffffff811161084257601f01601f191660200190565b919082039182116108a157565b634e487b7160e01b5f52601160045260245ffd5b6001600160a01b03165f90815260026020526040902054808211156108e0576108dd91610894565b90565b50505f90565b915f80916109599360405195602087019263a9059cbb60e01b845260018060a01b03809316602489015260448801526044875261092287610826565b1694519082865af13d156109ab573d9061093b82610878565b916109496040519384610856565b82523d5f602084013e5b83610b28565b8051908115159182610987575b505061096f5750565b60249060405190635274afe760e01b82526004820152fd5b81925090602091810103126101685760200151801590811503610168575f80610966565b606090610953565b5f546001600160a01b031633036109c657565b60405163118cdaa760e01b8152336004820152602490fd5b8151919060418303610a0e57610a079250602082015190606060408401519301515f1a90610a9b565b9192909190565b50505f9160029190565b6004811015610a875780610a2a575050565b60018103610a445760405163f645eedf60e01b8152600490fd5b60028103610a655760405163fce698f760e01b815260048101839052602490fd5b600314610a6f5750565b602490604051906335e2f38360e21b82526004820152fd5b634e487b7160e01b5f52602160045260245ffd5b91907f7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a08411610b1d579160209360809260ff5f9560405194855216868401526040830152606082015282805260015afa15610b12575f516001600160a01b03811615610b0857905f905f90565b505f906001905f90565b6040513d5f823e3d90fd5b5050505f9160039190565b90610b4f5750805115610b3d57805190602001fd5b604051630a12f52160e11b8152600490fd5b81511580610b82575b610b60575090565b604051639996b31560e01b81526001600160a01b039091166004820152602490fd5b50803b15610b5856fea264697066735822122017c9ae68eb14d55164a9ff0ab99e0654eeba7a3193fe7bf1d523bf7f55fab6ce64736f6c63430008180033",
+      "sourceMap": "1144:6240:48:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;7342:33;1144:6240;7342:33;;;1144:6240;;;;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;1144:6240:48;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;-1:-1:-1;1144:6240:48;;-1:-1:-1;;1144:6240:48;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;1144:6240:48;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;:::i;:::-;1500:62:19;;;:::i;:::-;-1:-1:-1;;;;;1144:6240:48;;;;2627:22:19;;2623:91;;1144:6240:48;;;;;;;;;;;;;;3052:40:19;1144:6240:48;3052:40:19;;1144:6240:48;2623:91:19;1144:6240:48;;;;;2672:31:19;;;;;;;;1144:6240:48;2672:31:19;1144:6240:48;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;-1:-1:-1;;;;;1144:6240:48;;:::i;:::-;;;;2327:42;1144:6240;;;;;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;-1:-1:-1;;;7342:33:48;;7369:4;7342:33;;;1144:6240;;;;7342:33;1144:6240;;;7342:8;-1:-1:-1;;;;;1144:6240:48;7342:33;;;;;;;1144:6240;7342:33;;;1144:6240;7342:33;1144:6240;;;;;;;7342:33;;;;;;;;;;;;;;;;;:::i;:::-;;;1144:6240;;;;7342:33;1144:6240;;7342:33;;;;;;-1:-1:-1;7342:33:48;;;1144:6240;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;:::i;:::-;1500:62:19;;;:::i;:::-;-1:-1:-1;;;;;1144:6240:48;;;;6671:23;;6667:51;;1144:6240;;6748:6;1144:6240;;;;;;;;6748:6;1144:6240;;6797:35;1144:6240;6797:35;;1144:6240;6667:51;1144:6240;-1:-1:-1;;;6703:15:48;;;1144:6240;;;;;;;;;;;;;7134:32;1144:6240;;;:::i;:::-;;;;1500:62:19;;;:::i;:::-;1144:6240:48;;-1:-1:-1;;;;;1144:6240:48;;;;7112:6;;1144:6240;;;;7112:6;:::i;:::-;1144:6240;;;;7134:32;1144:6240;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;;-1:-1:-1;;;;;1144:6240:48;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;-1:-1:-1;;;;;1144:6240:48;;:::i;:::-;;;;2433:41;1144:6240;;;;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;1500:62:19;;:::i;:::-;1144:6240:48;;;-1:-1:-1;;;;;;1144:6240:48;;;;-1:-1:-1;;;;;1144:6240:48;3052:40:19;1144:6240:48;;3052:40:19;1144:6240:48;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;1850:68;1144:6240;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;4940:10;1144:6240;;;;5027:6;1144:6240;;;;;;5018:21;;5014:52;;1144:6240;;5139:52;;;;1144:6240;1850:68;1144:6240;;4940:10;1144:6240;;;;;;;;;;;;;;5139:52;;1144:6240;;;;;;;;;;;;;;3915:8:37;1144:6240:48;;;;;3859:27:37;1144:6240:48;;;;;;5129:63;;1144:6240;5230:58;;;1144:6240;;;;;;5259:16;1144:6240;;;;;;;5230:58;;;;;:::i;:::-;1144:6240;5220:69;;1144:6240;;;;;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;;;;;;;3859:27:37;:::i;:::-;3915:8;;;;;:::i;:::-;1144:6240:48;;-1:-1:-1;;;;;1144:6240:48;;;;;5365:25;5361:56;;4940:10;1144:6240;;;;;;;;;5521:29;;;;5517:58;;5606:28;;;;:::i;:::-;4940:10;;1144:6240;;;;;;;;;;5027:6;1144:6240;;;;;;;;;;;;;;;;5822:37;1144:6240;;;;;5796:9;4940:10;;5768:8;5796:9;:::i;:::-;1144:6240;;;;;;;;4940:10;5822:37;;1144:6240;;;;;;;;;;;;;5517:58;1144:6240;;-1:-1:-1;;;5559:16:48;;1144:6240;;5559:16;5361:56;1144:6240;;-1:-1:-1;;;5399:18:48;;1144:6240;;5399:18;1144:6240;;;;;;;;;;;;5014:52;1144:6240;;-1:-1:-1;;;5048:18:48;;1144:6240;;5048:18;1144:6240;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;2522:41;1144:6240;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;;;;-1:-1:-1;;;;;1144:6240:48;;;;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;1515:32;-1:-1:-1;;;;;1144:6240:48;;;;;;;;;;;;-1:-1:-1;;1144:6240:48;;;;;1655:95;1144:6240;;;;;;;;-1:-1:-1;;;;;1144:6240:48;;;;;;:::o;:::-;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;-1:-1:-1;;1144:6240:48;;;;:::o;:::-;;;;;;;;;;:::o;:::-;;;;;;;;;;;;6059:248;-1:-1:-1;;;;;1144:6240:48;-1:-1:-1;1144:6240:48;;;6189:7;1144:6240;;;;;;6216:29;;;;6212:43;;6272:28;;;:::i;:::-;6059:248;:::o;6212:43::-;6247:8;;-1:-1:-1;6247:8:48;:::o;1303:160:28:-;;-1:-1:-1;1303:160:28;;3510:55:33;1303:160:28;1144:6240:48;;1412:43:28;;;;1144:6240:48;;;;1412:43:28;;1144:6240:48;;;;;;;;1412:43:28;;;1144:6240:48;;;;;;1412:43:28;;;;;:::i;:::-;1144:6240:48;3462:31:33;;;;;;;1144:6240:48;;;;;;;;;:::i;:::-;;;;;;;;:::i;:::-;;;;-1:-1:-1;1412:43:28;1144:6240:48;;;;3510:55:33;;:::i;:::-;1144:6240:48;;4551:22:28;;;;:57;;;;1144:6240:48;4547:135:28;;;;1303:160;:::o;4547:135::-;1412:43;1144:6240:48;;;4631:40:28;;;;;;;;;1144:6240:48;4631:40:28;4551:57;4578:30;;;;1412:43;4578:30;;;1144:6240:48;;;;1412:43:28;4578:30;1144:6240:48;;;;;;;;;4551:57:28;;;;1144:6240:48;;;;;1796:162:19;1710:6;1144:6240:48;-1:-1:-1;;;;;1144:6240:48;735:10:35;1855:23:19;1851:101;;1796:162::o;1851:101::-;1144:6240:48;;-1:-1:-1;;;1901:40:19;;735:10:35;1901:40:19;;;1144:6240:48;;;1901:40:19;2129:766:37;1144:6240:48;;;2129:766:37;2276:2;2256:22;;2276:2;;2739:25;2539:180;;;;;;;;;;;;;;;-1:-1:-1;2539:180:37;2739:25;;:::i;:::-;2732:32;;;;;:::o;2252:637::-;2795:83;;2811:1;2795:83;2815:35;2795:83;;:::o;7196:532::-;1144:6240:48;;;;;;7282:29:37;;;7327:7;;:::o;7278:444::-;1144:6240:48;7378:38:37;;1144:6240:48;;;;-1:-1:-1;;;7439:23:37;;1144:6240:48;;7439:23:37;7374:348;7492:35;7483:44;;7492:35;;1144:6240:48;;-1:-1:-1;;;7550:46:37;;1144:6240:48;7550:46:37;;1144:6240:48;;;;;7550:46:37;7479:243;7626:30;7617:39;7613:109;;7479:243;7196:532::o;7613:109::-;1144:6240:48;;;;7679:32:37;;;;;;1144:6240:48;7679:32:37;;1144:6240:48;7679:32:37;1144:6240:48;;;;7291:20:37;1144:6240:48;;;;;7291:20:37;1144:6240:48;5140:1530:37;;;6199:66;6186:79;;6182:164;;1144:6240:48;;;;;;-1:-1:-1;1144:6240:48;;;;;;;;;;;;;;;;;;;6457:24:37;;;;;;;;;-1:-1:-1;6457:24:37;-1:-1:-1;;;;;1144:6240:48;;6495:20:37;6491:113;;6614:49;-1:-1:-1;6614:49:37;-1:-1:-1;5140:1530:37;:::o;6491:113::-;6531:62;-1:-1:-1;6531:62:37;6457:24;6531:62;-1:-1:-1;6531:62:37;:::o;6457:24::-;1144:6240:48;;;-1:-1:-1;1144:6240:48;;;;;6182:164:37;6281:54;;;6297:1;6281:54;6301:30;6281:54;;:::o;4625:582:33:-;;4797:8;;-1:-1:-1;1144:6240:48;;5874:21:33;:17;;6046:142;;;;;;5870:383;1144:6240:48;;-1:-1:-1;;;6225:17:33;;;;;4793:408;1144:6240:48;;5045:22:33;:49;;;4793:408;5041:119;;5173:17;;:::o;5041:119::-;1144:6240:48;;-1:-1:-1;;;5121:24:33;;-1:-1:-1;;;;;1144:6240:48;;;5121:24:33;;;1144:6240:48;;;5121:24:33;5045:49;5071:18;;;:23;5045:49;",
+      "linkReferences": {},
+      "immutableReferences": {
+        "46191": [
+          {
+            "start": 605,
+            "length": 32
+          },
+          {
+            "start": 1708,
+            "length": 32
+          },
+          {
+            "start": 1961,
+            "length": 32
+          }
+        ],
+        "46223": [
+          {
+            "start": 1473,
+            "length": 32
+          },
+          {
+            "start": 1866,
+            "length": 32
+          }
+        ]
+      }
+    },
+    "methodIdentifiers": {
+      "CLAIM_TYPEHASH()": "6b0509b1",
+      "DOMAIN_SEPARATOR()": "3644e515",
+      "DOMAIN_TYPEHASH()": "20606b70",
+      "VERSION()": "ffa1ad74",
+      "claim(uint256,uint256,bytes)": "5eddd157",
+      "claimed(address)": "c884ef83",
+      "crtToken()": "20ed8a1d",
+      "emergencyWithdraw(address,uint256)": "95ccea67",
+      "getCRTBalance()": "b82c2246",
+      "getClaimableAmount(address,uint256)": "b3743f60",
+      "nonces(address)": "7ecebe00",
+      "owner()": "8da5cb5b",
+      "renounceOwnership()": "715018a6",
+      "signer()": "238ac933",
+      "transferOwnership(address)": "f2fde38b",
+      "updateSigner(address)": "a7ecd37e"
+    },
+    "rawMetadata": "{\"compiler\":{\"version\":\"0.8.24+commit.e11b9ed9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_crtToken\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_signer\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"AddressEmptyCode\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"AddressInsufficientBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ECDSAInvalidSignature\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"ECDSAInvalidSignatureLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"ECDSAInvalidSignatureS\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedInnerCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAmount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidSignature\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidSigner\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidToken\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NothingToClaim\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"SafeERC20FailedOperation\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"totalEarned\",\"type\":\"uint256\"}],\"name\":\"Claimed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"EmergencyWithdraw\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldSigner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newSigner\",\"type\":\"address\"}],\"name\":\"SignerUpdated\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"CLAIM_TYPEHASH\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"DOMAIN_SEPARATOR\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"DOMAIN_TYPEHASH\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"totalEarned\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"claim\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"claimed\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"crtToken\",\"outputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"emergencyWithdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCRTBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"totalEarned\",\"type\":\"uint256\"}],\"name\":\"getClaimableAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"nonces\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"signer\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newSigner\",\"type\":\"address\"}],\"name\":\"updateSigner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Users claim rewards by providing a signature from the authorized signer Flow: 1. User earns rewards in off-chain battle system 2. Server generates signature for user's total earned amount 3. User calls claim() with signature (pays gas) 4. Contract verifies signature and transfers claimable amount Security: - Signature-based claim (prevents unauthorized claims) - Nonce system (prevents replay attacks) - Incremental claiming (tracks total claimed per user) - EIP-712 typed data signing (prevents signature reuse across contracts)\",\"errors\":{\"AddressEmptyCode(address)\":[{\"details\":\"There's no code at `target` (it is not a contract).\"}],\"AddressInsufficientBalance(address)\":[{\"details\":\"The ETH balance of the account is not enough to perform the operation.\"}],\"ECDSAInvalidSignature()\":[{\"details\":\"The signature derives the `address(0)`.\"}],\"ECDSAInvalidSignatureLength(uint256)\":[{\"details\":\"The signature has an invalid length.\"}],\"ECDSAInvalidSignatureS(bytes32)\":[{\"details\":\"The signature has an S value that is in the upper half order.\"}],\"FailedInnerCall()\":[{\"details\":\"A call to an address target failed. The target may have reverted.\"}],\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}],\"SafeERC20FailedOperation(address)\":[{\"details\":\"An operation with an ERC20 token failed.\"}]},\"kind\":\"dev\",\"methods\":{\"claim(uint256,uint256,bytes)\":{\"details\":\"User pays gas for this transactionOnly claims the difference between totalEarned and already claimed\",\"params\":{\"nonce\":\"Current nonce (prevents replay attacks)\",\"signature\":\"Server signature proving reward eligibility\",\"totalEarned\":\"Total earned amount (from server database)\"}},\"constructor\":{\"params\":{\"_crtToken\":\"CRT token contract address\",\"_signer\":\"Authorized signer address (backend server wallet)\"}},\"emergencyWithdraw(address,uint256)\":{\"params\":{\"amount\":\"Amount to withdraw\",\"token\":\"Token address\"}},\"getCRTBalance()\":{\"returns\":{\"_0\":\"CRT token balance\"}},\"getClaimableAmount(address,uint256)\":{\"params\":{\"totalEarned\":\"Total earned amount (from server)\",\"user\":\"User address\"},\"returns\":{\"_0\":\"Claimable amount\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"updateSigner(address)\":{\"params\":{\"newSigner\":\"New signer address\"}}},\"title\":\"RewardDistributor\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"CLAIM_TYPEHASH()\":{\"notice\":\"Claim message type hash for EIP-712\"},\"DOMAIN_SEPARATOR()\":{\"notice\":\"EIP-712 domain separator\"},\"DOMAIN_TYPEHASH()\":{\"notice\":\"EIP-712 domain separator type hash\"},\"VERSION()\":{\"notice\":\"Contract version for EIP-712\"},\"claim(uint256,uint256,bytes)\":{\"notice\":\"Claim rewards with server signature\"},\"claimed(address)\":{\"notice\":\"Total amount claimed per user\"},\"constructor\":{\"notice\":\"Initialize RewardDistributor\"},\"crtToken()\":{\"notice\":\"CRT token contract address\"},\"emergencyWithdraw(address,uint256)\":{\"notice\":\"Emergency withdraw tokens (only owner)\"},\"getCRTBalance()\":{\"notice\":\"Get contract CRT balance\"},\"getClaimableAmount(address,uint256)\":{\"notice\":\"Get claimable amount for a user\"},\"nonces(address)\":{\"notice\":\"Nonce per user (prevents replay attacks)\"},\"signer()\":{\"notice\":\"Authorized signer address (backend server)\"},\"updateSigner(address)\":{\"notice\":\"Update authorized signer\"}},\"notice\":\"Distributes CRT token rewards to users based on server signatures\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/RewardDistributor.sol\":\"RewardDistributor\"},\"evmVersion\":\"shanghai\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/openzeppelin-contracts-upgradeable/lib/forge-std/src/\",\":halmos-cheatcodes/=lib/openzeppelin-contracts-upgradeable/lib/halmos-cheatcodes/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\"],\"viaIR\":true},\"sources\":{\"lib/openzeppelin-contracts/contracts/access/Ownable.sol\":{\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6\",\"dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c\",\"dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol\":{\"keccak256\":\"0x6008dabfe393240d73d7dd7688033f72740d570aa422254d29a7dce8568f3aff\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f5196ec75139918c6c7bb4251b36395e668f1fa6d206beba7e7520e74913940d\",\"dweb:/ipfs/QmSyqjksXxmm2mCG6qRd1yuwLykypkSVBbnBnGqJRcuJMi\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol\":{\"keccak256\":\"0x37bb49513c49c87c4642a891b13b63571bc87013dde806617aa1efb54605f386\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b3036b3a83b7c48f96641f2a9002b9f2dcb6a5958dd670894ada21ae8229b3d0\",\"dweb:/ipfs/QmUNfSBdoVtjhETaUJCYcaC7pTMgbhht926tJ2uXJbiVd3\"]},\"lib/openzeppelin-contracts/contracts/utils/Address.sol\":{\"keccak256\":\"0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245\",\"dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y\"]},\"lib/openzeppelin-contracts/contracts/utils/Context.sol\":{\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12\",\"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF\"]},\"lib/openzeppelin-contracts/contracts/utils/Strings.sol\":{\"keccak256\":\"0x55f102ea785d8399c0e58d1108e2d289506dde18abc6db1b7f68c1f9f9bc5792\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6e52e0a7765c943ef14e5bcf11e46e6139fa044be564881378349236bf2e3453\",\"dweb:/ipfs/QmZEeeXoFPW47amyP35gfzomF9DixqqTEPwzBakv6cZw6i\"]},\"lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol\":{\"keccak256\":\"0xeed0a08b0b091f528356cbc7245891a4c748682d4f6a18055e8e6ca77d12a6cf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ba80ba06c8e6be852847e4c5f4492cef801feb6558ae09ed705ff2e04ea8b13c\",\"dweb:/ipfs/QmXRJDv3xHLVQCVXg1ZvR35QS9sij5y9NDWYzMfUfAdTHF\"]},\"lib/openzeppelin-contracts/contracts/utils/cryptography/MessageHashUtils.sol\":{\"keccak256\":\"0xba333517a3add42cd35fe877656fc3dfcc9de53baa4f3aabbd6d12a92e4ea435\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2ceacff44c0fdc81e48e0e0b1db87a2076d3c1fb497341de077bf1da9f6b406c\",\"dweb:/ipfs/QmRUo1muMRAewxrKQ7TkXUtknyRoR57AyEkoPpiuZQ8FzX\"]},\"lib/openzeppelin-contracts/contracts/utils/math/Math.sol\":{\"keccak256\":\"0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4ece9f0b9c8daca08c76b6b5405a6446b6f73b3a15fab7ff56e296cbd4a2c875\",\"dweb:/ipfs/QmQyRpyPRL5SQuAgj6SHmbir3foX65FJjbVTTQrA2EFg6L\"]},\"lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol\":{\"keccak256\":\"0x5f7e4076e175393767754387c962926577f1660dd9b810187b9002407656be72\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7d533a1c97cd43a57cd9c465f7ee8dd0e39ae93a8fb8ff8e5303a356b081cdcc\",\"dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT\"]},\"src/RewardDistributor.sol\":{\"keccak256\":\"0x88136956721f4f6c7759332a6b7e69e5db5af7175c40c96ad4e5d1da9c80e063\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a2c324116861b6bc6691b43c343af828b17ced557d3282e812dba97ce65aada1\",\"dweb:/ipfs/QmemVhCVeL4Mbbf2d8JagMFaUJkd7fiUb11s9YLFCj4uVj\"]}},\"version\":1}",
+    "metadata": {
+      "compiler": {
+        "version": "0.8.24+commit.e11b9ed9"
+      },
+      "language": "Solidity",
+      "output": {
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "_crtToken",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "_signer",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              }
+            ],
+            "type": "error",
+            "name": "AddressEmptyCode"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              }
+            ],
+            "type": "error",
+            "name": "AddressInsufficientBalance"
+          },
+          {
+            "inputs": [],
+            "type": "error",
+            "name": "ECDSAInvalidSignature"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "uint256",
+                "name": "length",
+                "type": "uint256"
+              }
+            ],
+            "type": "error",
+            "name": "ECDSAInvalidSignatureLength"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "type": "error",
+            "name": "ECDSAInvalidSignatureS"
+          },
+          {
+            "inputs": [],
+            "type": "error",
+            "name": "FailedInnerCall"
+          },
+          {
+            "inputs": [],
+            "type": "error",
+            "name": "InvalidAmount"
+          },
+          {
+            "inputs": [],
+            "type": "error",
+            "name": "InvalidSignature"
+          },
+          {
+            "inputs": [],
+            "type": "error",
+            "name": "InvalidSigner"
+          },
+          {
+            "inputs": [],
+            "type": "error",
+            "name": "InvalidToken"
+          },
+          {
+            "inputs": [],
+            "type": "error",
+            "name": "NothingToClaim"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+              }
+            ],
+            "type": "error",
+            "name": "OwnableInvalidOwner"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              }
+            ],
+            "type": "error",
+            "name": "OwnableUnauthorizedAccount"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              }
+            ],
+            "type": "error",
+            "name": "SafeERC20FailedOperation"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "user",
+                "type": "address",
+                "indexed": true
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256",
+                "indexed": false
+              },
+              {
+                "internalType": "uint256",
+                "name": "totalEarned",
+                "type": "uint256",
+                "indexed": false
+              }
+            ],
+            "type": "event",
+            "name": "Claimed",
+            "anonymous": false
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address",
+                "indexed": true
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256",
+                "indexed": false
+              }
+            ],
+            "type": "event",
+            "name": "EmergencyWithdraw",
+            "anonymous": false
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address",
+                "indexed": true
+              },
+              {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address",
+                "indexed": true
+              }
+            ],
+            "type": "event",
+            "name": "OwnershipTransferred",
+            "anonymous": false
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "oldSigner",
+                "type": "address",
+                "indexed": true
+              },
+              {
+                "internalType": "address",
+                "name": "newSigner",
+                "type": "address",
+                "indexed": true
+              }
+            ],
+            "type": "event",
+            "name": "SignerUpdated",
+            "anonymous": false
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "CLAIM_TYPEHASH",
+            "outputs": [
+              {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+              }
+            ]
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "DOMAIN_SEPARATOR",
+            "outputs": [
+              {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+              }
+            ]
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "DOMAIN_TYPEHASH",
+            "outputs": [
+              {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+              }
+            ]
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "VERSION",
+            "outputs": [
+              {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "uint256",
+                "name": "totalEarned",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function",
+            "name": "claim"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "claimed",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ]
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "crtToken",
+            "outputs": [
+              {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+              }
+            ]
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function",
+            "name": "emergencyWithdraw"
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "getCRTBalance",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ]
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "totalEarned",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "getClaimableAmount",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ]
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "nonces",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ]
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "owner",
+            "outputs": [
+              {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+              }
+            ]
+          },
+          {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function",
+            "name": "renounceOwnership"
+          },
+          {
+            "inputs": [],
+            "stateMutability": "view",
+            "type": "function",
+            "name": "signer",
+            "outputs": [
+              {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+              }
+            ]
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function",
+            "name": "transferOwnership"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "newSigner",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function",
+            "name": "updateSigner"
+          }
+        ],
+        "devdoc": {
+          "kind": "dev",
+          "methods": {
+            "claim(uint256,uint256,bytes)": {
+              "details": "User pays gas for this transactionOnly claims the difference between totalEarned and already claimed",
+              "params": {
+                "nonce": "Current nonce (prevents replay attacks)",
+                "signature": "Server signature proving reward eligibility",
+                "totalEarned": "Total earned amount (from server database)"
+              }
+            },
+            "constructor": {
+              "params": {
+                "_crtToken": "CRT token contract address",
+                "_signer": "Authorized signer address (backend server wallet)"
+              }
+            },
+            "emergencyWithdraw(address,uint256)": {
+              "params": {
+                "amount": "Amount to withdraw",
+                "token": "Token address"
+              }
+            },
+            "getCRTBalance()": {
+              "returns": {
+                "_0": "CRT token balance"
+              }
+            },
+            "getClaimableAmount(address,uint256)": {
+              "params": {
+                "totalEarned": "Total earned amount (from server)",
+                "user": "User address"
+              },
+              "returns": {
+                "_0": "Claimable amount"
+              }
+            },
+            "owner()": {
+              "details": "Returns the address of the current owner."
+            },
+            "renounceOwnership()": {
+              "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+            },
+            "transferOwnership(address)": {
+              "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+            },
+            "updateSigner(address)": {
+              "params": {
+                "newSigner": "New signer address"
+              }
+            }
+          },
+          "version": 1
+        },
+        "userdoc": {
+          "kind": "user",
+          "methods": {
+            "CLAIM_TYPEHASH()": {
+              "notice": "Claim message type hash for EIP-712"
+            },
+            "DOMAIN_SEPARATOR()": {
+              "notice": "EIP-712 domain separator"
+            },
+            "DOMAIN_TYPEHASH()": {
+              "notice": "EIP-712 domain separator type hash"
+            },
+            "VERSION()": {
+              "notice": "Contract version for EIP-712"
+            },
+            "claim(uint256,uint256,bytes)": {
+              "notice": "Claim rewards with server signature"
+            },
+            "claimed(address)": {
+              "notice": "Total amount claimed per user"
+            },
+            "constructor": {
+              "notice": "Initialize RewardDistributor"
+            },
+            "crtToken()": {
+              "notice": "CRT token contract address"
+            },
+            "emergencyWithdraw(address,uint256)": {
+              "notice": "Emergency withdraw tokens (only owner)"
+            },
+            "getCRTBalance()": {
+              "notice": "Get contract CRT balance"
+            },
+            "getClaimableAmount(address,uint256)": {
+              "notice": "Get claimable amount for a user"
+            },
+            "nonces(address)": {
+              "notice": "Nonce per user (prevents replay attacks)"
+            },
+            "signer()": {
+              "notice": "Authorized signer address (backend server)"
+            },
+            "updateSigner(address)": {
+              "notice": "Update authorized signer"
+            }
+          },
+          "version": 1
+        }
+      },
+      "settings": {
+        "remappings": [
+          "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+          "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+          "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
+          "erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+          "forge-std/=lib/openzeppelin-contracts-upgradeable/lib/forge-std/src/",
+          "halmos-cheatcodes/=lib/openzeppelin-contracts-upgradeable/lib/halmos-cheatcodes/src/",
+          "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+          "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+        ],
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "metadata": {
+          "bytecodeHash": "ipfs"
+        },
+        "compilationTarget": {
+          "src/RewardDistributor.sol": "RewardDistributor"
+        },
+        "evmVersion": "shanghai",
+        "libraries": {},
+        "viaIR": true
+      },
+      "sources": {
+        "lib/openzeppelin-contracts/contracts/access/Ownable.sol": {
+          "keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
+          "urls": [
+            "bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6",
+            "dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+          "keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
+          "urls": [
+            "bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c",
+            "dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+          "keccak256": "0x6008dabfe393240d73d7dd7688033f72740d570aa422254d29a7dce8568f3aff",
+          "urls": [
+            "bzz-raw://f5196ec75139918c6c7bb4251b36395e668f1fa6d206beba7e7520e74913940d",
+            "dweb:/ipfs/QmSyqjksXxmm2mCG6qRd1yuwLykypkSVBbnBnGqJRcuJMi"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+          "keccak256": "0x37bb49513c49c87c4642a891b13b63571bc87013dde806617aa1efb54605f386",
+          "urls": [
+            "bzz-raw://b3036b3a83b7c48f96641f2a9002b9f2dcb6a5958dd670894ada21ae8229b3d0",
+            "dweb:/ipfs/QmUNfSBdoVtjhETaUJCYcaC7pTMgbhht926tJ2uXJbiVd3"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+          "keccak256": "0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721",
+          "urls": [
+            "bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245",
+            "dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/utils/Context.sol": {
+          "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+          "urls": [
+            "bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+            "dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/utils/Strings.sol": {
+          "keccak256": "0x55f102ea785d8399c0e58d1108e2d289506dde18abc6db1b7f68c1f9f9bc5792",
+          "urls": [
+            "bzz-raw://6e52e0a7765c943ef14e5bcf11e46e6139fa044be564881378349236bf2e3453",
+            "dweb:/ipfs/QmZEeeXoFPW47amyP35gfzomF9DixqqTEPwzBakv6cZw6i"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol": {
+          "keccak256": "0xeed0a08b0b091f528356cbc7245891a4c748682d4f6a18055e8e6ca77d12a6cf",
+          "urls": [
+            "bzz-raw://ba80ba06c8e6be852847e4c5f4492cef801feb6558ae09ed705ff2e04ea8b13c",
+            "dweb:/ipfs/QmXRJDv3xHLVQCVXg1ZvR35QS9sij5y9NDWYzMfUfAdTHF"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/utils/cryptography/MessageHashUtils.sol": {
+          "keccak256": "0xba333517a3add42cd35fe877656fc3dfcc9de53baa4f3aabbd6d12a92e4ea435",
+          "urls": [
+            "bzz-raw://2ceacff44c0fdc81e48e0e0b1db87a2076d3c1fb497341de077bf1da9f6b406c",
+            "dweb:/ipfs/QmRUo1muMRAewxrKQ7TkXUtknyRoR57AyEkoPpiuZQ8FzX"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/utils/math/Math.sol": {
+          "keccak256": "0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d",
+          "urls": [
+            "bzz-raw://4ece9f0b9c8daca08c76b6b5405a6446b6f73b3a15fab7ff56e296cbd4a2c875",
+            "dweb:/ipfs/QmQyRpyPRL5SQuAgj6SHmbir3foX65FJjbVTTQrA2EFg6L"
+          ],
+          "license": "MIT"
+        },
+        "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol": {
+          "keccak256": "0x5f7e4076e175393767754387c962926577f1660dd9b810187b9002407656be72",
+          "urls": [
+            "bzz-raw://7d533a1c97cd43a57cd9c465f7ee8dd0e39ae93a8fb8ff8e5303a356b081cdcc",
+            "dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT"
+          ],
+          "license": "MIT"
+        },
+        "src/RewardDistributor.sol": {
+          "keccak256": "0x88136956721f4f6c7759332a6b7e69e5db5af7175c40c96ad4e5d1da9c80e063",
+          "urls": [
+            "bzz-raw://a2c324116861b6bc6691b43c343af828b17ced557d3282e812dba97ce65aada1",
+            "dweb:/ipfs/QmemVhCVeL4Mbbf2d8JagMFaUJkd7fiUb11s9YLFCj4uVj"
+          ],
+          "license": "MIT"
+        }
+      },
+      "version": 1
+    },
+    "id": 48
+  }
+

@@ -10,7 +10,7 @@ declare global {
 // Read-only JSON-RPC provider for MemeCore.
 // Use this for calls that don't require the connected wallet.
 export function getReadOnlyProvider() {
-  return new ethers.providers.JsonRpcProvider("https://rpc.memecore.net");
+  return new ethers.providers.JsonRpcProvider("https://rpc.insectarium.memecore.net");
 }
 
 // Browser-injected provider (e.g. MetaMask). Requires the user to have a
