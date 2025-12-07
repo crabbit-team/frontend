@@ -55,10 +55,10 @@ export function StrategyResultCard({
                 )}
               </div>
             </div>
-            <p className="text-muted-foreground font-mono text-sm leading-relaxed mb-4">
+            <p className="text-muted-foreground font-mono text-xs leading-relaxed mb-4 whitespace-pre-line">
               {description}
             </p>
-            <p className="text-muted-foreground text-white font-mono leading-relaxed mb-4">
+            <p className="text-muted-foreground text-white font-mono text-xs leading-relaxed mb-4 whitespace-pre-line">
               {reasoning}
             </p>
 
