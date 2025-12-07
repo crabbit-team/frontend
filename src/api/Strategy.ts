@@ -23,6 +23,8 @@ export interface StrategyGenerateResponse {
     reasoning: string;
     /** 포함된 토큰 목록 */
     tokens: StrategyToken[];
+    /** 전략 이미지 URL */
+    image_url: string;
 }
 
 /**

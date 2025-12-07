@@ -140,17 +140,18 @@ export function StrategyResult() {
       if (!targetVaultAddress) {
         setTxInfo("Creating vault...");
 
-        // 포트폴리오 토큰 준비 (각 토큰에 대해 기본 수량 설정)
+        // 포트폴리오 토큰 준비 (가중치를 basis points로 변환: weight% * 100)
         const portfolioTokens = strategy.tokens.map((token) => ({
           address: token.address as Address,
-          amount: "1", // 기본값 1 (실제로는 전략에 맞게 계산 필요)
-          decimals: token.decimals, // 토큰의 소수점 자릿수
+          weightBps: Math.round(token.weight * 100), // weight % -> basis points (e.g., 30% -> 3000 bps)
         }));
 
         await createVaultWithParams({
           name: strategy.name,
           symbol: strategy.symbol,
           description: strategy.description,
+          imageURI: strategy.image_url, // API에서 받은 이미지 URL
+          baseAmount: amountNum.toString(), // USDC 금액
           portfolioTokens,
         });
 
