@@ -1,29 +1,63 @@
 import { BASE_URL } from ".";
 
+/**
+ * 사용자 프로필 정보
+ */
 export interface UserProfile {
+  /** 지갑 주소 */
   wallet_address: string;
+  /** 닉네임 */
   nickname: string;
+  /** 프로필 이미지 URL */
   profile_url: string;
+  /** 자기소개 */
+  bio: string;
+  /** Memex 링크 */
+  memex_link: string;
+  /** 프로필 생성 시간 (ISO 문자열) */
   created_at: string;
+  /** 프로필 수정 시간 (ISO 문자열) */
   updated_at: string;
-  // Optional list of on-chain strategy (vault) contract addresses owned by this user.
-  vault_addresses?: string[];
 }
 
+/**
+ * 프로필 초기화 요청
+ */
 export interface InitProfileRequest {
+  /** 지갑 주소 */
   wallet_address: string;
 }
 
+/**
+ * 프로필 업데이트 요청
+ */
 export interface UpdateProfileRequest {
+  /** 지갑 주소 */
   wallet_address: string;
+  /** 새로운 닉네임 */
   nickname: string;
 }
 
+/**
+ * 프로필 이미지 업데이트 요청
+ */
 export interface UpdateProfileImageRequest {
+  /** 지갑 주소 */
   wallet_address: string;
+  /** 업로드할 이미지 파일 */
   file: File;
 }
 
+/**
+ * POST /api/profile/init
+ *
+ * 새로운 사용자 프로필을 초기화합니다.
+ * 지갑 주소를 기반으로 프로필을 생성하며, 프로필이 이미 존재하는 경우 기존 프로필을 반환합니다.
+ * 
+ * @param walletAddress - 초기화할 지갑 주소
+ * @returns 생성되거나 조회된 프로필 정보
+ * @throws {Error} API 요청 실패 시 에러 발생
+ */
 export async function initProfile(
   walletAddress: string,
 ): Promise<UserProfile> {
@@ -54,7 +88,17 @@ export async function initProfile(
   return data;
 }
 
-// Upload or update profile image via multipart/form-data
+/**
+ * PUT /api/profile/image
+ *
+ * 프로필 이미지를 업로드하거나 업데이트합니다.
+ * multipart/form-data 형식으로 파일을 전송합니다.
+ * 
+ * @param walletAddress - 이미지를 업데이트할 지갑 주소
+ * @param file - 업로드할 이미지 파일
+ * @returns 업데이트된 프로필 정보
+ * @throws {Error} API 요청 실패 시 에러 발생
+ */
 export async function updateProfileImage(
   walletAddress: string,
   file: File,
@@ -86,6 +130,15 @@ export async function updateProfileImage(
 }
 
 
+/**
+ * GET /api/profile/{wallet_address}
+ *
+ * 지갑 주소로 사용자 프로필을 조회합니다.
+ * 
+ * @param walletAddress - 조회할 지갑 주소
+ * @returns 프로필 정보
+ * @throws {Error} API 요청 실패 시 에러 발생
+ */
 export async function getProfile(walletAddress: string): Promise<UserProfile> {
   const res = await fetch(`${BASE_URL}/api/profile/${encodeURIComponent(walletAddress)}`, {
     method: "GET",
@@ -111,6 +164,16 @@ export async function getProfile(walletAddress: string): Promise<UserProfile> {
   return data;
 }
 
+/**
+ * PATCH /api/profile
+ *
+ * 사용자 프로필의 닉네임을 업데이트합니다.
+ * 
+ * @param walletAddress - 업데이트할 지갑 주소
+ * @param nickname - 새로운 닉네임
+ * @returns 업데이트된 프로필 정보
+ * @throws {Error} API 요청 실패 시 에러 발생
+ */
 export async function updateProfile(
   walletAddress: string,
   nickname: string,
