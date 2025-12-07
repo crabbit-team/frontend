@@ -16,7 +16,7 @@ export function NetworkGuard({ requiredChainId, children }: NetworkGuardProps) {
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
-      <div className="bg-card border border-yellow-500/40 text-yellow-100 px-6 py-4 rounded-lg max-w-md text-center space-y-3">
+      <div className="bg-card border border-warning/40 text-warning-foreground px-6 py-4 rounded-lg max-w-md text-center space-y-3">
         <p className="text-sm font-mono">
           This page is only available on{" "}
           <span className="font-bold">
@@ -28,7 +28,7 @@ export function NetworkGuard({ requiredChainId, children }: NetworkGuardProps) {
           type="button"
           onClick={requestSwitch}
           disabled={isSwitching}
-          className="px-4 py-2 text-xs font-mono rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-xs font-mono rounded-md bg-carrot-orange text-carrot-orange-foreground hover:bg-carrot-orange/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSwitching ? "Switching..." : "Switch network"}
         </button>

@@ -11,7 +11,7 @@ export function TradePanel() {
             <div className="space-y-4">
                 <div>
                     <label className="text-sm text-muted-foreground mb-1 block">Asset</label>
-                    <select className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                    <select className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-carrot-orange">
                         <option>ETH / USDT</option>
                         <option>BTC / USDT</option>
                         <option>PEPE / USDT</option>
@@ -26,16 +26,16 @@ export function TradePanel() {
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         placeholder="0.00"
-                        className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-carrot-orange"
                     />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 pt-2">
-                    <button className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-medium transition-colors">
+                    <button className="flex items-center justify-center gap-2 bg-success hover:bg-success/90 text-success-foreground py-2 rounded-md font-medium transition-colors">
                         <ArrowUpRight className="w-4 h-4" />
                         Buy
                     </button>
-                    <button className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-md font-medium transition-colors">
+                    <button className="flex items-center justify-center gap-2 bg-error hover:bg-error/90 text-error-foreground py-2 rounded-md font-medium transition-colors">
                         <ArrowDownRight className="w-4 h-4" />
                         Sell
                     </button>

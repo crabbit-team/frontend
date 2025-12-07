@@ -75,7 +75,7 @@ export function ChatInterface() {
                     >
                         <div className={cn(
                             "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                            msg.role === 'assistant' ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
+                            msg.role === 'assistant' ? "bg-carrot-orange text-carrot-orange-foreground" : "bg-secondary text-secondary-foreground"
                         )}>
                             {msg.role === 'assistant' ? <Bot className="w-5 h-5" /> : <User className="w-5 h-5" />}
                         </div>
@@ -85,7 +85,7 @@ export function ChatInterface() {
                                 "p-3 rounded-lg text-sm",
                                 msg.role === 'assistant'
                                     ? "bg-secondary text-secondary-foreground rounded-tl-none"
-                                    : "bg-primary text-primary-foreground rounded-tr-none"
+                                    : "bg-carrot-orange text-carrot-orange-foreground rounded-tr-none"
                             )}>
                                 {msg.content}
                             </div>
@@ -95,7 +95,7 @@ export function ChatInterface() {
                 ))}
                 {isTyping && (
                     <div className="flex gap-3 max-w-[80%]">
-                        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-carrot-orange text-carrot-orange-foreground flex items-center justify-center shrink-0">
                             <Bot className="w-5 h-5" />
                         </div>
                         <div className="bg-secondary text-secondary-foreground p-3 rounded-lg rounded-tl-none text-sm flex items-center gap-1">
@@ -116,12 +116,12 @@ export function ChatInterface() {
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                         placeholder="Describe your strategy idea..."
-                        className="flex-1 bg-secondary border-transparent focus:border-primary rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="flex-1 bg-secondary border-transparent focus:border-carrot-orange rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-carrot-orange"
                     />
                     <button
                         onClick={handleSend}
                         disabled={!input.trim() || isTyping}
-                        className="bg-primary text-primary-foreground p-2 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-carrot-orange text-carrot-orange-foreground p-2 rounded-md hover:bg-carrot-orange/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Send className="w-5 h-5" />
                     </button>

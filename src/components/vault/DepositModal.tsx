@@ -31,9 +31,9 @@ export function DepositModal({ isOpen, onClose, vaultName }: DepositModalProps) 
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 placeholder="0.00"
-                                className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-carrot-orange"
                             />
-                            <button className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-primary hover:text-primary/80">
+                            <button className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-carrot-orange hover:text-carrot-orange/80">
                                 MAX
                             </button>
                         </div>
@@ -43,7 +43,7 @@ export function DepositModal({ isOpen, onClose, vaultName }: DepositModalProps) 
                     <div className="bg-secondary/50 rounded-md p-3 text-sm space-y-2">
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">Est. APY</span>
-                            <span className="font-medium text-green-600">124.5%</span>
+                            <span className="font-medium text-success">124.5%</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">Lock-up Period</span>
@@ -51,7 +51,7 @@ export function DepositModal({ isOpen, onClose, vaultName }: DepositModalProps) 
                         </div>
                     </div>
 
-                    <button className="w-full bg-primary text-primary-foreground py-2 rounded-md font-medium hover:bg-primary/90 transition-colors">
+                    <button className="w-full bg-carrot-orange text-carrot-orange-foreground py-2 rounded-md font-medium hover:bg-carrot-orange/90 transition-colors">
                         Confirm Deposit
                     </button>
                 </div>

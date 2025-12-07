@@ -1,188 +1,352 @@
-import { motion } from "framer-motion";
-import { cn } from "../lib/utils";
-import { useNavigate } from "react-router-dom";
-import { MOCK_VAULTS } from "../lib/mockData";
+/**
+ * Rank 페이지 컴포넌트
+ * 
+ * 전략 랭킹을 표시하는 페이지입니다.
+ * - 상위 3개 전략을 카드 형태로 강조 표시
+ * - 전체 전략 목록을 테이블 형태로 표시
+ * - 각 전략 클릭 시 상세 페이지로 이동
+ */
 
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getVaults, type VaultSummary, type VaultCreator } from "../api/vault";
+import { CardWithFrame } from "../components/common/CardWithFrame";
+import { CreatorModal } from "../components/common/CreatorModal";
+
+/**
+ * Tier에 따른 색상 스타일 반환
+ */
+function getTierStyles(tier: string): { backgroundColor: string; color: string } {
+    const tierLower = tier.toLowerCase();
+    
+    switch (tierLower) {
+        case "iron":
+            return {
+                backgroundColor: `hsl(var(--tier-iron) / 0.2)`,
+                color: `hsl(var(--tier-iron))`,
+            };
+        case "bronze":
+            return {
+                backgroundColor: `hsl(var(--tier-bronze) / 0.2)`,
+                color: `hsl(var(--tier-bronze))`,
+            };
+        case "silver":
+            return {
+                backgroundColor: `hsl(var(--tier-silver) / 0.2)`,
+                color: `hsl(var(--tier-silver))`,
+            };
+        case "gold":
+            return {
+                backgroundColor: `hsl(var(--tier-gold) / 0.2)`,
+                color: `hsl(var(--tier-gold))`,
+            };
+        case "diamond":
+            return {
+                backgroundColor: `hsl(var(--tier-diamond) / 0.2)`,
+                color: `hsl(var(--tier-diamond))`,
+            };
+        default:
+            return {
+                backgroundColor: `hsl(var(--carrot-orange) / 0.2)`,
+                color: `hsl(var(--carrot-orange))`,
+            };
+    }
+}
+
+/**
+ * Rank 메인 컴포넌트
+ * @returns 전략 랭킹 페이지 JSX
+ */
 export function Rank() {
+    // 페이지 네비게이션을 위한 훅
     const navigate = useNavigate();
+    const [vaults, setVaults] = useState<VaultSummary[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [creatorModalOpen, setCreatorModalOpen] = useState(false);
+    const [selectedCreator, setSelectedCreator] = useState<VaultCreator | null>(null);
+    const [selectedVaultName, setSelectedVaultName] = useState<string | null>(null);
+
+    // API에서 볼트 목록 가져오기
+    useEffect(() => {
+        async function fetchVaults() {
+            try {
+                setIsLoading(true);
+                const response = await getVaults();
+                setVaults(response.vaults);
+            } catch (error) {
+                console.error("Failed to fetch vaults:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchVaults();
+    }, []);
+
+    // Deposit 버튼 클릭 핸들러
+    const handleDepositClick = (e: React.MouseEvent, vault: VaultSummary) => {
+        e.stopPropagation(); // 행 클릭 이벤트 방지
+        navigate(`/vaults/${vault.address}`);
+    };
+
+    // Creator 클릭 핸들러
+    const handleCreatorClick = (e: React.MouseEvent, creator: VaultCreator, vaultName: string) => {
+        e.stopPropagation(); // 행 클릭 이벤트 방지
+        setSelectedCreator(creator);
+        setSelectedVaultName(vaultName);
+        setCreatorModalOpen(true);
+    };
 
     return (
-        <div className="min-h-screen bg-[#0c0b10] text-white font-tech overflow-hidden relative">
-            {/* Background Particles (Simulated with CSS/SVG for performance) */}
+        // 메인 컨테이너: 전체 화면 높이, 배경색, 텍스트 색상 설정
+        <div className="min-h-screen bg-background text-foreground font-tech overflow-hidden relative">
+            {/* 배경 파티클 효과: 시각적 깊이감을 위한 블러 처리된 원형 그라디언트 */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-[120px]" />
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[120px]" />
+                {/* 왼쪽 상단 당근 오렌지 그라디언트 효과 */}
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-carrot-orange/20 rounded-full blur-[120px] border-glow" />
+                {/* 오른쪽 하단 파란색(정보) 그라디언트 효과 */}
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-info/20 rounded-full blur-[120px]" />
             </div>
 
+            {/* 메인 콘텐츠 영역: 컨테이너 중앙 정렬, 패딩, z-index 설정 */}
             <div className="container mx-auto px-4 py-12 relative z-10">
-                {/* 1. Rankings Section Title */}
+                {/* 1. 페이지 제목 섹션 */}
                 <div className="mb-16 space-y-2">
-                    <h1 className="text-4xl md:text-5xl font-bold font-pixel tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                    {/* 메인 제목: 그라디언트 텍스트 효과 (흰색 → 당근 오렌지) */}
+                    <h1 className="text-4xl md:text-5xl font-bold font-pixel tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-carrot-orange">
                         Strategy Rank
                     </h1>
+                    {/* 설명 텍스트: 랭킹 생성 기준 및 업데이트 주기 안내 */}
                     <p className="text-muted-foreground font-mono text-sm tracking-wider">
                         Rank is generated from the strategy owner's historical average ROI. <br />
                         Updated every 24 hours.
                     </p>
                 </div>
 
-                {/* 2. Ranking Showcase (Centerpiece) */}
-                <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[200px]">
-                    {/* Simple mock spotlight for top 3 strategies */}
-                    {(() => {
-                        const top3 = MOCK_VAULTS.slice(0, 3);
-                        if (top3.length < 3) return null;
+                {/* 2. 상위 3개 전략 쇼케이스 (중앙 하이라이트) */}
+                {!isLoading && vaults.length >= 3 && (
+                    <div className="flex flex-col md:flex-row items-end justify-center gap-6 mb-20 min-h-[200px]">
+                        {/* 상위 3개 전략을 추출하고 순서 재배치 */}
+                        {(() => {
+                            const top3 = vaults.slice(0, 3);
+                            if (top3.length < 3) return null;
 
-                        const spotlight = [
-                            { vault: top3[1], rank: 2, position: "left" as const, delay: 0.3 },
-                            { vault: top3[0], rank: 1, position: "center" as const, delay: 0.2 },
-                            { vault: top3[2], rank: 3, position: "right" as const, delay: 0.4 },
-                        ];
+                            // 포디움 형태로 배치하기 위한 순서 재배치
+                            // 1위는 중앙, 2위는 왼쪽, 3위는 오른쪽
+                            const spotlight = [
+                                { vault: top3[1], rank: 2, position: "left" as const, delay: 0.3 },
+                                { vault: top3[0], rank: 1, position: "center" as const, delay: 0.2 },
+                                { vault: top3[2], rank: 3, position: "right" as const, delay: 0.4 },
+                            ];
 
-                        return spotlight.map(({ vault, rank, position, delay }) => (
-                            <RankingCard
-                                key={vault.id}
-                                user={{
-                                    id: vault.id,
-                                    rank,
-                                    vaultName: vault.name,
-                                    owner: vault.manager,
-                                    roiUsd: `+$${(vault.apy * 1000).toFixed(0)}`,
-                                    tvl: `$${vault.tvl.toLocaleString()}`,
-                                    avatar: vault.name.charAt(0).toUpperCase(),
-                                }}
-                                position={position}
-                                delay={delay}
-                            />
-                        ));
-                    })()}
-                </div>
+                            return spotlight.map(({ vault, rank, position, delay }) => (
+                                <RankingCard
+                                    key={vault.address}
+                                    vault={vault}
+                                    rank={rank}
+                                    position={position}
+                                    delay={delay}
+                                />
+                            ));
+                        })()}
+                    </div>
+                )}
 
-                {/* 4. Ranking Table */}
-                <div className="bg-[#13121a] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-sm shadow-2xl">
-                    <div className="grid grid-cols-12 gap-4 p-6 text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-white/5">
-                        <div className="col-span-1">Rank</div>
-                        <div className="col-span-5">Strategy</div>
-                        <div className="col-span-2 text-right">ROI (USD)</div>
-                        <div className="col-span-2 text-right">TVL</div>
-                        <div className="col-span-2 text-right">Deposit</div>
+                {/* 3. 전체 랭킹 테이블 */}
+                <div className="bg-card border border-border rounded-2xl overflow-hidden backdrop-blur-sm shadow-2xl">
+                    {/* 테이블 헤더 */}
+                    <div className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px] gap-4 p-6 text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border">
+                        <div>Rank</div>
+                        <div>Strategy</div>
+                        <div className="text-center">Creator</div>
+                        <div className="text-right">APY</div>
+                        <div className="text-right">24h</div>
+                        <div className="text-right">TVL</div>
+                        <div className="text-center">Tier</div>
+                        <div className="text-center">Deposit</div>
                     </div>
 
-                    <div className="divide-y divide-white/5">
-                        {MOCK_VAULTS.map((vault, index) => {
-                            const rank = index + 1;
-                            const roiUsd = (vault.apy * 1000).toFixed(0);
-                            const tvlLabel = `$${vault.tvl.toLocaleString()}`;
+                    {/* 테이블 바디 */}
+                    {isLoading ? (
+                        <div className="p-6 text-center text-muted-foreground">Loading...</div>
+                    ) : vaults.length === 0 ? (
+                        <div className="p-6 text-center text-muted-foreground font-mono">No strategy available</div>
+                    ) : (
+                        <div className="divide-y divide-border">
+                            {vaults.map((vault, index) => {
+                                const rank = index + 1;
+                                const apy = vault.performance?.apy ?? 0;
+                                const change24h = vault.performance?.change_24h ?? 0;
+                                const tvlLabel = `$${vault.tvl.toLocaleString()}`;
+                                const tier = vault.tier;
+                                const creatorImage = vault.creator?.image_url;
+                                const creator = vault.creator;
 
-                            return (
-                                <div
-                                    key={vault.id}
-                                    className="grid grid-cols-12 gap-4 px-6 py-4 text-sm items-center hover:bg-white/5 cursor-pointer transition-colors"
-                                    onClick={() => navigate(`/vaults/${vault.id}`)}
-                                >
-                                    <div className="col-span-1 font-mono text-muted-foreground">
-                                        #{rank}
-                                    </div>
-                                    <div className="col-span-5">
-                                        <div className="font-mono text-white">{vault.name}</div>
-                                        <div className="text-xs text-muted-foreground">
-                                            by {vault.manager}
+                                return (
+                                    <div
+                                        key={vault.address}
+                                        className="grid grid-cols-[60px_1fr_80px_100px_100px_100px_80px_120px] gap-4 px-6 py-4 text-sm items-center hover:bg-secondary/50 transition-colors"
+                                        onClick={() => navigate(`/vaults/${vault.address}`)}
+                                    >
+                                        {/* Rank */}
+                                        <div className="font-mono text-muted-foreground">
+                                            #{rank}
+                                        </div>
+
+                                        {/* Strategy: image(좌) & name/symbol(우) */}
+                                        <div className="flex items-center gap-2">
+                                            {/* Vault Profile Image */}
+                                            <div className="w-8 h-8 rounded-full overflow-hidden bg-carrot-orange/10 flex items-center justify-center flex-shrink-0">
+                                                {vault.image_url && vault.image_url.trim() ? (
+                                                    <img
+                                                        src={vault.image_url}
+                                                        alt={vault.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <span className="text-carrot-orange text-[10px] font-mono">
+                                                        ?
+                                                    </span>
+                                                )}
+                                            </div>
+                                            {/* Name & Symbol */}
+                                            <div>
+                                                <div className="font-mono text-foreground">{vault.name}</div>
+                                                <div className="text-xs text-muted-foreground">{vault.symbol}</div>
+                                            </div>
+                                        </div>
+
+                                        {/* Creator image & nickname (클릭하면 모달 열기) */}
+                                        <div className="flex items-center justify-center gap-2">
+                                            {creator && (
+                                                <button
+                                                    onClick={(e) => handleCreatorClick(e, creator, vault.name)}
+                                                    className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+                                                >
+                                                    <div className="w-8 h-8 rounded-full overflow-hidden bg-carrot-orange/10 flex items-center justify-center hover:ring-2 hover:ring-carrot-orange/50 transition-all flex-shrink-0">
+                                                        {creatorImage && creatorImage.trim() ? (
+                                                            <img
+                                                                src={creatorImage}
+                                                                alt={creator.nickname || "Creator"}
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        ) : (
+                                                            <span className="text-carrot-orange text-[10px] font-mono">
+                                                                ?
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <span className="text-xs font-mono text-foreground truncate max-w-[60px]">
+                                                        {creator.nickname?.trim() || vault.name.slice(0, 3)}
+                                                    </span>
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {/* APY */}
+                                        <div className="text-right font-mono text-success">
+                                            {apy.toFixed(2)}%
+                                        </div>
+
+                                        {/* 24h Change */}
+                                        <div className={`text-right font-mono ${change24h >= 0 ? "text-success" : "text-error"}`}>
+                                            {change24h >= 0 ? "+" : ""}{change24h.toFixed(2)}%
+                                        </div>
+
+                                        {/* TVL */}
+                                        <div className="text-right font-mono text-foreground/80">
+                                            {tvlLabel}
+                                        </div>
+
+                                        {/* Tier */}
+                                        <div className="text-center">
+                                            {(() => {
+                                                const tierStyles = getTierStyles(tier);
+                                                return (
+                                                    <span 
+                                                        className="inline-flex items-center justify-center font-bold text-sm font-mono px-2 py-1 rounded"
+                                                        style={{
+                                                            backgroundColor: tierStyles.backgroundColor,
+                                                            color: tierStyles.color,
+                                                        }}
+                                                    >
+                                                        {tier}
+                                                    </span>
+                                                );
+                                            })()}
+                                        </div>
+
+                                        {/* Deposit Button */}
+                                        <div className="text-center">
+                                            <button
+                                                onClick={(e) => handleDepositClick(e, vault)}
+                                                className="px-3 py-1.5 bg-carrot-orange text-carrot-orange-foreground hover:bg-carrot-orange/90 rounded-md text-xs font-mono font-medium transition-colors"
+                                            >
+                                                Deposit
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className="col-span-2 text-right font-mono text-emerald-400">
-                                        +${roiUsd}
-                                    </div>
-                                    <div className="col-span-2 text-right font-mono text-white/80">
-                                        {tvlLabel}
-                                    </div>
-                                    <div className="col-span-2 text-right font-mono text-muted-foreground">
-                                        —
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
+
+                {/* Creator Modal */}
+                {selectedCreator && (
+                    <CreatorModal
+                        isOpen={creatorModalOpen}
+                        onClose={() => {
+                            setCreatorModalOpen(false);
+                            setSelectedCreator(null);
+                            setSelectedVaultName(null);
+                        }}
+                        creator={selectedCreator}
+                        vaultName={selectedVaultName || undefined}
+                    />
+                )}
             </div>
         </div>
     );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function RankingCard({ user, position, delay }: { user: any, position: 'left' | 'center' | 'right', delay: number }) {
+/**
+ * RankingCard 컴포넌트
+ * 
+ * 상위 3개 전략을 카드 형태로 표시하는 컴포넌트입니다.
+ * CardWithFrame 컴포넌트를 사용하여 렌더링합니다.
+ * 
+ * @param vault - 전략 정보 객체 (VaultSummary)
+ * @param rank - 순위
+ * @param position - 카드 위치 ('left' | 'center' | 'right')
+ * @param delay - 애니메이션 시작 지연 시간 (초)
+ */
+function RankingCard({ 
+    vault, 
+    position, 
+    delay 
+}: { 
+    vault: VaultSummary; 
+    rank: number; 
+    position: 'left' | 'center' | 'right'; 
+    delay: number;
+}) {
     const isCenter = position === 'center';
     const navigate = useNavigate();
+    
+    // 1위는 오렌지 프레임, 2-3위는 그린 프레임 사용
+    const frameImage = isCenter 
+        ? "/card/frame/cardFrameOrange.png"
+        : "/card/frame/cardFrameGreen.png";
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.6, delay, ease: "easeOut" }}
-            className={cn(
-                "relative group cursor-pointer",
-                isCenter ? "z-20 -mb-8" : "z-10"
-            )}
-            onClick={() => navigate(`/vaults/${user.id}`)}
-        >
-            <motion.div
-                animate={isCenter ? { y: [-4, 4, -4] } : {}}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className={cn(
-                    "relative overflow-hidden rounded-2xl border transition-all duration-300",
-                    "bg-gradient-to-b from-[#1a1924] to-[#0c0b10]",
-                    isCenter
-                        ? "w-72 h-96 border-yellow-500/50 shadow-[0_0_50px_rgba(234,179,8,0.2)]"
-                        : "w-64 h-80 border-white/10 shadow-xl hover:border-white/30"
-                )}
-            >
-                {/* Card Glow Effect */}
-                <div className={cn(
-                    "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none",
-                    "bg-gradient-to-b from-transparent via-primary/5 to-primary/10"
-                )} />
-
-                {/* Rank Badge */}
-                <div className="absolute top-4 left-4">
-                    <div className={cn(
-                        "w-10 h-10 flex items-center justify-center rounded-lg font-pixel text-lg shadow-lg",
-                        isCenter ? "bg-yellow-500 text-black" : "bg-white/10 text-white border border-white/10"
-                    )}>
-                        #{user.rank}
-                    </div>
-                </div>
-
-                {/* Avatar */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
-                    <div className={cn(
-                        "rounded-full flex items-center justify-center border-4 shadow-2xl",
-                        isCenter ? "w-32 h-32 border-yellow-500/30 bg-yellow-500/10 text-6xl" : "w-24 h-24 border-white/10 bg-white/5 text-4xl"
-                    )}>
-                        {user.avatar}
-                    </div>
-                    <div className="text-center space-y-1">
-                        <h3 className={cn("font-bold tracking-tight", isCenter ? "text-2xl text-white" : "text-xl text-white/80")}>
-                            {user.vaultName}
-                        </h3>
-                        <p className="text-xs text-muted-foreground font-mono">{user.owner}</p>
-                    </div>
-                </div>
-
-                {/* Stats Footer */}
-                <div className="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                    <div className="flex justify-between items-end">
-                        <div>
-                            <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">ROI (USD)</div>
-                            <div className={cn("font-mono font-bold", isCenter ? "text-xl text-green-400" : "text-lg text-green-400/80")}>
-                                {user.roiUsd}
-                            </div>
-                        </div>
-                        <div className="text-right">
-                            <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">TVL</div>
-                            <div className="font-mono font-bold text-white">{user.tvl}</div>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-        </motion.div>
+        <CardWithFrame
+            frameImage={frameImage}
+            backgroundImage="/card/background/cardBgWhale.png"
+            text={vault.name}
+            size={isCenter ? "large" : "small"}
+            onClick={() => navigate(`/vaults/${vault.address}`)}
+            animationDelay={delay}
+            isCenter={isCenter}
+        />
     );
 }

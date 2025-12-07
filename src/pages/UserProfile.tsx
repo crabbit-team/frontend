@@ -4,6 +4,7 @@ import { Users, Wallet, Pencil, Copy } from "lucide-react";
 import { useAccount, useDisconnect } from "wagmi";
 import {
     getProfile,
+    initProfile,
     updateProfile,
     updateProfileImage,
     type UserProfile,
@@ -44,7 +45,16 @@ export function UserProfile() {
             setIsLoading(true);
             setError(null);
             try {
-                const p = await getProfile(connectedAddress);
+                let p: UserProfile;
+                try {
+                    // 먼저 프로필 조회 시도
+                    p = await getProfile(connectedAddress);
+                } catch (getErr) {
+                    // 프로필이 없으면 자동으로 생성
+                    console.log("Profile not found, initializing new profile...");
+                    p = await initProfile(connectedAddress);
+                }
+                
                 if (!cancelled) {
                     setProfile(p);
                     setEditNickname(p.nickname);
@@ -61,7 +71,7 @@ export function UserProfile() {
                     }
                 }
             } catch (err) {
-                console.error("Failed to fetch profile", err);
+                console.error("Failed to fetch or init profile", err);
                 if (!cancelled) {
                     setError(
                         err instanceof Error
@@ -216,18 +226,9 @@ export function UserProfile() {
     return (
         <div className="space-y-8">
             <div className="bg-card border border-border rounded-lg p-8 relative">
-                {canEdit && (
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="absolute top-3 right-3 text-[10px] font-mono text-muted-foreground hover:text-red-400 transition-colors"
-                    >
-                        logout
-                    </button>
-                )}
                 <div className="flex flex-col md:flex-row items-center gap-6">
                     <div className="relative w-24 h-24">
-                        <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center text-3xl font-bold overflow-hidden">
+                        <div className="w-24 h-24 rounded-full bg-carrot-orange/10 flex items-center justify-center text-3xl font-bold overflow-hidden">
                             {profile.profile_url ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
@@ -245,7 +246,7 @@ export function UserProfile() {
                                     type="button"
                                     onClick={handleAvatarEditClick}
                                     disabled={isUploadingImage}
-                                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center border border-background shadow-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-carrot-orange text-carrot-orange-foreground flex items-center justify-center border border-background shadow-md hover:bg-carrot-orange/90 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <Pencil className="w-3 h-3" />
                                 </button>
@@ -267,7 +268,7 @@ export function UserProfile() {
                                 <button
                                     type="button"
                                     onClick={handleStartEdit}
-                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs font-mono text-muted-foreground border border-border rounded hover:border-primary hover:text-primary transition-colors"
+                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs font-mono text-muted-foreground border border-border rounded hover:border-carrot-orange hover:text-carrot-orange transition-colors"
                                 >
                                     <Pencil className="w-3 h-3" />
                                     Edit
@@ -287,7 +288,7 @@ export function UserProfile() {
                                     <Copy className="w-3 h-3" />
                                 </button>
                                 {addressCopyFeedback && (
-                                    <span className="ml-1 text-[10px] text-primary font-mono">
+                                    <span className="ml-1 text-[10px] text-carrot-orange font-mono">
                                         {addressCopyFeedback}
                                     </span>
                                 )}
@@ -302,7 +303,7 @@ export function UserProfile() {
                 </div>
 
                 {canEdit && uploadError && (
-                    <p className="mt-3 text-xs text-red-400 font-mono">
+                    <p className="mt-3 text-xs text-error font-mono">
                         {uploadError}
                     </p>
                 )}
@@ -318,11 +319,11 @@ export function UserProfile() {
                                 value={editNickname}
                                 maxLength={32}
                                 onChange={(e) => setEditNickname(e.target.value)}
-                                className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-carrot-orange"
                                 placeholder="Enter new nickname"
                             />
                             {updateError && (
-                                <p className="text-xs text-red-400 font-mono">
+                                <p className="text-xs text-error font-mono">
                                     {updateError}
                                 </p>
                             )}
@@ -332,7 +333,7 @@ export function UserProfile() {
                                 type="button"
                                 onClick={handleSaveEdit}
                                 disabled={isUpdating || !editNickname.trim()}
-                                className="px-4 py-2 bg-primary text-primary-foreground text-xs font-mono rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-4 py-2 bg-carrot-orange text-carrot-orange-foreground text-xs font-mono rounded-md hover:bg-carrot-orange/90 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isUpdating ? "Saving..." : "Save"}
                             </button>
@@ -361,14 +362,14 @@ export function UserProfile() {
                     <div className="flex gap-2">
                         <Link
                             to="/ai-architect"
-                            className="px-3 py-1.5 text-xs font-mono border border-primary text-primary rounded-md hover:bg-primary/10 transition-colors"
+                            className="px-3 py-1.5 text-xs font-mono border border-carrot-orange text-carrot-orange rounded-md hover:bg-carrot-orange/10 transition-colors"
                         >
                             Create with AI
                         </Link>
                 </div>
             </div>
 
-                <UserVaultList addresses={profile.vault_addresses ?? []} />
+                <UserVaultList addresses={[]} />
             </div>
         </div>
     );

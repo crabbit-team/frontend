@@ -12,10 +12,6 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -40,6 +36,30 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
+        error: {
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--error-foreground))",
+        },
+        "carrot-green": {
+          DEFAULT: "hsl(var(--carrot-green))",
+          foreground: "hsl(var(--carrot-green-foreground))",
+        },
+        "carrot-orange": {
+          DEFAULT: "hsl(var(--carrot-orange))",
+          foreground: "hsl(var(--carrot-orange-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -49,6 +69,17 @@ export default {
       fontFamily: {
         pixel: ['"Press Start 2P"', 'cursive'],
         tech: ['"Rajdhani"', 'sans-serif'],
+      },
+    },
+    // Override default Tailwind color palettes completely (not in extend)
+    colors: {
+      pink: {
+        DEFAULT: "hsl(var(--pink))",
+        foreground: "hsl(var(--pink-foreground))",
+      },
+      gray: {
+        DEFAULT: "hsl(var(--gray))",
+        foreground: "hsl(var(--gray-foreground))",
       },
     },
   },

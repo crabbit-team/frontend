@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { CHART_COLORS, UI_COLORS } from '../../lib/utils';
 
 const data = [
     { time: '00:00', pnlA: 0, pnlB: 0 },
@@ -16,15 +17,15 @@ export function BattleChart() {
             <h3 className="text-sm font-medium mb-4">Live PNL Performance</h3>
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#333" opacity={0.1} />
-                    <XAxis dataKey="time" stroke="#888" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis stroke="#888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}%`} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={UI_COLORS.gray} opacity={0.1} />
+                    <XAxis dataKey="time" stroke={UI_COLORS.grayLight} fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke={UI_COLORS.grayLight} fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}%`} />
                     <Tooltip
                         contentStyle={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
                         itemStyle={{ fontSize: '12px' }}
                     />
-                    <Line type="monotone" dataKey="pnlA" stroke="#2563eb" strokeWidth={2} dot={false} name="You" />
-                    <Line type="monotone" dataKey="pnlB" stroke="#dc2626" strokeWidth={2} dot={false} name="Opponent" />
+                    <Line type="monotone" dataKey="pnlA" stroke={CHART_COLORS.info} strokeWidth={2} dot={false} name="You" />
+                    <Line type="monotone" dataKey="pnlB" stroke={CHART_COLORS.error} strokeWidth={2} dot={false} name="Opponent" />
                 </LineChart>
             </ResponsiveContainer>
         </div>

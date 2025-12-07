@@ -15,7 +15,7 @@ export function StrategyPreview({ strategy }: StrategyPreviewProps) {
         <div className="bg-card border border-border rounded-lg p-4 mt-4 animate-in fade-in slide-in-from-bottom-2">
             <div className="flex justify-between items-start mb-2">
                 <h4 className="font-bold text-lg">{strategy.name}</h4>
-                <div className="bg-primary/10 text-primary px-2 py-1 rounded text-xs font-bold">
+                <div className="bg-carrot-orange/10 text-carrot-orange px-2 py-1 rounded text-xs font-bold">
                     AI GENERATED
                 </div>
             </div>
@@ -34,7 +34,7 @@ export function StrategyPreview({ strategy }: StrategyPreviewProps) {
                 </div>
                 <div className="bg-secondary/50 p-2 rounded">
                     <span className="text-xs text-muted-foreground block">Est. APY</span>
-                    <div className="flex items-center gap-1 font-medium text-sm text-green-600">
+                    <div className="flex items-center gap-1 font-medium text-sm text-success">
                         <TrendingUp className="w-3 h-3" />
                         {strategy.estApy}%
                     </div>
@@ -49,7 +49,7 @@ export function StrategyPreview({ strategy }: StrategyPreviewProps) {
                 ))}
             </div>
 
-            <button className="w-full bg-primary text-primary-foreground py-2 rounded-md font-medium text-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+            <button className="w-full bg-carrot-orange text-carrot-orange-foreground py-2 rounded-md font-medium text-sm hover:bg-carrot-orange/90 transition-colors flex items-center justify-center gap-2">
                 Deploy Strategy
                 <ArrowRight className="w-4 h-4" />
             </button>
