@@ -19,11 +19,18 @@ import {
   Legend,
 } from "recharts";
 import { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
+import { formatUnits } from "viem";
 import { getVaultByAddress, type VaultDetail } from "../api/vault";
 import { CHART_COLOR_PALETTE } from "../lib/utils";
+import { issueWithBase } from "../contracts/vault/issueWithBase";
+import { useTokenBalance } from "../hooks/useTokenBalance";
+import { CONTRACT_ADDRESSES } from "../contracts/config";
 
 export function VaultDetail() {
   const { id } = useParams();
+  const { address, isConnected } = useAccount();
+
   const [vault, setVault] = useState<VaultDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +38,82 @@ export function VaultDetail() {
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [imageLinkCopyFeedback, setImageLinkCopyFeedback] = useState<string | null>(null);
+  const [isDepositing, setIsDepositing] = useState(false);
+  const [depositError, setDepositError] = useState<string | null>(null);
+  const [depositSuccess, setDepositSuccess] = useState<string | null>(null);
+
+  // USDC 잔액 조회
+  const { balance: usdcBalance, isLoading: isLoadingBalance } = useTokenBalance({
+    tokenAddress: CONTRACT_ADDRESSES.USDC,
+    userAddress: address,
+    enabled: isConnected && !!address,
+  });
+
+  const handleDeposit = async () => {
+    if (!id) {
+      setDepositError("Vault address is required");
+      return;
+    }
+
+    if (!isConnected || !address) {
+      setDepositError("Please connect your wallet first");
+      return;
+    }
+
+    const amountNum = Number(amount);
+    if (!Number.isFinite(amountNum) || amountNum <= 0) {
+      setDepositError("Enter a valid deposit amount");
+      return;
+    }
+
+    // USDC 잔액 확인
+    if (usdcBalance) {
+      const balanceFormatted = parseFloat(formatUnits(usdcBalance as bigint, 6));
+      if (balanceFormatted < amountNum) {
+        setDepositError(
+          `Insufficient USDC balance. You have ${balanceFormatted.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })} USDC but tried to deposit ${amountNum} USDC`
+        );
+        return;
+      }
+    }
+
+    try {
+      setIsDepositing(true);
+      setDepositError(null);
+      setDepositSuccess(null);
+
+      const result = await issueWithBase({
+        vaultAddress: id,
+        usdcAmount: amountNum,
+        slippageBps: 2000, // 20% slippage tolerance (더 관대한 설정)
+      });
+
+      console.log("Deposit result:", result);
+
+      // Format shares for display
+      const sharesFormatted = result.sharesReceived
+        ? (parseFloat(formatUnits(result.sharesReceived, 18))).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 6,
+          })
+        : "N/A";
+
+      setDepositSuccess(
+        `Deposit successful! ${amountNum} USDC deposited. Shares received: ${sharesFormatted}`
+      );
+      setAmount(""); // Clear input
+    } catch (err) {
+      console.error("Deposit failed:", err);
+      setDepositError(
+        err instanceof Error ? err.message : "Deposit failed. Please try again."
+      );
+    } finally {
+      setIsDepositing(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchVault() {
@@ -431,7 +514,18 @@ export function VaultDetail() {
                     </div>
                   </div>
                   <div className="flex justify-between text-xs font-mono text-muted-foreground px-1">
-                    <span>Balance: 0.00 USDC</span>
+                    <span>
+                      Balance:{" "}
+                      {isLoadingBalance
+                        ? "Loading..."
+                        : usdcBalance
+                          ? parseFloat(formatUnits(usdcBalance as bigint, 6)).toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : "0.00"}{" "}
+                      USDC
+                    </span>
                     <span>≈ ${amount || "0.00"}</span>
                   </div>
                 </div>
@@ -444,10 +538,26 @@ export function VaultDetail() {
                 </div>
 
                 {/* Action Button */}
-                <button className="w-full py-4 rounded-xl bg-gradient-to-r from-carrot-orange to-carrot-orange text-carrot-orange-foreground font-bold text-sm tracking-wide hover:shadow-[0_0_20px_rgba(208,129,65,0.4)] transition-all flex items-center justify-center gap-2 group">
+                <button
+                  onClick={handleDeposit}
+                  disabled={isDepositing || !amount}
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-carrot-orange to-carrot-orange text-carrot-orange-foreground font-bold text-sm tracking-wide hover:shadow-[0_0_20px_rgba(208,129,65,0.4)] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   <Wallet className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  DEPOSIT USDC
+                  {isDepositing ? "DEPOSITING..." : "DEPOSIT USDC"}
                 </button>
+
+                {/* Error/Success Messages */}
+                {depositError && (
+                  <div className="p-3 bg-error/10 border border-error/20 rounded-lg text-xs text-error text-center font-mono">
+                    {depositError}
+                  </div>
+                )}
+                {depositSuccess && (
+                  <div className="p-3 bg-success/10 border border-success/20 rounded-lg text-xs text-success text-center font-mono">
+                    {depositSuccess}
+                  </div>
+                )}
 
                 {/* Empty State / Info */}
                 <div className="pt-4 border-t border-border text-center">
