@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { useAccount } from "wagmi";
 import { getVaults, type VaultSummary } from "../../api/vault";
 import { VaultCardSelectable } from "./VaultCardSelectable";
 
@@ -11,6 +12,7 @@ interface VaultSelectionModalProps {
 }
 
 export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectionModalProps) {
+    const { address, isConnected } = useAccount();
     const [vaults, setVaults] = useState<VaultSummary[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -18,10 +20,24 @@ export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectio
     useEffect(() => {
         if (isOpen) {
             async function fetchVaults() {
+                // 지갑이 연결되지 않은 경우
+                if (!isConnected || !address) {
+                    setError("Please connect your wallet to select a vault");
+                    setIsLoading(false);
+                    return;
+                }
+
                 try {
                     setIsLoading(true);
                     setError(null);
-                    const response = await getVaults();
+
+                    // 현재 연결된 지갑 주소로 필터링하여 내 vault만 가져오기
+                    const response = await getVaults(address);
+
+                    if (response.vaults.length === 0) {
+                        setError("You don't have any vaults yet. Create a vault first!");
+                    }
+
                     setVaults(response.vaults);
                 } catch (err) {
                     setError(err instanceof Error ? err.message : "Failed to fetch vaults");
@@ -31,7 +47,7 @@ export function VaultSelectionModal({ isOpen, onSelect, onClose }: VaultSelectio
             }
             void fetchVaults();
         }
-    }, [isOpen]);
+    }, [isOpen, address, isConnected]);
 
     return (
         <AnimatePresence>
