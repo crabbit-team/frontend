@@ -58,7 +58,7 @@ export async function issueWithBase(params: IssueWithBaseParams) {
     MemeVaultABI.abi,
     getReadOnlyProvider(),
   );
-  const navPerShare = await vaultRead.navPerShare();
+  const navPerShare = await vaultRead.getNavPerShare();
   const expectedShares = amount
     .mul(ethers.utils.parseEther("1"))
     .div(navPerShare);

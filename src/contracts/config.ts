@@ -13,17 +13,17 @@ import RewardDistributorABI from "./abi/RewardDistributor.json";
  * 실제 배포된 주소로 업데이트 필요
  */
 export const CONTRACT_ADDRESSES = {
-  // Core protocol contracts
+  // Core protocol contracts on MemeCore Insectarium Testnet (Chain ID: 43522)
   CrtToken: "0x8371e24Ad7252f4BE6dE1AE7F589Fd82A4bcb940" as Address, // CRT token (CarrotToken)
-  MemeVaultFactory: "0xEB9ABD2007562674C85e5B70109776Bf82d6F6F5" as Address, // Vault creation factory
-  VaultManagerNFT: "0x3e361b70F3e5976d5adDfE17dCF53102b8c73C6c" as Address, // Manager NFT
-  UniswapV3TWAPOracle: "0xf307991Baf791B3569E9748c1309314232D02a61" as Address, // Price oracle
-  FeeCollector: "0xd0dB9de90E531ce0Fe35A143822f3Fe4c86B05C4" as Address, // Fee collector
-  RewardDistributor: "0xF8Cb324d87b8DE89B1F63fd29dDc9634791cf67c" as Address, // Reward distributor
+  MemeVaultFactory: "0xC83C2F3D8DB882dF24ACC770978C66c95FAcDa25" as Address, // Vault creation factory
+  VaultManagerNFT: "0x3c78DBb43fb9e1c4ad126c4A7D7Dd68a31Cb423F" as Address, // Manager NFT
+  UniswapV3TWAPOracle: "0xAD6acF19b5eEd4580C9513a8F4A9DC86A1E66c40" as Address, // Price oracle
+  FeeCollector: "0x4c8012f9d3ca8576bCCc465080838D66dcd0576E" as Address, // Fee collector
+  RewardDistributor: "0x279EaeE3e85FD717261793FAf1ec46c0ecfd1cFE" as Address, // Reward distributor
 
-  // External contracts (pre-deployed)
+  // External contracts (pre-deployed on Insectarium)
   SwapRouter: "0x12BDD778C77FBD6b82757f42C529300937d75C63" as Address,
-  USDC: "0x3eeBc5bEE5B6A26fE5f47eF46124EdbF4D29161E" as Address, // Base asset (USDC) – Demo token
+  USDC: "0x3eeBc5bEE5B6A26fE5f47eF46124EdbF4D29161E" as Address, // Demo USDC
 } as const;
 
 /**

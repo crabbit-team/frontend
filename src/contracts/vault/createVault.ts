@@ -37,7 +37,7 @@ export async function createVault(params: CreateVaultParams) {
   const signer = await getSigner();
   const userAddress = await signer.getAddress();
 
-  const crtTokenAddr = assertAddress("MemeToken");
+  const crtTokenAddr = assertAddress("CrtToken");
   const factoryAddr = assertAddress("MemeVaultFactory");
   const usdcAddr = params.baseAsset ?? assertAddress("USDC");
   const oracleAddr = params.priceOracle ?? assertAddress("UniswapV3TWAPOracle");
