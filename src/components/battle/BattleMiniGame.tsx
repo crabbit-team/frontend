@@ -43,7 +43,7 @@ const JUMP_HEIGHT = 150;
 
 export function BattleMiniGame({
     durationMs = SURVIVAL_TIME,
-    userLaneLabel = "You",
+    userLaneLabel: _userLaneLabel = "You",
     onComplete,
 }: BattleMiniGameProps) {
     const [obstacles, setObstacles] = useState<Obstacle[]>([
@@ -314,7 +314,8 @@ export function BattleMiniGame({
         return () => window.removeEventListener("keydown", handleGlobalKeyDown);
     }, [isPlaying]);
 
-    const remainingSeconds = Math.max(0, Math.ceil((durationMs - elapsed) / 1000));
+    // Remaining seconds calculated but not currently used
+    // const remainingSeconds = Math.max(0, Math.ceil((durationMs - elapsed) / 1000));
 
     // Retry Handler
     const handleRetry = () => {

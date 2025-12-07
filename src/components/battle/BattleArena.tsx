@@ -28,7 +28,7 @@ function formatTVL(tvlString: string): string {
 }
 
 export function BattleArena({ vault, opponent, onStartBattle, onBack }: BattleArenaProps) {
-    const { address: connectedAddress, isConnected } = useAccount();
+    const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
 
     // 내 전략 카드: creator/deposit 구분 없이 표시 (기본적으로 orange 프레임 사용)

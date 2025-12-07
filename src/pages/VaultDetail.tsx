@@ -157,7 +157,7 @@ export function VaultDetail() {
 
       // Format shares for display
       const sharesFormatted = result.sharesReceived
-        ? (parseFloat(formatUnits(result.sharesReceived, 18))).toLocaleString("en-US", {
+        ? (parseFloat(formatUnits(result.sharesReceived.toBigInt(), 18))).toLocaleString("en-US", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 6,
           })
